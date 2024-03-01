@@ -1,0 +1,182 @@
+.landing-page {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.header {
+  background-color: #fff;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  font-size: 1.8em;
+  margin: 0;
+  color: #2196f3;
+  font-weight: bold;
+}
+
+.navLink {
+  white-space: nowrap;
+  text-decoration: none;
+  padding: 0.6em 0.8em;
+  background-color: #eee;
+  border-bottom: 3px solid #eee;
+  display: block;
+  font-size: 0.93em;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: black;
+}
+
+.header nav ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.header nav li {
+  margin-right: 20px;
+}
+
+.header nav li:first-child {
+  margin-left: 0;
+}
+
+.authButtons {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 20px;
+}
+
+.loginButton {
+  background-color: #ee7718;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.signupButton {
+  background-color: #55504c;
+  color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Optional styles for hover effect */
+.loginButton:hover,
+.signupButton:hover {
+  background-color: #f0f0f0; /* Change background color on hover */
+}
+
+/* .landing-page {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.header {
+  background-color: #f0f0f0;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 2em;
+  margin: 0;
+}
+
+.header nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header nav li {
+  margin-right: 20px;
+}
+
+.header nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 0;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.hero h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1em;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.button:hover {
+  background-color: #0069d9;
+}
+
+.benefits {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin-bottom: 50px;
+}
+
+.benefits h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  margin-bottom: 50px;
+}
+
+.actionLink {
+} */
