@@ -7,176 +7,111 @@
   flex-direction: column;
 }
 
-.header {
-  background-color: #fff;
-  padding: 20px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.header h1 {
-  font-size: 1.8em;
-  margin: 0;
-  color: #2196f3;
-  font-weight: bold;
-}
-
-.navLink {
-  white-space: nowrap;
-  text-decoration: none;
-  padding: 0.6em 0.8em;
-  background-color: #eee;
-  border-bottom: 3px solid #eee;
-  display: block;
-  font-size: 0.93em;
-  font-weight: 700;
-  text-transform: uppercase;
-  cursor: pointer;
-  color: black;
-}
-
-.header nav ul {
-  display: flex;
-  justify-content: space-between;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.header nav li {
-  margin-right: 20px;
-}
-
-.header nav li:first-child {
-  margin-left: 0;
-}
-
-.authButtons {
-  display: flex;
-  justify-content: flex-end;
-  margin-left: 20px;
-}
-
-.loginButton {
-  background-color: #ee7718;
-  border: 1px solid #ddd;
-  padding: 10px 20px;
-  border-radius: 7px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.signupButton {
-  background-color: #55504c;
-  color: #fff;
-  border: 1px solid #ddd;
-  padding: 10px 20px;
-  border-radius: 7px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-/* Optional styles for hover effect */
-.loginButton:hover,
-.signupButton:hover {
-  background-color: #f0f0f0; /* Change background color on hover */
-}
-
-/* .landing-page {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
-.header {
-  background-color: #f0f0f0;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header h1 {
-  font-size: 2em;
-  margin: 0;
-}
-
-.header nav {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.header nav li {
-  margin-right: 20px;
-}
-
-.header nav a {
-  text-decoration: none;
-  color: #333;
-}
-
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 50px 0;
-}
-
 .hero {
+  position: relative;
+  overflow: hidden;
   text-align: center;
-  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../../assets/images/background-img.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(1px);
+  height: 850px;
+  backgroun-color: #000;
 }
 
-.hero h2 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black; /* changed from white */
+  width: 60%;
+  margin: auto;
+  margin-top: 9rem;
+  /* margin-bottom: 0; removed */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 10;
+  border-radius: 7px;
+  padding: 20px;
 }
 
-.hero p {
-  font-size: 1em;
-  line-height: 1.5;
+.overlayContent {
+  position: relative;
+  z-index: 20;
+  margin: 20px;
+  max-width: 900px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.overlay h1 {
+  font-size: 2.5em;
   margin-bottom: 20px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: black; /* changed from #2196f3 */
 }
 
-.button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.button:hover {
-  background-color: #0069d9;
+.overlay p {
+  font-size: 1.4em;
+  line-height: 1.4;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  color: black; /* changed from #2196f3 */
 }
 
 .benefits {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   justify-content: space-between;
-  width: 80%;
-  margin-bottom: 50px;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
 }
 
-.benefits h3 {
-  font-size: 1.2em;
-  margin-bottom: 10px;
+.benefits p {
+  font-size: 0.8em;
 }
 
-.actions {
+.footer {
+  padding: 20px 40px;
   display: flex;
-  justify-content: space-between;
-  width: 60%;
-  margin-bottom: 50px;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
 }
 
-.actionLink {
+.footer p {
+  font-size: 0.9em;
+  margin: 0;
+}
+
+/* .heroButtons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.heroButtons button {
+  background-color: #ee7718;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
 } */
