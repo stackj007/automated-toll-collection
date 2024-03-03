@@ -4,7 +4,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   margin-bottom: 2rem;
 }
 
@@ -19,14 +18,12 @@
   white-space: nowrap;
   text-decoration: none;
   padding: 0.6em 0.8em;
-  /* background-color: #eee; */
-  /* border-bottom: 3px solid #eee; */
   display: block;
   font-size: 0.93em;
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
-  color: black; /* changed from #2196f3 */
+  color: black;
 }
 
 .header nav ul {

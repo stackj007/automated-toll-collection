@@ -2,7 +2,6 @@
   /**
    * colors
    */
-
   --violet-blue-crayola: hsla(234, 50%, 64%, 1);
   --dark-cornflower-blue_a7: hsla(214, 88%, 27%, 0.07);
   --white: hsla(0, 0%, 100%, 1);
@@ -23,7 +22,6 @@
   /**
    * typography
    */
-
   --ff-manrope: 'Manrope', sans-serif;
 
   --fs-1: calc(2.7rem + 1.38vw);
@@ -40,13 +38,11 @@
   /**
    * spacing
    */
-
   --section-padding: 90px;
 
   /**
    * box shadow
    */
-
   --shadow-1: 0 0 20px hsla(216, 14%, 14%, 0.05);
   --shadow-2: 0 0 0 0.05rem hsla(214, 88%, 27%, 0.08),
     0 0 1.25rem hsla(216, 14%, 14%, 0.06);
@@ -55,7 +51,6 @@
   /**
    * border radius
    */
-
   --radius-circle: 50%;
   --radius-pill: 100px;
   --radius-10: 10px;
@@ -65,7 +60,6 @@
   /**
    * transition
    */
-
   --transition-1: 0.25s ease;
   --transition-2: 0.5s ease;
   --transition-3: 0.3s ease-in-out;

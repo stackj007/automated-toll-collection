@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import styles from './OurValueTextContent .module.css'
+import {useState} from 'react'
+import styles from './OurValues.module.css'
 
-function OurValueTextContent() {
+function OurValues() {
   const [selectedButton, setSelectedButton] =
     useState('mission')
 
@@ -58,4 +58,4 @@ function OurValueTextContent() {
   )
 }
 
-export default OurValueTextContent
+export default OurValues

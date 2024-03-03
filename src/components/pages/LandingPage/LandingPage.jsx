@@ -1,16 +1,13 @@
-import Header from '../../../components/common/Header'
-import AboutUs from '../../common/AboutUs'
+import AboutUs from './AboutUs.jsx'
 import styles from './LandingPage.module.css'
-import accountIcon from '../../../assets/icons/account 1.png'
-import calculator from '../../../assets/icons/calculator 1.png'
-import payment from '../../../assets/icons/payment 1.png'
-import toll from '../../../assets/icons/toll (1) 1.png'
+import accountIcon from '../../../assets/icons/account.png'
+import calculator from '../../../assets/icons/calculator.png'
+import payment from '../../../assets/icons/payment.png'
+import toll from '../../../assets/icons/toll.png'
 
 function LandingPage() {
   return (
     <div className={styles.landingPage}>
-      <Header />
-
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className={styles.overlay}>
@@ -61,31 +58,6 @@ function LandingPage() {
         </section>
 
         <AboutUs />
-
-        {/* <section className={styles.benefits}>
-          <h3>Save time and money</h3>
-          <p>
-            Our automated toll collection system eliminates
-            the need to stop at toll booths, saving you time
-            and money.
-          </p>
-          <h3>Numerous payment methods</h3>
-          <p>
-            Choose from a variety of convenient payment
-            methods to keep your account current.
-          </p>
-        </section> */}
-
-        {/* <section className={styles.actions}>
-          <a href="#" className={styles.actionLink}>
-            Pay or learn more about a Notice of Toll
-            Violation
-          </a>
-          <a href="#" className={styles.actionLink}>
-            Calculate the toll for any trip on our toll
-            roads
-          </a>
-        </section> */}
       </main>
       <footer className={styles.footer}>
         <p>
