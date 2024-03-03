@@ -1,4 +1,5 @@
 import Header from '../../../components/common/Header'
+import AboutUs from '../../common/AboutUs'
 import styles from './LandingPage.module.css'
 import accountIcon from '../../../assets/icons/account 1.png'
 import calculator from '../../../assets/icons/calculator 1.png'
@@ -58,6 +59,8 @@ function LandingPage() {
             </div>
           </div>
         </section>
+
+        <AboutUs />
 
         {/* <section className={styles.benefits}>
           <h3>Save time and money</h3>
