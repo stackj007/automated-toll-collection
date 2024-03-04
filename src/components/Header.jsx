@@ -1,7 +1,17 @@
+import { useNavigate } from 'react-router-dom'
 import styles from './Header.module.css'
 import Logo from '../assets/Logo/logo.png'
 
 function Header() {
+  const navigate = useNavigate()
+
+  const handleLoginClick = () => {
+    navigate('/login')
+  }
+
+  const handleHomeClick = () => {
+    navigate('/')
+  }
   return (
     <nav className="bg-white bg-opacity-75 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,7 +21,7 @@ function Header() {
               <span className="sr-only">Toll Express</span>
               <img
                 alt="Toll Express logo"
-                className="h-6 w-auto object-contain" // Single height for consistent logo size
+                className="h-6 w-auto object-contain"
                 src={Logo}
               />
             </a>
@@ -20,6 +30,7 @@ function Header() {
             <a
               className="text-base font-medium text-gray-500 hover:text-gray-900"
               href="#"
+              onClick={handleHomeClick}
             >
               Home
             </a>
@@ -46,6 +57,7 @@ function Header() {
             <a
               className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
               href="#"
+              onClick={handleLoginClick}
             >
               Login
             </a>
