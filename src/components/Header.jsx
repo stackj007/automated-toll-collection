@@ -4,7 +4,7 @@ import Logo from '../assets/Logo/logo.png'
 function Header() {
   return (
     <header className={styles.header}>
-      <img src={Logo} alt="Your company logo"  />
+      <img src={Logo} alt="Your company logo" />
       <nav>
         <ul>
           <li>
