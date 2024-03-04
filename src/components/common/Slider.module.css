@@ -3,13 +3,14 @@
   align-items: center;
   position: relative;
   width: 100%;
-  height: 400px; /* Adjust height as needed */
+  height: 400px;
 }
 
 .sliderImage {
   object-fit: cover;
   width: 100%;
   height: 100%;
+  border-radius: 5px;
 }
 
 .sliderButtonPrev,
@@ -22,7 +23,7 @@
   cursor: pointer;
   padding: 10px;
   font-size: 2rem;
-  color: #fff; /* Adjust color based on your design */
+  color: #fff;
   transition: all 0.3s ease;
 }
 
@@ -32,9 +33,9 @@
 }
 
 .sliderButtonPrev {
-  left: 10px; /* Adjust spacing */
+  left: 10px;
 }
 
 .sliderButtonNext {
-  right: 10px; /* Adjust spacing */
+  right: 10px;
 }

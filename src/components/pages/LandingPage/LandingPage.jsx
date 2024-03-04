@@ -12,9 +12,10 @@ function LandingPage() {
         <section className={styles.hero}>
           <div className={styles.overlay}>
             <div className={styles.overlayContent}>
-              {' '}
-              <h1>Enjoy the ride.</h1>
-              <p>
+              <h1 className="text-4xl font-bold text-black mb-4">
+                Enjoy the Ride
+              </h1>
+              <p className="text-black mb-6">
                 Ready to handle toll payments hassle-free?
                 Join now and access all the resources needed
                 to streamline your toll payment experience
@@ -25,32 +26,46 @@ function LandingPage() {
                   <img
                     src={accountIcon}
                     alt="Account Icon"
+                    className="mb-2"
                   />
-                  <p>Save time and money</p>
+                  <p className="text-black">
+                    Save time and money
+                  </p>
                 </div>
 
                 <div className={styles.subbenefits}>
                   <img
                     src={calculator}
-                    alt="Account Icon"
+                    alt="Calculator Icon"
+                    className="mb-2"
                   />
-                  <p>
-                    calculate the toll for any trip on the
+                  <p className="text-black">
+                    Calculate the toll for any trip on the
                     toll roads
                   </p>
                 </div>
 
                 <div className={styles.subbenefits}>
-                  <img src={toll} alt="Account Icon" />
-                  <p>
-                    Pay or learn more about a Notice of toll
-                    violation
+                  <img
+                    src={toll}
+                    alt="Toll Icon"
+                    className="mb-2"
+                  />
+                  <p className="text-black">
+                    Pay or learn more about a Notice of Toll
+                    Violation
                   </p>
                 </div>
 
                 <div className={styles.subbenefits}>
-                  <img src={payment} alt="Account Icon" />
-                  <p>Numerous payment methods</p>
+                  <img
+                    src={payment}
+                    alt="Payment Icon"
+                    className="mb-2"
+                  />
+                  <p className="text-black">
+                    Numerous payment methods
+                  </p>
                 </div>
               </div>
             </div>

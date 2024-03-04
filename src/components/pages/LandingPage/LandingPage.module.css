@@ -1,5 +1,5 @@
 .landing-page {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
   display: flex;
@@ -17,7 +17,7 @@
   background-image: url('../../../assets/images/background-img.png');
   background-size: cover;
   background-position: center;
-  filter: blur(1px);
+  filter: blur(0.2);
   height: 850px;
 }
 
@@ -37,33 +37,29 @@
   justify-content: flex-start;
   align-items: center;
   z-index: 10;
-  border-radius: 50px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .overlayContent {
   position: relative;
   z-index: 20;
-  margin: 20px;
   max-width: 900px;
-  padding: 20px;
-  border-radius: 10px;
 }
 
 .overlay h1 {
-  font-size: 2.5em;
+  font-size: 3em;
   margin-bottom: 20px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  color: black; /* changed from #2196f3 */
 }
 
 .overlay p {
-  font-size: 1.4em;
+  font-size: 1.6em;
   line-height: 1.4;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  color: black; /* changed from #2196f3 */
 }
 
 .benefits {
@@ -72,16 +68,30 @@
   gap: 20px;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  width: 100%;
+  margin-top: 40px;
 }
 
+.subbenefits {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.subbenefits img {
+  grid-column: 1;
+}
+
+.subbenefits p {
+  grid-column: 2;
+}
 .benefits p {
-  font-size: 0.8em;
+  font-size: 1.2em;
+  color: black;
 }
 
 .footer {
-  padding: 20px 40px;
+  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,7 +100,6 @@
 }
 
 .footer p {
-  font-size: 0.9em;
+  font-size: 1em;
   margin: 0;
 }
-

@@ -8,7 +8,8 @@
   margin-bottom: 2rem;
 }
 
-.button {
+.button,
+.activeButton {
   margin-bottom: 20px;
   margin-right: 10px;
 }
