@@ -1,69 +1,88 @@
 export default function LoginPage() {
   return (
-    <div className="container mx-auto px-4 py-20">
-      <div className="max-w-lg mx-auto bg-white rounded-lg p-8 shadow-lg">
-        <h2 className="text-2xl font-bold mb-6">
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Login to your account
         </h2>
-        <form>
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium mb-2"
-              htmlFor="email"
-            >
-              Email Address
-            </label>
-            <input
-              className="w-full"
-              id="email"
-              placeholder="Enter your email"
-              type="email"
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              className="block text-sm font-medium mb-2"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              className="w-full"
-              id="password"
-              placeholder="Enter your password"
-              type="password"
-            />
-          </div>
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center">
-              <input id="remember-me" type="checkbox" />
-              <label
-                className="text-sm ml-2"
-                htmlFor="remember-me"
-              >
-                Remember me
-              </label>
-            </div>
-            <a
-              className="text-sm text-orange-500 hover:underline"
-              href="#"
-            >
-              Forgot your password?
-            </a>
-          </div>
-          <button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
-            Login
-          </button>
-        </form>
-        <p className="mt-4 text-sm text-center">
-          Don't have an account?{' '}
-          <a
-            className="text-orange-500 hover:underline"
-            href="#"
+      </div>
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form
+            action="#"
+            className="space-y-6"
+            method="POST"
           >
-            Sign up
-          </a>
-        </p>
+            <div>
+              <label
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="email"
+              >
+                Email Address
+              </label>
+              <div className="mt-1">
+                <input
+                  autoComplete="email"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  type="email"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <div className="mt-1">
+                <input
+                  autoComplete="current-password"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  required
+                  type="password"
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                  id="terms"
+                />
+                <label
+                  className="ml-2 block text-sm text-gray-900"
+                  htmlFor="terms"
+                >
+                  I agree to the terms and conditions
+                </label>
+              </div>
+            </div>
+            <div>
+              <button
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                type="submit"
+              >
+                Sign up
+              </button>
+            </div>
+          </form>
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

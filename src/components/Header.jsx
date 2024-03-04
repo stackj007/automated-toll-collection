@@ -23,6 +23,7 @@ function Header() {
                 alt="Toll Express logo"
                 className="h-6 w-auto object-contain"
                 src={Logo}
+                onClick={handleHomeClick}
               />
             </a>
           </div>
