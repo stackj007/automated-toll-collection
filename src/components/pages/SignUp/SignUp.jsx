@@ -70,21 +70,6 @@ export default function SignUp() {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
-                  id="terms"
-                />
-                <label
-                  className="ml-2 block text-sm text-gray-900"
-                  htmlFor="terms"
-                >
-                  I agree to the terms and conditions
-                </label>
-              </div>
-            </div>
             <div>
               <button
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
