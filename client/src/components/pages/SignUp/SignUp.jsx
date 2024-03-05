@@ -1,4 +1,23 @@
+import {useAuth} from "../../../AuthContext.jsx";
+import {useNavigate} from "react-router-dom";
+
 export default function SignUp() {
+  const { register } = useAuth()
+  const navigate = useNavigate()
+
+  const handleRegister = (e) => {
+    e.preventDefault()
+    const email = e.target.email.value
+    const password = e.target.password.value
+    const confirmPassword = e.target['password-confirm'].value
+    const result = register(email, password, confirmPassword)
+    if (result) {
+      navigate('/')
+    } else {
+      //  registration fail
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -9,9 +28,8 @@ export default function SignUp() {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form
-            action="#"
             className="space-y-6"
-            method="POST"
+            onSubmit={handleRegister}
           >
             <div>
               <label
