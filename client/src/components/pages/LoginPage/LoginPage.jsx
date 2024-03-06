@@ -1,34 +1,33 @@
-import { useAuth } from '../../../AuthContext'
-import { useNavigate } from 'react-router-dom'
+import {useAuth} from '../../../AuthContext'
+import {useNavigate} from 'react-router-dom'
+import {useState} from "react";
 
 export default function LoginPage() {
-  const { login } = useAuth()
+  const {login} = useAuth()
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     const email = e.target.email.value
     const password = e.target.password.value
 
-    // Call the login function with the email and password
-    const isLoginSuccessful = login(email, password)
-    if (isLoginSuccessful) {
-      // Redirect to the home page after successful login
+    const [res, error] = await login(email, password)
+    console.log(res, error)
+    if (res) {
       navigate('/')
     } else {
-      //  login fail
+      setError(error)
     }
   }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      {/* // Title container */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Login to your account
         </h2>
       </div>
-      {/*  Form container */}
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {/*  Login form */}
@@ -58,7 +57,6 @@ export default function LoginPage() {
                 />
               </div>
             </div>
-            {/* Password input field */}
             <div>
               <label
                 className="block text-sm font-medium text-gray-700"
@@ -78,7 +76,11 @@ export default function LoginPage() {
                 />
               </div>
             </div>
-            {/*  Submit button */}
+            {error && (
+              <div className="text-red-500 text-s text-center">
+                {error}
+              </div>
+            )}
             <div>
               <button
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
@@ -88,11 +90,10 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
-          {/* Separator  */}
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
+                <div className="w-full border-t border-gray-300"/>
               </div>
             </div>
           </div>

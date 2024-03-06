@@ -1,20 +1,21 @@
 import {useAuth} from "../../../AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 
 export default function SignUp() {
   const { register } = useAuth()
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault()
-    const email = e.target.email.value
-    const password = e.target.password.value
-    const confirmPassword = e.target['password-confirm'].value
-    const result = register(email, password, confirmPassword)
+    const [email, password, confirmPassword] = [e.target.email.value, e.target.password.value, e.target['password-confirm'].value]
+
+    const [result, error] = await register(email, password, confirmPassword)
     if (result) {
       navigate('/')
     } else {
-      //  registration fail
+      setError(error)
     }
   };
 
@@ -88,6 +89,11 @@ export default function SignUp() {
                 />
               </div>
             </div>
+            {error && (
+              <div className="text-red-500 text-s text-center">
+                {error}
+              </div>
+            )}
             <div>
               <button
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"

@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useState,
   useContext,
@@ -12,66 +12,61 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({children}) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [user, setUser] = useState({})
 
-  const login = (email, password) => {
-    axios.post('/login', {
-      email: email,
-      password: password
-    })
-      .then((response) => {
-        setIsLoggedIn(true)
-        return true
-      }).catch((error) => {
-      console.log(error);
-      return false
-    });
-  }
-
-  const logout = () => {
-    axios.post('/logout')
-      .then((response) => {
-        setIsLoggedIn(false)
-        return true
+  const login = async (email, password) => {
+    try {
+      const response = await axios.post('/login', {
+        email: email,
+        password: password
       })
-      .catch((error) => {
-        console.log(error);
-        return false
-      });
+      setUser(response.data.user)
+      return [true, null]
+    } catch (error) {
+      return [false, error.response.data?.error ?? error.response.data]
+    }
   }
 
-  const register = (email, password, confirmPassword) => {
-    axios.post('/register', {
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword
-    })
-      .then((response) => {
-        setIsLoggedIn(true)
-        return true
-      }).catch((error) => {
-      console.log(error);
-      return false
-    });
+  const logout = async () => {
+    try {
+      await axios.post('/logout')
+      setUser(null)
+      return [true, null]
+    } catch (error) {
+      return [false, error.response.data?.error ?? error.response.data]
+    }
   }
 
-  const getIsLoggedIn = () => {
-    axios.get('/user')
-      .then((response) => {
-        setIsLoggedIn(response.data.isLoggedIn)
-        return true
-      }).catch((error) => {
-        return false
-        console.log(error);
-    });
+  const register = async (email, password, confirmPassword) => {
+    try {
+      const response = await axios.post('/register', {
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword
+      })
+      setUser(response.data.user)
+      return [true, null]
+    } catch (error) {
+      return [false, error.response.data?.error ?? error.response.data]
+    }
+  }
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get('/user')
+      setUser(response.data.user)
+    } catch (error) {
+      console.error('Error fetching user:', error)
+      setUser(null)
+    }
   }
 
   const value = {
-    isLoggedIn,
     login,
     logout,
     register,
-    getIsLoggedIn
+    fetchUser,
+    user
   }
 
   return (

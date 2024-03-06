@@ -72,6 +72,7 @@ app.post("/register", async (req, res) => {
         });
         await AppDataSource.getRepository(User).save(user);
 
+        delete user.password;
         return res.status(200).json({message: "Registration successful", user});
     } catch (err) {
         return res.status(500).json({message: err.message});
@@ -95,6 +96,8 @@ app.post('/logout', function (req, res, next) {
 
 app.get("/user", async function (req: Request, res: Response) {
     if (req.user) {
+        // @ts-ignore
+        delete req.user.password;
         res.json({user: req.user});
     } else {
         res.status(403).json({error: "Not logged in"});
