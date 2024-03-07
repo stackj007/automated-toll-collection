@@ -13,7 +13,7 @@ export default function SignUp() {
 
     const [result, error] = await register(email, password, confirmPassword)
     if (result) {
-      navigate('/')
+      navigate('/dashboard')
     } else {
       setError(error)
     }
