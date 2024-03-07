@@ -8,19 +8,18 @@ import LoginPage from './components/pages/LoginPage/LoginPage'
 import SignUp from './components/pages/SignUp/SignUp'
 import Header from './components/Header.jsx'
 import './tailwind.css'
-import axios from 'axios'
-import { useAuth } from './AuthContext.jsx'
-import { useEffect } from 'react'
-import UserDashboard from './components/pages/UserDashboard/UserDashboard'
+import axios from "axios";
+import {useAuth} from "./AuthContext.jsx";
+import {useEffect} from "react";
 
 function App() {
   axios.defaults.withCredentials = true
   axios.defaults.baseURL = 'http://localhost:8080'
-  const { fetchUser, isAuthenticated } = useAuth()
+  const {fetchUser} = useAuth()
 
   useEffect(() => {
     fetchUser()
-  }, [])
+  }, []);
 
   return (
     <Router>
@@ -29,12 +28,6 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUp />} />
-        {isAuthenticated && (
-          <Route
-            path="/dashboard"
-            element={<UserDashboard />}
-          />
-        )}
       </Routes>
     </Router>
   )
