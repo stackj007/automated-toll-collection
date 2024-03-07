@@ -11,6 +11,7 @@ import './tailwind.css'
 import axios from "axios";
 import {useAuth} from "./AuthContext.jsx";
 import {useEffect} from "react";
+import {DashboardPage} from "./components/pages/DashboardPage/DashboardPage.jsx";
 
 function App() {
   axios.defaults.withCredentials = true
@@ -28,6 +29,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
     </Router>
   )

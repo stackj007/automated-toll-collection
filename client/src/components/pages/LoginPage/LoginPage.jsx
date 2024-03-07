@@ -15,7 +15,7 @@ export default function LoginPage() {
     const [res, error] = await login(email, password)
     console.log(res, error)
     if (res) {
-      navigate('/')
+      navigate('/dashboard')
     } else {
       setError(error)
     }
