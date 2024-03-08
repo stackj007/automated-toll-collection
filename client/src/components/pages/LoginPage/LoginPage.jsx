@@ -1,9 +1,9 @@
-import {useAuth} from '../../../AuthContext'
-import {useNavigate} from 'react-router-dom'
-import {useState} from "react";
+import { useAuth } from '../../../AuthContext'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 export default function LoginPage() {
-  const {login} = useAuth()
+  const { login } = useAuth()
   const [error, setError] = useState(null)
   const navigate = useNavigate()
 
@@ -93,7 +93,7 @@ export default function LoginPage() {
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"/>
+                <div className="w-full border-t border-gray-300" />
               </div>
             </div>
           </div>
