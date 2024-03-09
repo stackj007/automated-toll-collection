@@ -64,78 +64,76 @@ export function Documents() {
   return (
     <div className="container mx-auto px-4 py-8">
       {step === 1 && (
-        <div className="flex flex-col space-y-4">
+        <div className="container mx-auto px-4 py-8">
           <h2>Upload Documents</h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 mb-4">
             Please upload your ID proof which are updated
             with latest details
           </p>
-          <div className="flex space-x-4">
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
               <img
                 src={documents}
-                className="w-11 my-2"
-              ></img>
+                className="w-11 my-2 mx-auto"
+              />
               <label htmlFor="id-proof-front">
                 Id Card (Front)
               </label>
               <input
                 type="file"
                 id="id-proof-front"
-                className="bg-gray-100 rounded-md p-2 "
+                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={(event) =>
                   handleIdProofUpload(event, 'front-card')
                 }
               />
             </div>
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 w-full">
+            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
               <img
                 src={documents}
-                className="w-11 my-2"
-              ></img>
+                className="w-11 my-2 mx-auto"
+              />
               <label htmlFor="id-proof-back">
                 Id Card (back)
               </label>
               <input
                 type="file"
                 id="id-proof-back"
-                className="bg-gray-100 rounded-md p-2 "
+                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={(event) =>
                   handleIdProofUpload(event, 'back-card')
                 }
               />
             </div>
-          </div>
-          <div className="flex space-x-4">
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 w-full">
+            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
               <img
                 src={documents}
-                className="w-11 my-2"
-              ></img>
+                className="w-11 my-2 mx-auto"
+              />
               <label htmlFor="id-proof-front">
                 Driving License (Front)
               </label>
               <input
                 type="file"
                 id="id-proof-front"
-                className="bg-gray-100 rounded-md p-2 "
+                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={(event) =>
                   handleIdProofUpload(event, 'front-card')
                 }
               />
             </div>
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 w-full">
+            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
               <img
                 src={documents}
-                className="w-11 my-2"
-              ></img>
+                className="w-11 my-2 mx-auto"
+              />
               <label htmlFor="id-proof-back">
                 Driving License (back)
               </label>
               <input
                 type="file"
-                id="id-proof-front"
-                className="bg-gray-100 rounded-md p-2 "
+                id="id-proof-back"
+                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={(event) =>
                   handleIdProofUpload(event, 'back-card')
                 }
@@ -158,74 +156,56 @@ export function Documents() {
           </div>
         </div>
       )}
+
       {step === 2 && (
-        <div className="flex flex-col space-y-4">
-          <h2 className="text-xl font-bold">
+        <div className="container mx-auto px-4 py-8">
+          <h2 className="text-xl font-bold mb-4">
             Upload Vehicle Documents
           </h2>
-          <p className="text-gray-600">
-            Please upload you Vehicle details
+          <p className="text-gray-600 mb-4">
+            Please upload your Vehicle details
           </p>
-          <label className="flex items-center space-x-2">
-            <span className="text-gray-600">
+
+          <label className="flex items-center space-x-4">
+            <span className="text-gray-600 w-48">
               Vehicle Number:
             </span>
             <input
               type="text"
               name="vehicleNumber"
-              className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
               onChange={handleVehicleDetailsChange}
             />
           </label>
-          <div className="flex flex-col space-y-2">
-            <label className="flex items-center space-x-2">
-              <span className="text-gray-600">
+
+          <div className="flex flex-col space-y-4">
+            <label className="flex items-center space-x-4">
+              <span className="text-gray-600 w-48">
                 Vehicle RC Book:
               </span>
               <input
                 type="file"
                 name="rcBook"
-                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={handleVehicleDocumentUpload}
               />
             </label>
-            <label className="flex items-center space-x-2">
-              <span className="text-gray-600">
+            <label className="flex items-center space-x-4">
+              <span className="text-gray-600 w-48">
                 Vehicle Photo:
               </span>
               <input
                 type="file"
                 name="vehiclePhoto"
-                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onChange={handleVehicleDocumentUpload}
-              />
-            </label>
-            <label className="flex items-center space-x-2">
-              <span className="text-gray-600">
-                Driving License (Front):
-              </span>
-              <input
-                type="file"
-                name="drivingLicenseFront"
-                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onChange={handleVehicleDocumentUpload}
-              />
-            </label>
-            <label className="flex items-center space-x-2">
-              <span className="text-gray-600">
-                Driving License (Back):
-              </span>
-              <input
-                type="file"
-                name="drivingLicenseBack"
-                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={handleVehicleDocumentUpload}
               />
             </label>
           </div>
+
           <div className="flex justify-end space-x-4">
             <button
-              className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+              className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 mr-4"
               onClick={handleCancel}
             >
               Cancel
@@ -239,6 +219,7 @@ export function Documents() {
           </div>
         </div>
       )}
+
       {step === 3 && (
         <div className="flex flex-col items-center justify-center h-screen">
           <h2 className="text-xl font-bold text-green-500">
