@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export function DropdownMenu({ children }) {
+export default function DropdownMenu({ children }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleOpen = () => setIsOpen(!isOpen)

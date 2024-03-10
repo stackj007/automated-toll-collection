@@ -1,22 +1,13 @@
-export function DropdownMenuTrigger({
-  children,
-  ...props
-}) {
-  return <div {...props}>{children}</div>
-}
+// components/ui/dropdown-menu/DropdownMenuTrigger.jsx
+import React from 'react'
 
-export function DropdownMenuContent({
+export default function DropdownMenuTrigger({
   children,
-  align = 'start',
+  onClick,
   ...props
 }) {
   return (
-    <div
-      className={`absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${
-        align === 'end' ? 'right-0' : 'left-0'
-      }`}
-      {...props}
-    >
+    <div onClick={onClick} {...props}>
       {children}
     </div>
   )

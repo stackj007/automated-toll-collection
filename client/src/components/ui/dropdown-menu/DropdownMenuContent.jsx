@@ -1,4 +1,4 @@
-export function DropdownMenuContent({
+export default function DropdownMenuContent({
   children,
   align = 'start',
   ...props
