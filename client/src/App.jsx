@@ -13,6 +13,7 @@ import { useAuth } from './AuthContext.jsx'
 import { useEffect } from 'react'
 import { DashboardPage } from './components/pages/DashboardPage/DashboardPage.jsx'
 import { Documents } from './components/pages/DashboardPage/Documents.jsx'
+import AdminDashboard from './components/pages/AdminDashboard/AdminDashboard.jsx'
 
 function App() {
   axios.defaults.withCredentials = true
@@ -35,6 +36,7 @@ function App() {
           element={<DashboardPage />}
         />
         <Route path="/documents" element={<Documents />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </Router>
   )

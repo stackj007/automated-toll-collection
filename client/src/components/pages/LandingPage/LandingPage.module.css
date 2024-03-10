@@ -18,7 +18,7 @@
   background-size: cover;
   background-position: center;
   filter: blur(0.2);
-  height: 850px;
+  min-height: 100vh;
 }
 
 .overlay {
@@ -30,7 +30,7 @@
   background-color: rgba(255, 255, 255, 0.8);
   color: black;
   width: 60%;
-  margin: auto;
+  margin: 0 auto;
   margin-top: 9rem;
   display: flex;
   flex-direction: column;
@@ -38,34 +38,37 @@
   align-items: center;
   z-index: 10;
   border-radius: 20px;
-  padding: 40px;
+
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .overlayContent {
   position: relative;
   z-index: 20;
-  max-width: 900px;
+  max-width: 700px;
 }
 
 .overlay h1 {
-  font-size: 3em;
+  font-size: 2.5rem;
   margin-bottom: 20px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .overlay p {
-  font-size: 1.6em;
-  line-height: 1.4;
+  font-size: 1.1em;
+  line-height: 1.5;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .benefits {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
+  );
+  gap: 1rem;
   justify-content: space-between;
   align-items: center;
   margin-top: 40px;
@@ -83,11 +86,23 @@
 }
 
 .subbenefits p {
-  grid-column: 2;
+  text-align: left;
 }
 .benefits p {
   font-size: 1.2em;
   color: black;
+}
+
+@media (max-width: 768px) {
+  .overlayContent {
+    padding: 1rem;
+  }
+  .overlay h1 {
+    font-size: 2rem;
+  }
+  .overlay p {
+    font-size: 1rem;
+  }
 }
 
 .footer {

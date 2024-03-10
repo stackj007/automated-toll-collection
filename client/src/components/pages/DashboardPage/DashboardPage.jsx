@@ -20,7 +20,7 @@ export function DashboardPage() {
         <div className="flex justify-between items-center">
           <div>
             <p className="text-sm">Balance</p>
-            <p className="text-3xl font-bold">₹ 430.00</p>
+            <p className="text-3xl font-bold">£ 430.00</p>
           </div>
           <div className="text-right">
             <p className="text-sm">DL 06 DD 2561</p>
@@ -30,7 +30,7 @@ export function DashboardPage() {
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
-          <p className="text-sm">Last Toll Price ₹ 30.00</p>
+          <p className="text-sm">Last Toll Price £ 30.00</p>
           <button className="bg-[#2E5C63] py-1 px-2 text-xs rounded">
             Recharge
           </button>
@@ -69,7 +69,7 @@ export function DashboardPage() {
                 22 May 2021 | 10:30 AM
               </p>
             </div>
-            <p className="text-sm font-medium">₹ 30.00</p>
+            <p className="text-sm font-medium">£ 30.00</p>
           </div>
           <div className="py-3 border-b border-gray-200 flex justify-between">
             <div>
@@ -80,7 +80,7 @@ export function DashboardPage() {
                 22 May 2021 | 10:30 AM
               </p>
             </div>
-            <p className="text-sm font-medium">₹ 30.00</p>
+            <p className="text-sm font-medium">£ 30.00</p>
           </div>
           <div className="py-3 border-b border-gray-200 flex justify-between">
             <div>
@@ -91,7 +91,7 @@ export function DashboardPage() {
                 22 May 2021 | 10:30 AM
               </p>
             </div>
-            <p className="text-sm font-medium">₹ 30.00</p>
+            <p className="text-sm font-medium">£ 30.00</p>
           </div>
         </div>
         <button className="text-xs mt-4 mx-auto flex justify-center">
