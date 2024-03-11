@@ -155,6 +155,7 @@ export default function AdminDashboard() {
           </nav>
         </div>
       </div>
+
       <div className="flex flex-col">
         <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
           <Link className="lg:hidden" href="#">
@@ -190,6 +191,7 @@ export default function AdminDashboard() {
               Settings
             </Link>
           </nav>
+
           <div className="w-full ml-auto flex-1">
             <form>
               <div className="relative">

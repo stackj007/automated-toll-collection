@@ -1,3 +1,3 @@
 export default function TollStationContent() {
-  return <div> Setting Content</div>
+  return <div> TollStation Content</div>
 }

@@ -1,3 +1,3 @@
 export default function TransactionsContent() {
-  return <div> Setting Content</div>
+  return <div> Transactions Content</div>
 }
