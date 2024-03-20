@@ -51,7 +51,7 @@ export default function AdminDashboard() {
             <Link
               className="flex items-center gap-2 font-semibold"
               href="#"
-            /*  TODO: change href -> to */
+              /*  TODO: change href -> to */
             >
               <Package2Icon className="h-6 w-6" />
               <span className="">Express Inc</span>
@@ -73,7 +73,7 @@ export default function AdminDashboard() {
              ///////// */}
             <div className="grid items-start gap-3 text-sm">
               <Link
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white-900 dark:text-white-400 dark:hover:text-gray-50 ${
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all  ${
                   selectedSidebarItem === 'users'
                     ? 'bg-gray-100 dark:bg-gray-800 text-white'
                     : ''
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
                 Users
               </Link>
               <Link
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white-900 dark:text-white-400 dark:hover:text-gray-50 ${
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
                   selectedSidebarItem === 'toll-stations'
                     ? 'bg-gray-100 dark:bg-gray-800 text-white'
                     : ''
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
                 Toll Stations
               </Link>
               <Link
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white-900 dark:text-white-400 dark:hover:text-gray-50 ${
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
                   selectedSidebarItem === 'transactions'
                     ? 'bg-gray-100 dark:bg-gray-800 text-white'
                     : ''
@@ -115,7 +115,7 @@ export default function AdminDashboard() {
                 Transactions
               </Link>
               <Link
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white-900 dark:text-white-400 dark:hover:text-gray-50 ${
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
                   selectedSidebarItem === 'analytics'
                     ? 'bg-gray-100 dark:bg-gray-800 text-white'
                     : ''
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
                 Analytics
               </Link>
               <Link
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white-900 dark:text-white-400 dark:hover:text-gray-50 ${
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
                   selectedSidebarItem === 'settings'
                     ? 'bg-gray-100 dark:bg-gray-800 text-white'
                     : ''
@@ -162,7 +162,7 @@ export default function AdminDashboard() {
                   placeholder="Search"
                   type="search"
                 />
-              {/*  TODO: i recommend using https://tanstack.com/table , they have search built in, v0 can generate the table as well */}
+                {/*  TODO: i recommend using https://tanstack.com/table , they have search built in, v0 can generate the table as well */}
               </div>
             </form>
           </div>
