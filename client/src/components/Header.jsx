@@ -4,7 +4,7 @@ import { useAuth } from '../AuthContext'
 
 function Header() {
   const { user, logout } = useAuth()
-  console.log(user)
+
   return (
     <nav className="bg-white bg-opacity-75 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,7 +49,7 @@ function Header() {
             {user ? (
               <>
                 <span className="text-base font-medium text-gray-500">
-                  {user.email}
+                  {user.name}
                 </span>
                 <button
                   className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-orange-600 hover:bg-orange-700"

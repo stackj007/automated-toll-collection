@@ -18,7 +18,7 @@ import AdminDashboard from './components/pages/AdminDashboard/AdminDashboard.jsx
 function App() {
   axios.defaults.withCredentials = true
   axios.defaults.baseURL = 'http://localhost:8080'
-  const { fetchUser } = useAuth()
+  const { fetchUser, user } = useAuth()
 
   useEffect(() => {
     fetchUser()
@@ -33,10 +33,13 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route
           path="/dashboard"
-          element={<DashboardPage />}
+          element={
+          user?.isAdmin
+            ? <AdminDashboard /> // TODO: bad naming, rename to UserDashboard or any other
+            : <DashboardPage />
+          }
         />
         <Route path="/documents" element={<Documents />} />
-        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </Router>
   )

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+// TODO: integrate it correctly or remove
 export const useUserData = () => {
   const [userData, setUserData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -9,7 +10,7 @@ export const useUserData = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/user') // Replace with your actual API endpoint
+        const response = await axios.get('/user')
         setUserData(response.data)
       } catch (err) {
         setError(err)

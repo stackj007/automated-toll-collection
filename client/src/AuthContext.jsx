@@ -37,12 +37,13 @@ export const AuthProvider = ({children}) => {
     }
   }
 
-  const register = async (email, password, confirmPassword) => {
+  const register = async (email, password, confirmPassword, name) => {
     try {
       const response = await axios.post('/register', {
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword
+        email,
+        password,
+        confirmPassword,
+        name
       })
       setUser(response.data.user)
       return [true, null]
