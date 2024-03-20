@@ -1,9 +1,9 @@
-import React, {
+import {
   createContext,
-  useContext,
   useState,
+  useContext,
 } from 'react'
-import axios from 'axios'
+import axios from "axios";
 
 const AuthContext = createContext()
 
@@ -11,35 +11,19 @@ export const useAuth = () => {
   return useContext(AuthContext)
 }
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-
-  const fetchUser = async () => {
-    if (!user) {
-      try {
-        const response = await axios.get('/user', {
-          withCredentials: true,
-        })
-        setUser(response.data.user)
-      } catch (error) {
-        console.error('Error fetching user:', error)
-      }
-    }
-  }
+export const AuthProvider = ({children}) => {
+  const [user, setUser] = useState({})
 
   const login = async (email, password) => {
     try {
       const response = await axios.post('/login', {
         email: email,
-        password: password,
+        password: password
       })
       setUser(response.data.user)
       return [true, null]
     } catch (error) {
-      return [
-        false,
-        error.response.data?.error ?? error.response.data,
-      ]
+      return [false, error.response.data?.error ?? error.response.data]
     }
   }
 
@@ -47,21 +31,47 @@ export const AuthProvider = ({ children }) => {
     try {
       await axios.post('/logout')
       setUser(null)
+      return [true, null]
     } catch (error) {
-      console.error('Error logging out:', error)
+      return [false, error.response.data?.error ?? error.response.data]
+    }
+  }
+
+  const register = async (email, password, confirmPassword) => {
+    try {
+      const response = await axios.post('/register', {
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword
+      })
+      setUser(response.data.user)
+      return [true, null]
+    } catch (error) {
+      return [false, error.response.data?.error ?? error.response.data]
+    }
+  }
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get('/user')
+      setUser(response.data.user)
+    } catch (error) {
+      console.error('Error fetching user:', error)
+      setUser(null)
     }
   }
 
   const value = {
-    user,
     login,
     logout,
+    register,
     fetchUser,
+    user
   }
 
   return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={value}>
+        {children}
+      </AuthContext.Provider>
   )
 }
