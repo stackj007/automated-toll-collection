@@ -1,4 +1,4 @@
-import Recat, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../ui/Button'
 import Input from '../../ui/Input'
@@ -6,17 +6,6 @@ import Input from '../../ui/Input'
 import UsersContent from '../AdminDashboard/Content/UsersContent'
 import TollStationsContent from '../AdminDashboard/Content/TollStationsContent'
 import TransactionsContent from '../AdminDashboard/Content/TransactionsContent'
-import AnalyticsContent from '../AdminDashboard/Content/AnalyticsContent'
-import SettingsContent from '../AdminDashboard/Content/SettingsContent'
-
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-} from '../../ui/dropdown-menu'
 
 import {
   SettingsIcon,
@@ -45,22 +34,24 @@ export default function AdminDashboard() {
         return <TollStationsContent />
       case 'transactions':
         return <TransactionsContent />
-      case 'analytics':
-        return <AnalyticsContent />
-      case 'settings':
-        return <SettingsContent />
+      // TODO: remove analytics/setting
+      // case 'analytics':
+      //   return <AnalyticsContent />
+      // case 'settings':
+      //   return <SettingsContent />
       default:
         return <UsersContent />
     }
   }
   return (
     <div className="grid h-screen min-h-screen gap-2 lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
+      <div className="hidden border-r lg:block">
         <div className="flex h-full flex-col gap-2">
           <div className="flex h-[60px] items-center border-b px-6">
             <Link
               className="flex items-center gap-2 font-semibold"
               href="#"
+            /*  TODO: change href -> to */
             >
               <Package2Icon className="h-6 w-6" />
               <span className="">Express Inc</span>
@@ -157,87 +148,59 @@ export default function AdminDashboard() {
       </div>
 
       <div className="flex flex-col">
-        <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
+        <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b">
           <Link className="lg:hidden" href="#">
             <Package2Icon className="w-6 h-6" />
             <span className="sr-only">Home</span>
           </Link>
-          <nav className="hidden gap-5 text-sm font-medium lg:flex lg:gap-3 lg:text-base">
-            <Link className="font-bold" href="#">
-              Users
-            </Link>
-            <Link
-              className="text-white-500 dark:text-400"
-              href="#"
-            >
-              Toll Stations
-            </Link>
-            <Link
-              className="text-white-500 dark:text-400 "
-              href="#"
-            >
-              Transactions
-            </Link>
-            <Link
-              className="text-white-500 dark:text-400"
-              href="#"
-            >
-              Analytics
-            </Link>
-            <Link
-              className="text-white-500 dark:text-400"
-              href="#"
-            >
-              Settings
-            </Link>
-          </nav>
-
           <div className="w-full ml-auto flex-1">
             <form>
               <div className="relative">
-                <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
+                <SearchIcon className="absolute h-5 w-5" />
                 <Input
-                  className="w-full bg-white shadow-none appearance-none pl-8 md:w-2/3 lg:w-1/3 dark:bg-gray-950"
+                  className="w-full bg-white shadow-none appearance-none pl-8 "
                   placeholder="Search"
                   type="search"
                 />
+              {/*  TODO: i recommend using https://tanstack.com/table , they have search built in, v0 can generate the table as well */}
               </div>
             </form>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button
-                className="rounded-full border border-gray-200 w-8 h-8 dark:border-gray-800"
-                size="icon"
-                variant="ghost"
-              >
-                <img
-                  alt="Avatar"
-                  className="rounded-full"
-                  height="32"
-                  src="/placeholder.svg"
-                  style={{
-                    aspectRatio: '32/32',
-                    objectFit: 'cover',
-                  }}
-                  width="32"
-                />
-                <span className="sr-only">
-                  Toggle user menu
-                </span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>
-                My Account
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/*// TODO: fix */}
+          {/*<DropdownMenu>*/}
+          {/*  <DropdownMenuTrigger>*/}
+          {/*    <Button*/}
+          {/*      className="rounded-full border border-gray-200 w-8 h-8 dark:border-gray-800"*/}
+          {/*      size="icon"*/}
+          {/*      variant="ghost"*/}
+          {/*    >*/}
+          {/*      <img*/}
+          {/*        alt="Avatar"*/}
+          {/*        className="rounded-full"*/}
+          {/*        height="32"*/}
+          {/*        src="/placeholder.svg"*/}
+          {/*        style={{*/}
+          {/*          aspectRatio: '32/32',*/}
+          {/*          objectFit: 'cover',*/}
+          {/*        }}*/}
+          {/*        width="32"*/}
+          {/*      />*/}
+          {/*      <span className="sr-only">*/}
+          {/*        Toggle user menu*/}
+          {/*      </span>*/}
+          {/*    </Button>*/}
+          {/*  </DropdownMenuTrigger>*/}
+          {/*  <DropdownMenuContent align="end">*/}
+          {/*    <DropdownMenuLabel>*/}
+          {/*      My Account*/}
+          {/*    </DropdownMenuLabel>*/}
+          {/*    <DropdownMenuSeparator />*/}
+          {/*    <DropdownMenuItem>Settings</DropdownMenuItem>*/}
+          {/*    <DropdownMenuItem>Support</DropdownMenuItem>*/}
+          {/*    <DropdownMenuSeparator />*/}
+          {/*    <DropdownMenuItem>Logout</DropdownMenuItem>*/}
+          {/*  </DropdownMenuContent>*/}
+          {/*</DropdownMenu>*/}
         </header>
 
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">

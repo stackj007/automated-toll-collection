@@ -31,6 +31,19 @@ app.use(
   })
 )
 
+passport.serializeUser((user: User, done) => {
+  AppDataSource.getRepository(User).findOneBy({id: user.id}).then((user) => {
+    done(null, user);
+  });
+});
+
+passport.deserializeUser((user: User, done) => {
+  AppDataSource.getRepository(User).findOneBy({id: user.id}).then((user) => {
+    done(null, user);
+  });
+});
+
+
 function isUserLoggedIn(
   req: Request,
   res: Response,
@@ -51,9 +64,9 @@ app.post('/register', async (req, res) => {
       .json({ error: 'Already logged in' })
   }
 
-  const { email, password, confirmPassword } = req.body
+  const { email, password, confirmPassword, name } = req.body
 
-  if (!email && !password && !confirmPassword) {
+  if (!email && !password && !confirmPassword && name) {
     return res
       .status(403)
       .json({ error: 'All Fields are required' })
@@ -80,6 +93,7 @@ app.post('/register', async (req, res) => {
     const user = AppDataSource.getRepository(User).create({
       email: req.body.email,
       password: hashedPassword,
+      name
     })
     await AppDataSource.getRepository(User).save(user)
 
@@ -136,6 +150,42 @@ app.get('/users', async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message })
   }
 })
+
+app.post('/api/delete-user', isAdmin, async (req, res) => {
+  const {id} = req.body
+
+  try {
+    await AppDataSource.getRepository(User).delete(id)
+    res.json({message: "User deleted"})
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error delete the user"})
+  }
+});
+
+app.post('/api/edit-user', isAdmin, async (req, res) => {
+  const {id, name, email} = req.body
+
+  try {
+    const user = await AppDataSource.getRepository(User).findOneBy({id})
+
+    if (!user) {
+      res.status(404).json({message: "user doesn't not exist"})
+    }
+
+    user.name = name
+    user.email = email
+
+    await AppDataSource.getRepository(User).save(user)
+    res.json({message: "User deleted"})
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error delete the user"})
+  }
+});
+
+
+
 
 AppDataSource.initialize()
   .then(() => {

@@ -4,14 +4,6 @@ import {AppDataSource} from "../data-source";
 import {User} from "../entity/User";
 import bcrypt from "bcrypt";
 
-passport.serializeUser((user: User, done) => {
-    done(null, user);
-});
-
-passport.deserializeUser((user: User, done) => {
-    done(null, user);
-});
-
 passport.use(
     new Strategy({
             usernameField: 'email',
