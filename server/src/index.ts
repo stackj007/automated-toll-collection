@@ -138,7 +138,7 @@ app.get(
   }
 )
 
-app.get('/users', async (req: Request, res: Response) => {
+app.get('/api/users', async (req: Request, res: Response) => {
   try {
     const users = await AppDataSource.getRepository(
       User
@@ -183,8 +183,6 @@ app.post('/api/edit-user', isAdmin, async (req, res) => {
     res.status(400).json({message: "Error delete the user"})
   }
 });
-
-
 
 
 AppDataSource.initialize()
