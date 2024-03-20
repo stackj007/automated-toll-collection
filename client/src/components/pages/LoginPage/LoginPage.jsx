@@ -5,12 +5,16 @@ import { useState } from 'react'
 export default function LoginPage() {
   const { login } = useAuth()
   const [error, setError] = useState(null)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    const email = e.target.email.value
-    const password = e.target.password.value
+    if (!email || !password) {
+      setError('Email and password are required.')
+      return
+    }
 
     const [res, error] = await login(email, password)
     console.log(res, error)
@@ -51,6 +55,8 @@ export default function LoginPage() {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                   id="email"
                   name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
                   type="email"
@@ -70,6 +76,10 @@ export default function LoginPage() {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                   id="password"
                   name="password"
+                  value={password}
+                  onChange={(e) =>
+                    setPassword(e.target.value)
+                  }
                   placeholder="Enter your password"
                   required
                   type="password"

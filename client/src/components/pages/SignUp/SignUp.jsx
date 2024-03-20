@@ -1,25 +1,39 @@
-import {useAuth} from "../../../AuthContext.jsx";
-import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import { useAuth } from '../../../AuthContext.jsx'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 export default function SignUp() {
-  const {register} = useAuth()
+  const { register } = useAuth()
   const [error, setError] = useState(null)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [name, setName] = useState('')
   const navigate = useNavigate()
 
   const handleRegister = async (e) => {
     e.preventDefault()
-    const [email, password, confirmPassword, name] =
-      [e.target.email.value, e.target.password.value, e.target['password-confirm'].value, e.target.name.value]
+    if (!email || !password || !confirmPassword || !name) {
+      setError('All fields are required.')
+      return
+    }
+    if (password !== confirmPassword) {
+      setError('passwords do not match.')
+      return
+    }
 
-    console.log(email,password,confirmPassword, name)
-    const [result, error] = await register(email, password, confirmPassword, name)
+    const [result, error] = await register(
+      email,
+      password,
+      confirmPassword,
+      name
+    )
     if (result) {
-      navigate('/dashboard')
+      navigate('./dashboard')
     } else {
       setError(error)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -47,6 +61,8 @@ export default function SignUp() {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                   id="email"
                   name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
                   type="email"
@@ -66,6 +82,8 @@ export default function SignUp() {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                   id="name"
                   name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="Enter your name"
                   required
                   type="text"
@@ -85,6 +103,10 @@ export default function SignUp() {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                   id="password"
                   name="password"
+                  value={password}
+                  onChange={(e) =>
+                    setPassword(e.target.value)
+                  }
                   placeholder="Enter your password"
                   required
                   type="password"
@@ -104,6 +126,10 @@ export default function SignUp() {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                   id="password-confirm"
                   name="password-confirm"
+                  value={confirmPassword}
+                  onChange={(e) =>
+                    setConfirmPassword(e.target.value)
+                  }
                   placeholder="Confirm your password"
                   required
                   type="password"
@@ -127,7 +153,7 @@ export default function SignUp() {
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"/>
+                <div className="w-full border-t border-gray-300" />
               </div>
             </div>
           </div>
