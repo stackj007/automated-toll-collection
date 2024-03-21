@@ -29,7 +29,7 @@ export default function SignUp() {
       name
     )
     if (result) {
-      navigate('./dashboard')
+      navigate('/dashboard')
     } else {
       setError(error)
     }

@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
 import { VscAccount } from 'react-icons/vsc'
@@ -11,10 +10,12 @@ export function DashboardPage() {
     navigate('/documents')
   }
   return (
-    <div className="max-w-sm mx-auto">
+    <div className="max-w-sm mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
       <div className="text-center">
-        <h1 className="text-xl font-semibold">Hey,</h1>
-        <h2 className="text-xl font-semibold">
+        <h1 className="text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+          Hey,
+        </h1>
+        <h2 className="text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
           Welcome back!
         </h2>
         {/* <MoreIcon className="text-gray-500" /> */}
