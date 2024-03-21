@@ -17,7 +17,8 @@ import AdminDashboard from './components/pages/AdminDashboard/AdminDashboard.jsx
 
 function App() {
   axios.defaults.withCredentials = true
-  axios.defaults.baseURL = 'http://localhost:8080'
+  axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL
+
   const { fetchUser, user } = useAuth()
 
   useEffect(() => {

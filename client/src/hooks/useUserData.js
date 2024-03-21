@@ -10,7 +10,7 @@ export const useUserData = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/user')
+        const response = await axios.get('/api/user')
         setUserData(response.data)
       } catch (err) {
         setError(err)

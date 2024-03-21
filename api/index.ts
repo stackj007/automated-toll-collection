@@ -1,12 +1,13 @@
 import express from 'express'
 import { Request, Response } from 'express'
-import { User } from './entity/User'
-import { AppDataSource } from './data-source'
 import session from 'express-session'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import bcrypt from 'bcrypt'
-import passport from './passport'
+import passport from './src/passport'
+import {User} from "./src/entity/User";
+import {AppDataSource} from "./src/data-source";
+require('dotenv').config()
 
 bodyParser.urlencoded({ extended: false })
 
@@ -25,7 +26,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     allowedHeaders: 'Content-Type, Authorization',
   })
@@ -57,7 +58,9 @@ function isAdmin(req: Request, res: Response, next: any) {
   req.user?.isAdmin ? next() : res.sendStatus(401)
 }
 
-app.post('/register', async (req, res) => {
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
+app.post('/api/register', async (req, res) => {
   if (req.isAuthenticated()) {
     return res
       .status(403)
@@ -106,8 +109,7 @@ app.post('/register', async (req, res) => {
   }
 })
 
-app.post(
-  '/login',
+app.post('/api/login',
   passport.authenticate('local', {
     failureMessage: 'failed',
   }),
@@ -116,7 +118,7 @@ app.post(
   }
 )
 
-app.post('/logout', function (req, res, next) {
+app.post('/api/logout', function (req, res, next) {
   req.logout(function (err) {
     if (err) {
       return next(err)
@@ -125,8 +127,7 @@ app.post('/logout', function (req, res, next) {
   })
 })
 
-app.get(
-  '/user',
+app.get('/api/user',
   async function (req: Request, res: Response) {
     if (req.user) {
       // @ts-ignore
@@ -184,12 +185,15 @@ app.post('/api/edit-user', isAdmin, async (req, res) => {
   }
 });
 
+const port = process.env.PORT || 8000
 
 AppDataSource.initialize()
   .then(() => {
     console.log('Database is connected')
-    const server = app.listen(8080)
+    const server = app.listen(port)
+    module.exports = app;
   })
   .catch((error) => {
     console.log('Error: ', error)
   })
+

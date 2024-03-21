@@ -3,7 +3,6 @@
    "version": "0.0.1",
    "description": "Awesome project developed with TypeORM.",
    "type": "commonjs",
-   "proxy": "http://localhost:8080",
    "devDependencies": {
       "@types/bcrypt": "^5.0.2",
       "@types/express": "^4.17.21",
@@ -20,17 +19,20 @@
       "bcrypt": "^5.1.1",
       "body-parser": "^1.20.2",
       "connect-sqlite3": "^0.9.13",
+      "dotenv": "^16.4.5",
       "express": "^4.18.3",
       "express-session": "^1.18.0",
       "mysql": "^2.14.1",
       "passport": "^0.7.0",
       "passport-local": "^1.0.0",
+      "pg": "^8.11.3",
       "reflect-metadata": "^0.1.13",
       "socket.io": "^4.7.4",
       "typeorm": "0.3.12"
    },
    "scripts": {
-      "start": "nodemon --exec ts-node src/index.ts",
+      "start": "nodemon --exec ts-node index.ts",
+      "build": "tsc",
       "typeorm": "typeorm-ts-node-commonjs"
    }
 }

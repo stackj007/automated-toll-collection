@@ -16,7 +16,7 @@ export const AuthProvider = ({children}) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/login', {
+      const response = await axios.post('/api/login', {
         email: email,
         password: password
       })
@@ -29,7 +29,7 @@ export const AuthProvider = ({children}) => {
 
   const logout = async () => {
     try {
-      await axios.post('/logout')
+      await axios.post('/api/logout')
       setUser(null)
       return [true, null]
     } catch (error) {
@@ -39,7 +39,7 @@ export const AuthProvider = ({children}) => {
 
   const register = async (email, password, confirmPassword, name) => {
     try {
-      const response = await axios.post('/register', {
+      const response = await axios.post('/api/register', {
         email,
         password,
         confirmPassword,
@@ -54,7 +54,7 @@ export const AuthProvider = ({children}) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('/user')
+      const response = await axios.get('/api/user')
       setUser(response.data.user)
     } catch (error) {
       console.error('Error fetching user:', error)
