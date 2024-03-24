@@ -7,7 +7,7 @@ export function DashboardPage() {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate('/documents')
+    navigate('/account')
   }
   return (
     <div className="max-w-sm mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">

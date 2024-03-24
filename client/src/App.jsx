@@ -14,6 +14,7 @@ import { useEffect } from 'react'
 import { DashboardPage } from './components/pages/DashboardPage/DashboardPage.jsx'
 import { Documents } from './components/pages/DashboardPage/Documents.jsx'
 import AdminDashboard from './components/pages/AdminDashboard/AdminDashboard.jsx'
+import Account from './components/pages/AccountPage/account.jsx'
 
 function App() {
   axios.defaults.withCredentials = true
@@ -35,12 +36,15 @@ function App() {
         <Route
           path="/dashboard"
           element={
-          user?.isAdmin
-            ? <AdminDashboard /> // TODO: bad naming, rename to UserDashboard or any other
-            : <DashboardPage />
+            user?.isAdmin ? (
+              <AdminDashboard /> // TODO: bad naming, rename to UserDashboard or any other
+            ) : (
+              <DashboardPage />
+            )
           }
         />
         <Route path="/documents" element={<Documents />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </Router>
   )
