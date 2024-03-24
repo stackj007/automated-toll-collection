@@ -1,3 +1,7 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Notification from './Notification'
+
 import {
   CardTitle,
   CardDescription,
@@ -10,6 +14,22 @@ import { Input } from '../../../ui/input'
 import { Button } from '../../../ui/button'
 
 export default function Account() {
+  const [isNotificationVisible, setIsNotificationVisible] =
+    useState(false)
+
+  const navigate = useNavigate()
+
+  const { vehicle } = true
+
+  const handleShowNotification = () => {
+    setIsNotificationVisible(true)
+  }
+
+  const handleRedirectToDocuments = () => {
+    setIsNotificationVisible(false)
+    navigate('/documents')
+  }
+
   return (
     <>
       <Card>
@@ -58,57 +78,31 @@ export default function Account() {
           </div>
         </CardContent>
       </Card>
-      <Card className="mt-3">
-        <CardHeader>
-          <CardTitle>Vehicles</CardTitle>
-          <CardDescription>
-            Manage your vehicle details and generate QR
-            codes for toll payments.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-6">
-          <div className="flex items-center gap-4">
-            <Button size="sm">Add vehicle</Button>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="grid gap-1">
-              <Label htmlFor="vehicle-number">
-                Vehicle number
-              </Label>
-              <Input
-                id="vehicle-number"
-                placeholder="Enter vehicle number"
-              />
+
+      {vehicle ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>information</CardTitle>
+            <CardDescription>
+              complete you account details and generate QR
+              codes for toll payments.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div>
+              <p>Vehicle Name: </p>
+              <p>Model: </p>
+              <p>Driver License: </p>
+              <p>Vehicle Plate: </p>
             </div>
-            <div className="grid gap-1">
-              <Label htmlFor="make-model">
-                Make & model
-              </Label>
-              <Input
-                id="make-model"
-                placeholder="Enter make & model"
-              />
-            </div>
-            <div className="grid gap-1">
-              <Label htmlFor="year">Year</Label>
-              <Input id="year" placeholder="Enter year" />
-            </div>
-            <div className="grid gap-1">
-              <Label htmlFor="qr-code">QR code</Label>
-              <img
-                alt="QR code"
-                className="aspect-square rounded-md object-cover"
-                height="100"
-                src="/placeholder.svg"
-                width="100"
-              />
-              <Button className="w-[100px]" size="sm">
-                Regenerate QR code
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ) : (
+        <Notification
+          onRedirect={handleRedirectToDocuments}
+        />
+      )}
+
       <Card className="mt-3">
         <CardHeader>
           <CardTitle>Transaction history</CardTitle>
@@ -119,7 +113,13 @@ export default function Account() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
-            <Button size="sm">View more details</Button>
+            <Button
+              size="sm"
+              className="bg-black text-white"
+              variant="default"
+            >
+              View more details
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -133,8 +133,20 @@ export default function Account() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
-            <Button size="sm">Add payment method</Button>
-            <Button size="sm">Make payment</Button>
+            <Button
+              size="sm"
+              className="bg-black text-white"
+              variant="default"
+            >
+              Add payment method
+            </Button>
+            <Button
+              size="sm"
+              className="bg-black text-white"
+              variant="default"
+            >
+              Make payment
+            </Button>
           </div>
           <div className="mt-4">
             <div className="text-sm font-medium">
@@ -156,7 +168,13 @@ export default function Account() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
-            <Button size="sm">Change password</Button>
+            <Button
+              size="sm"
+              className="bg-black text-white"
+              variant="default"
+            >
+              Change password
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -169,7 +187,13 @@ export default function Account() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
-            <Button size="sm">Contact support</Button>
+            <Button
+              size="sm"
+              className="bg-black text-white"
+              variant="default"
+            >
+              Contact support
+            </Button>
           </div>
         </CardContent>
       </Card>
