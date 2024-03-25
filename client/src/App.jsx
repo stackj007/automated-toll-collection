@@ -15,6 +15,7 @@ import { DashboardPage } from './components/pages/DashboardPage/DashboardPage.js
 import { Documents } from './components/pages/DashboardPage/Documents.jsx'
 import AdminDashboard from './components/pages/AdminDashboard/AdminDashboard.jsx'
 import Account from './components/pages/AccountPage/account.jsx'
+import ProfileCompletion from './components/pages/DashboardPage/ProfileCompletion'
 
 function App() {
   axios.defaults.withCredentials = true
@@ -43,8 +44,15 @@ function App() {
             )
           }
         />
+
         <Route path="/documents" element={<Documents />} />
+
         <Route path="/account" element={<Account />} />
+
+        <Route
+          path="/profile-completion"
+          element={<ProfileCompletion />}
+        />
       </Routes>
     </Router>
   )

@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
 import { VscAccount } from 'react-icons/vsc'
+import { BsQrCodeScan } from 'react-icons/bs'
 
 export function DashboardPage() {
   const navigate = useNavigate()
@@ -9,6 +10,11 @@ export function DashboardPage() {
   const handleClick = () => {
     navigate('/account')
   }
+
+  const handleQrCodeClick = () => {
+    navigate('/profile-completion')
+  }
+
   return (
     <div className="max-w-sm mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
       <div className="text-center">
@@ -26,21 +32,21 @@ export function DashboardPage() {
       />
 
       <div className="mt-6 grid grid-cols-3 gap-4 text-center">
-        <div className="flex flex-col items-center">
-          <VscAccount className="text-4xl " />
-          <button
-            className="text-xs mt-2"
-            onClick={handleClick}
-          >
-            Account
-          </button>
+        <div
+          className="flex flex-col items-center"
+          onClick={handleClick}
+        >
+          <VscAccount className="text-4xl cursor-pointer" />
+          <button className="text-xs mt-2">Account</button>
         </div>
 
-        <div className="flex flex-col items-center">
-          <VscAccount className="text-4xl " />
-          <button className="text-xs mt-2">
-            Estimate toll
-          </button>
+        <div
+          className="flex flex-col items-center cursor-pointer"
+          onClick={handleQrCodeClick}
+        >
+          <BsQrCodeScan className="text-4xl" />
+
+          <button className="text-xs mt-2">QR Code</button>
         </div>
 
         <div className="flex flex-col items-center">
