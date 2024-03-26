@@ -3,16 +3,23 @@ import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
 import { VscAccount } from 'react-icons/vsc'
 import { BsQrCodeScan } from 'react-icons/bs'
+import QrCodePage from './QrCodePage'
 
 export function DashboardPage() {
   const navigate = useNavigate()
+
+  const documentsUploaded = true
 
   const handleClick = () => {
     navigate('/account')
   }
 
   const handleQrCodeClick = () => {
-    navigate('/profile-completion')
+    if (documentsUploaded) {
+      navigate('/qr-code')
+    } else {
+      navigate('/profile-completion')
+    }
   }
 
   return (

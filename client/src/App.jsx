@@ -16,6 +16,7 @@ import { Documents } from './components/pages/DashboardPage/Documents.jsx'
 import AdminDashboard from './components/pages/AdminDashboard/AdminDashboard.jsx'
 import Account from './components/pages/AccountPage/account.jsx'
 import ProfileCompletion from './components/pages/DashboardPage/ProfileCompletion'
+import QrCodePage from './components/pages/DashboardPage/QrCodePage'
 
 function App() {
   axios.defaults.withCredentials = true
@@ -31,7 +32,7 @@ function App() {
     <Router>
       <Header />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route
@@ -53,6 +54,7 @@ function App() {
           path="/profile-completion"
           element={<ProfileCompletion />}
         />
+        <Route path="/qr-code" element={<QrCodePage />} />
       </Routes>
     </Router>
   )
