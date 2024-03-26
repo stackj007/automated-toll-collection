@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
 import Notification from './Notification'
-
 import {
   CardTitle,
   CardDescription,
@@ -14,21 +14,23 @@ import { Input } from '../../../ui/input'
 import { Button } from '../../../ui/button'
 
 export default function Account() {
-  const [isNotificationVisible, setIsNotificationVisible] =
-    useState(false)
-
   const navigate = useNavigate()
+  const { documentsUploaded, setDocumentsUploaded } =
+    useDocumentsUploaded()
+
+  const handleRedirectToDocuments = () => {
+    setDocumentsUploaded(false)
+    navigate('/documents')
+  }
 
   const { vehicle } = true
 
-  const handleShowNotification = () => {
-    setIsNotificationVisible(true)
-  }
+  // const [isNotificationVisible, setIsNotificationVisible] =
+  //   useState(false)
 
-  const handleRedirectToDocuments = () => {
-    setIsNotificationVisible(false)
-    navigate('/documents')
-  }
+  // const handleShowNotification = () => {
+  //   setIsNotificationVisible(true)
+  // }
 
   return (
     <>

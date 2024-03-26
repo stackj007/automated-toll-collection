@@ -3,6 +3,8 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
+import { DocumentsUploadedProvider } from './hooks/DocumentsUploadedContext'
+
 import LandingPage from './components/pages/LandingPage/LandingPage'
 import LoginPage from './components/pages/LoginPage/LoginPage'
 import SignUp from './components/pages/SignUp/SignUp'
@@ -29,34 +31,39 @@ function App() {
   }, [])
 
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route
-          path="/dashboard"
-          element={
-            user?.isAdmin ? (
-              <AdminDashboard /> // TODO: bad naming, rename to UserDashboard or any other
-            ) : (
-              <DashboardPage />
-            )
-          }
-        />
+    <DocumentsUploadedProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/dashboard"
+            element={
+              user?.isAdmin ? (
+                <AdminDashboard /> // TODO: bad naming, rename to UserDashboard or any other
+              ) : (
+                <DashboardPage />
+              )
+            }
+          />
 
-        <Route path="/documents" element={<Documents />} />
+          <Route
+            path="/documents"
+            element={<Documents />}
+          />
 
-        <Route path="/account" element={<Account />} />
+          <Route path="/account" element={<Account />} />
 
-        <Route
-          path="/profile-completion"
-          element={<ProfileCompletion />}
-        />
-        <Route path="/qr-code" element={<QrCodePage />} />
-      </Routes>
-    </Router>
+          <Route
+            path="/profile-completion"
+            element={<ProfileCompletion />}
+          />
+          <Route path="/qr-code" element={<QrCodePage />} />
+        </Routes>
+      </Router>
+    </DocumentsUploadedProvider>
   )
 }
 

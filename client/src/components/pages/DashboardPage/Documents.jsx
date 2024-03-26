@@ -1,7 +1,12 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
 import documents from '../../../assets/icons/documents.png'
 
 export function Documents() {
+  const navigate = useNavigate()
+  const { setDocumentsUploaded } = useDocumentsUploaded()
+
   const [step, setStep] = useState(1)
   const [idProof, setIdProof] = useState(null)
   const [vehicleDetails, setVehicleDetails] = useState({})
@@ -10,16 +15,15 @@ export function Documents() {
   )
 
   const handleNext = () => {
+    // Validation logic for each step
     if (step === 1 && !idProof) {
       alert('Please upload your ID proof')
       return
     }
-
     if (step === 2 && !Object.keys(vehicleDetails).length) {
       alert('Please enter your vehicle details')
       return
     }
-
     if (
       step === 2 &&
       !Object.keys(vehicleDocuments).length
@@ -59,6 +63,12 @@ export function Documents() {
       ...vehicleDocuments,
       [event.target.name]: event.target.files[0],
     })
+  }
+
+  const handleSubmit = () => {
+    // If the submission is successful:
+    setDocumentsUploaded(true)
+    navigate('/qr-code')
   }
 
   return (
@@ -226,9 +236,16 @@ export function Documents() {
             Success
           </h2>
           <p className="text-gray-600 text-center mt-4">
-            Your Tag has been generated. Please go to the
-            nearest toll gate or office to collect it
+            Your documents have been uploaded. Please go to
+            the nearest toll gate or office to collect your
+            QR code.
           </p>
+          <button
+            className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-black-700"
+            onClick={handleSubmit}
+          >
+            <h2>Qr Code </h2>
+          </button>
         </div>
       )}
     </div>
