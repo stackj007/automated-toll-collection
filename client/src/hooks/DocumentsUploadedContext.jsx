@@ -6,16 +6,15 @@ export const useDocumentsUploaded = () =>
   useContext(DocumentsUploadedContext)
 
 export const DocumentsUploadedProvider = ({ children }) => {
-  const [documentUploaded, setDocumentsUploaded] =
+  const [documentsUploaded, setDocumentsUploaded] =
     useState(false)
 
   return (
     <DocumentsUploadedContext.Provider
-      value={{ documentUploaded, setDocumentsUploaded }}
+      value={{ documentsUploaded, setDocumentsUploaded }}
     >
       {children}
     </DocumentsUploadedContext.Provider>
   )
 }
-
 export default DocumentsUploadedContext

@@ -19,18 +19,11 @@ export default function Account() {
     useDocumentsUploaded()
 
   const handleRedirectToDocuments = () => {
-    setDocumentsUploaded(false)
+    setDocumentsUploaded(true)
     navigate('/documents')
   }
 
   const { vehicle } = true
-
-  // const [isNotificationVisible, setIsNotificationVisible] =
-  //   useState(false)
-
-  // const handleShowNotification = () => {
-  //   setIsNotificationVisible(true)
-  // }
 
   return (
     <>
