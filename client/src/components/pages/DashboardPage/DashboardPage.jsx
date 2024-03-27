@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
+import { useTransactions } from '../../../hooks/TransactionContext'
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
 import { VscAccount } from 'react-icons/vsc'
@@ -7,6 +8,8 @@ import { BsQrCodeScan } from 'react-icons/bs'
 
 export function DashboardPage() {
   const navigate = useNavigate()
+
+  const { transactions } = useTransactions()
 
   const { documentsUploaded } = useDocumentsUploaded()
 
@@ -66,25 +69,22 @@ export function DashboardPage() {
           Transaction history
         </h3>
 
-        <div className="mt-4">
-          <TransactionHistoryItem
-            location="Delhi outer ring road"
-            date="22 May 2021 | 10:30 AM"
-            amount="30.00"
-          />
-          <TransactionHistoryItem
-            location="Delhi outer ring road"
-            date="22 May 2021 | 10:30 AM"
-            amount="40.00"
-          />
-          <TransactionHistoryItem
-            location="Delhi outer ring road"
-            date="22 May 2021 | 10:30 AM"
-            amount="60.00"
-          />
+        <div>
+          {transactions.map((transaction, index) => (
+            <TransactionHistoryItem
+              key={index}
+              location={transaction.location}
+              date={transaction.date}
+              amount={transaction.amount}
+            />
+          ))}
         </div>
-
-        <button className="text-xs mt-4 mx-auto flex justify-center">
+        <button
+          className="text-xs mt-4 mx-auto flex justify-center"
+          onClick={() => {
+            navigate('/transaction-history-details')
+          }}
+        >
           View More
         </button>
       </div>

@@ -112,6 +112,12 @@ export default function Account() {
               size="sm"
               className="bg-black text-white"
               variant="default"
+              onClick={() => {
+                console.log(
+                  'Navigating to transaction history details'
+                )
+                navigate('/transaction-history-details')
+              }}
             >
               View more details
             </Button>
