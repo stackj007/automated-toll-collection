@@ -65,7 +65,7 @@ export function DashboardPage() {
         </div>
       </div>
       <div className="mt-6 mb-6">
-        <h3 className="text-lg font-semibold">
+        <h3 className="text-lg text-center font-semibold fle ">
           Transaction history
         </h3>
 
