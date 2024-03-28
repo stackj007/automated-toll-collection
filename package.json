@@ -1,8 +1,10 @@
 {
   "dependencies": {
     "core-js": "^3.36.1",
-    "esm": "^3.2.25",
     "instascan": "^1.0.0",
     "jsqr": "^1.4.0"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25"
   }
 }
