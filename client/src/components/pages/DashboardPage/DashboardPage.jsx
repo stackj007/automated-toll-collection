@@ -1,13 +1,16 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
 import { useTransactions } from '../../../hooks/TransactionContext'
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
+import QrCodeScanner from './QrCodeScanner'
 import { VscAccount } from 'react-icons/vsc'
 import { BsQrCodeScan } from 'react-icons/bs'
 
 export function DashboardPage() {
   const navigate = useNavigate()
+  const [isScanning, setIsScanning] = useState(false)
 
   const { transactions } = useTransactions()
 
@@ -19,7 +22,7 @@ export function DashboardPage() {
 
   const handleQrCodeClick = () => {
     if (documentsUploaded) {
-      navigate('/qr-code')
+      setIsScanning(true)
     } else {
       navigate('/profile-completion')
     }
@@ -55,9 +58,10 @@ export function DashboardPage() {
           onClick={handleQrCodeClick}
         >
           <BsQrCodeScan className="text-4xl" />
-
           <button className="text-xs mt-2">QR Code</button>
         </div>
+
+        {isScanning && <QrCodeScanner />}
 
         <div className="flex flex-col items-center">
           <VscAccount className="text-4xl " />

@@ -18,7 +18,7 @@ import { Documents } from './components/pages/DashboardPage/Documents.jsx'
 import AdminDashboard from './components/pages/AdminDashboard/AdminDashboard.jsx'
 import Account from './components/pages/AccountPage/account.jsx'
 import ProfileCompletion from './components/pages/DashboardPage/ProfileCompletion'
-import QrCodePage from './components/pages/DashboardPage/QrCodePage'
+import QrCodePage from './components/pages/DashboardPage/QrCodeScanner'
 import TransactionHistoryDetails from './components/pages/AccountPage/TransactionHistoryDetails'
 
 function App() {
