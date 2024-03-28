@@ -63,7 +63,10 @@ export function DashboardPage() {
         </div>
 
         {isScanning && (
-          <QrCodeScanner onScan={setQrCodeData} />
+          <QrCodeScanner
+            key={qrCodeData}
+            onScan={setQrCodeData}
+          />
         )}
         {qrCodeData && <p> QR code Scanned {qrCodeData}</p>}
 

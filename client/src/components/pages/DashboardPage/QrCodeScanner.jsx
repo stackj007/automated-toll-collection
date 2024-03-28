@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react'
 import jsQR from 'jsqr'
 
-const QrCodeScanner = () => {
+const QrCodeScanner = (props) => {
   const videoRef = useRef(null)
 
   useEffect(() => {
@@ -36,7 +36,8 @@ const QrCodeScanner = () => {
           }
         )
         if (code) {
-          console.log('Found QR code', code.data)
+          props.onScan(code.data)
+          console.log('QR code data set:', code.data)
         }
       }
       requestAnimationFrame(scan)
