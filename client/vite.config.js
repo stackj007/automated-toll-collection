@@ -13,7 +13,6 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['jsqr'],
       output: {
         globals: {
           jsqr: 'jsqr',
