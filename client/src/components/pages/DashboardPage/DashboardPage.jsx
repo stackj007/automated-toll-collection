@@ -65,7 +65,7 @@ export function DashboardPage() {
         {isScanning && (
           <QrCodeScanner
             key={qrCodeData}
-            onScan={setQrCodeData}
+            onScan={(data) => setQrCodeData(data)}
           />
         )}
         {qrCodeData && <p> QR code Scanned {qrCodeData}</p>}
