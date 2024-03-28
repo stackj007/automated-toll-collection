@@ -1,13 +1,11 @@
+// Notification.jsx
 import { Button } from '../../../ui/button'
 
-const Notification = ({ onRedirect }) => {
+const Notification = ({ onRedirect, message }) => {
   return (
     <div className="mt-3">
       <div className="bg-white shadow-lg rounded-lg p-4">
-        <p className="text-sm text-gray-700">
-          Please complete your vehicle information in the
-          Documents page.
-        </p>
+        <p className="text-sm text-gray-700">{message}</p>
         <div className="mt-4">
           <Button
             onClick={onRedirect}

@@ -26,16 +26,16 @@ export default function Account() {
   const { vehicle } = true
 
   return (
-    <>
-      <Card>
-        <CardHeader>
-          <CardTitle>Profile</CardTitle>
-          <CardDescription>
-            Update your profile information below.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-6">
-          <div className="grid gap-4 md:grid-cols-2">
+    <div className="container mx-auto px-4 lg:px-8 xl:px-0">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Profile</CardTitle>
+            <CardDescription>
+              Update your profile information below.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-6">
             <div className="grid gap-1">
               <Label htmlFor="name">Name</Label>
               <Input
@@ -50,168 +50,155 @@ export default function Account() {
                 placeholder="Enter your email"
               />
             </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <Label className="w-[200px]">
-              Profile picture
-            </Label>
-            <img
-              alt="Profile picture"
-              className="rounded-full"
-              height="64"
-              src="/placeholder.svg"
-              style={{
-                aspectRatio: '64/64',
-                objectFit: 'cover',
-              }}
-              width="64"
-            />
-            <Button size="icon" variant="outline">
-              <CameraIcon className="h-4 w-4" />
-              <span className="sr-only">Change image</span>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {vehicle ? (
+        {vehicle ? (
+          <Card>
+            <CardHeader>
+              <CardTitle>Information</CardTitle>
+              <CardDescription>
+                Complete your account details and generate
+                QR codes for toll payments.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div>
+                <p>Vehicle Name: </p>
+                <p>Model: </p>
+                <p>Driver License: </p>
+                <p>Vehicle Plate: </p>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card>
+            <CardHeader>
+              <CardTitle>Notification</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Notification
+                onRedirect={handleRedirectToDocuments}
+                message="Please complete your vehicle information in the Documents page."
+              />
+            </CardContent>
+          </Card>
+        )}
         <Card>
           <CardHeader>
-            <CardTitle>information</CardTitle>
+            <CardTitle>Transaction History</CardTitle>
             <CardDescription>
-              complete you account details and generate QR
-              codes for toll payments.
+              View detailed information about your
+              transactions.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div>
-              <p>Vehicle Name: </p>
-              <p>Model: </p>
-              <p>Driver License: </p>
-              <p>Vehicle Plate: </p>
+            <div className="flex items-center gap-4">
+              <Button
+                size="sm"
+                className="bg-black text-white"
+                variant="default"
+                onClick={() => {
+                  console.log(
+                    'Navigating to transaction history details'
+                  )
+                  navigate('/transaction-history-details')
+                }}
+              >
+                View more details
+              </Button>
             </div>
           </CardContent>
         </Card>
-      ) : (
-        <Notification
-          onRedirect={handleRedirectToDocuments}
-        />
-      )}
 
-      <Card className="mt-3">
-        <CardHeader>
-          <CardTitle>Transaction history</CardTitle>
-          <CardDescription>
-            View detailed information about your
-            transactions.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4">
-            <Button
-              size="sm"
-              className="bg-black text-white"
-              variant="default"
-              onClick={() => {
-                console.log(
-                  'Navigating to transaction history details'
-                )
-                navigate('/transaction-history-details')
-              }}
-            >
-              View more details
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Account balance</CardTitle>
-          <CardDescription>
-            Manage your payment methods and make payments.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4">
-            <Button
-              size="sm"
-              className="bg-black text-white"
-              variant="default"
-            >
-              Add payment method
-            </Button>
-            <Button
-              size="sm"
-              className="bg-black text-white"
-              variant="default"
-            >
-              Make payment
-            </Button>
-          </div>
-          <div className="mt-4">
-            <div className="text-sm font-medium">
-              Current Balance:
+        <Card>
+          <CardHeader>
+            <CardTitle>Account Balance</CardTitle>
+            <CardDescription>
+              Manage your payment methods and make payments.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-4">
+              <Button
+                size="sm"
+                className="bg-black text-white"
+                variant="default"
+              >
+                Add Payment Method
+              </Button>
+              <Button
+                size="sm"
+                className="bg-black text-white"
+                variant="default"
+              >
+                Make Payment
+              </Button>
             </div>
-            <div className="text-lg font-semibold">
-              $500.00
+            <div className="mt-4">
+              <div className="text-sm font-medium">
+                Current Balance:
+              </div>
+              <div className="text-lg font-semibold">
+                $500.00
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Security</CardTitle>
+            <CardDescription>
+              Manage your security settings.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-4">
+              <Button
+                size="sm"
+                className="bg-black text-white"
+                variant="default"
+              >
+                Change Password
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Support</CardTitle>
+            <CardDescription>
+              Access help articles and contact support.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-4">
+              <Button
+                size="sm"
+                className="bg-black text-white"
+                variant="default"
+              >
+                Contact Support
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-      <Card className="mt-3">
-        <CardHeader>
-          <CardTitle>Security</CardTitle>
-          <CardDescription>
-            Manage your security settings.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4">
-            <Button
-              size="sm"
-              className="bg-black text-white"
-              variant="default"
-            >
-              Change password
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className="mt-3">
-        <CardHeader>
-          <CardTitle>Support</CardTitle>
-          <CardDescription>
-            Access help articles and contact support.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4">
-            <Button
-              size="sm"
-              className="bg-black text-white"
-              variant="default"
-            >
-              Contact support
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-      <div className="flex justify-center w-full">
-        <Button className="w-full lg:w-auto bg-gray-900 text-gray-50 hover:bg-gray-900/80 focus:ring-gray-950 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/80 dark:focus:ring-gray-300">
-          Save changes
+      <div className="flex justify-center mt-4">
+        <Button className="w-full md:w-auto bg-gray-900 text-gray-50 focus:ring-gray-950 ">
+          Save Changes
         </Button>
       </div>
-      <div className="flex justify-center w-full">
+      <div className="flex justify-center mt-2">
         <Button
-          className="w-full lg:w-auto border-gray-200 text-white hover:text-gray-50 hover:bg-gray-100 focus:ring-gray-950 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:ring-gray-300"
+          className="w-full md:w-auto border-gray-200 text-white hover:text-gray-50 hover:bg-gray-100 focus:ring-gray-950  bg-gray-500 hover:bg-black"
           variant="outline"
         >
           Cancel
         </Button>
       </div>
-    </>
+    </div>
   )
 }
 
