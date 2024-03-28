@@ -11,6 +11,7 @@ import { BsQrCodeScan } from 'react-icons/bs'
 export function DashboardPage() {
   const navigate = useNavigate()
   const [isScanning, setIsScanning] = useState(false)
+  const [qrCodeData, setQrCodeData] = useState(null)
 
   const { transactions } = useTransactions()
 
@@ -61,7 +62,10 @@ export function DashboardPage() {
           <button className="text-xs mt-2">QR Code</button>
         </div>
 
-        {isScanning && <QrCodeScanner />}
+        {isScanning && (
+          <QrCodeScanner onScan={setQrCodeData} />
+        )}
+        {qrCodeData && <p> QR code Scanned {qrCodeData}</p>}
 
         <div className="flex flex-col items-center">
           <VscAccount className="text-4xl " />
