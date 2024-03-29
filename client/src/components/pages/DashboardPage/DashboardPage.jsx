@@ -4,29 +4,21 @@ import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
 import { useTransactions } from '../../../hooks/TransactionContext'
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
-import QrCodeScanner from './QrCodeScanner'
+
 import { VscAccount } from 'react-icons/vsc'
 import { BsQrCodeScan } from 'react-icons/bs'
 
 export function DashboardPage() {
   const navigate = useNavigate()
-  const [isScanning, setIsScanning] = useState(false)
-  const [qrCodeData, setQrCodeData] = useState(null)
 
   const { transactions } = useTransactions()
-
-  const { documentsUploaded } = useDocumentsUploaded()
 
   const handleClick = () => {
     navigate('/account')
   }
 
   const handleQrCodeClick = () => {
-    if (documentsUploaded) {
-      setIsScanning(true)
-    } else {
-      navigate('/profile-completion')
-    }
+    navigate('/qr-code')
   }
 
   return (
@@ -62,19 +54,12 @@ export function DashboardPage() {
           <button className="text-xs mt-2">QR Code</button>
         </div>
 
-        {isScanning && (
-          <QrCodeScanner
-            key={qrCodeData}
-            onScan={(data) => setQrCodeData(data)}
-          />
-        )}
-        {qrCodeData && <p> QR code Scanned {qrCodeData}</p>}
-
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center cursor-pointer">
           <VscAccount className="text-4xl " />
           <button className="text-xs mt-2">Vehicle</button>
         </div>
       </div>
+
       <div className="mt-6 mb-6">
         <h3 className="text-lg text-center font-semibold fle ">
           Transaction history

@@ -1,9 +1,10 @@
-// QrCodeScanner.jsx
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import jsQR from 'jsqr'
 
-const QrCodeScanner = (props) => {
+const QrCodeScanner = () => {
   const videoRef = useRef(null)
+  const [scannedData, setScannedData] = useState(null)
+  const [showMessage, setShowMessage] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
@@ -36,8 +37,8 @@ const QrCodeScanner = (props) => {
           }
         )
         if (code) {
-          props.onScan(code.data)
-          console.log('QR code data set:', code.data)
+          setScannedData(code.data)
+          setShowMessage(true)
         }
       }
       requestAnimationFrame(scan)
@@ -49,7 +50,7 @@ const QrCodeScanner = (props) => {
       })
       .then((stream) => {
         video.srcObject = stream
-        video.setAttribute('playsinline', true) // required to tell iOS safari we don't want fullscreen
+        video.setAttribute('playsinline', true)
         video.play()
         requestAnimationFrame(scan)
       })
@@ -60,7 +61,19 @@ const QrCodeScanner = (props) => {
     }
   }, [])
 
-  return <video ref={videoRef} />
+  return (
+    <div>
+      <video ref={videoRef} />
+      {showMessage && (
+        <div>
+          <p>QR code scanned: {scannedData}</p>
+          <button onClick={() => setShowMessage(false)}>
+            Scan Again
+          </button>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default QrCodeScanner
