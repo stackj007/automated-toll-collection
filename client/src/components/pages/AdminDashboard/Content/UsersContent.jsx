@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Button from '../../../ui/Button'
 import {
@@ -15,14 +15,16 @@ import {
   TableCell,
   TableBody,
 } from '../../../ui/table' // TODO: i recommend using a table component, i recommend https://tanstack.com/table
-import {TrashIcon, FileEditIcon} from '../../../ui/icons'
-import {DeleteUserDialog} from "../../../modals/DeleteUserDialog.jsx"
-import {EditUserDialog} from "../../../modals/EditUserDialog.jsx";
+import { TrashIcon, FileEditIcon } from '../../../ui/icons'
+import { DeleteUserDialog } from '../../../modals/DeleteUserDialog.jsx'
+import { EditUserDialog } from '../../../modals/EditUserDialog.jsx'
 
 export default function UsersContent() {
   const [users, setUsers] = useState([])
-  const [isEditModalOpened, setIsEditModalOpened] = useState(false)
-  const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false)
+  const [isEditModalOpened, setIsEditModalOpened] =
+    useState(false)
+  const [isDeleteModalOpened, setIsDeleteModalOpened] =
+    useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
 
   useEffect(() => {
@@ -40,8 +42,18 @@ export default function UsersContent() {
 
   return (
     <div className="grid gap-4">
-      <DeleteUserDialog open={isDeleteModalOpened} setIsDeleteDialogOpen={setIsDeleteModalOpened} user={selectedUser}/>
-      <EditUserDialog open={isEditModalOpened} setIsEditDialogOpen={setIsEditModalOpened} user={selectedUser}/>
+      <DeleteUserDialog
+        open={isDeleteModalOpened}
+        setIsDeleteDialogOpen={setIsDeleteModalOpened}
+        user={selectedUser}
+      />
+
+      <EditUserDialog
+        open={isEditModalOpened}
+        setIsEditDialogOpen={setIsEditModalOpened}
+        user={selectedUser}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle>Users</CardTitle>
@@ -60,6 +72,7 @@ export default function UsersContent() {
                 </TableHead>
               </TableRow>
             </TableHeader>
+
             <TableBody>
               {users.map((user) => (
                 <TableRow key={user.id}>
@@ -77,10 +90,8 @@ export default function UsersContent() {
                         setSelectedUser(user)
                       }}
                     >
-                      <FileEditIcon className="h-4 w-4"/>
-                      <span className="sr-only">
-                        Edit
-                      </span>
+                      <FileEditIcon className="h-4 w-4" />
+                      <span className="sr-only">Edit</span>
                     </Button>
                     <Button
                       size="icon"
@@ -90,7 +101,7 @@ export default function UsersContent() {
                         setSelectedUser(user)
                       }}
                     >
-                      <TrashIcon className="h-4 w-4"/>
+                      <TrashIcon className="h-4 w-4" />
                       <span className="sr-only">
                         Delete
                       </span>

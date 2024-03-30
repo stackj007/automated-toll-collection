@@ -6,6 +6,9 @@ import Input from '../../ui/Input'
 import UsersContent from '../AdminDashboard/Content/UsersContent'
 import TollStationsContent from '../AdminDashboard/Content/TollStationsContent'
 import TransactionsContent from '../AdminDashboard/Content/TransactionsContent'
+import UserRequests from './Content/UserRequests'
+
+import { FaRegComment } from 'react-icons/fa'
 
 import {
   SettingsIcon,
@@ -30,15 +33,16 @@ export default function AdminDashboard() {
     switch (selectedSidebarItem) {
       case 'users':
         return <UsersContent />
+
       case 'toll-stations':
         return <TollStationsContent />
+
       case 'transactions':
         return <TransactionsContent />
-      // TODO: remove analytics/setting
-      // case 'analytics':
-      //   return <AnalyticsContent />
-      // case 'settings':
-      //   return <SettingsContent />
+
+      case 'user-requests':
+        return <UserRequests />
+
       default:
         return <UsersContent />
     }
@@ -71,6 +75,7 @@ export default function AdminDashboard() {
             {/*///////
                   Aside
              ///////// */}
+
             <div className="grid items-start gap-3 text-sm">
               <Link
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all  ${
@@ -86,6 +91,22 @@ export default function AdminDashboard() {
                 <UsersIcon className="h-4 w-4" />
                 Users
               </Link>
+
+              <Link
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
+                  selectedSidebarItem === 'user-requests'
+                    ? 'bg-gray-100 dark:bg-gray-800 text-white'
+                    : ''
+                }`}
+                onClick={() =>
+                  handleSidebarItemClick('user-requests')
+                }
+                href="#"
+              >
+                <FaRegComment className="h-4 w-4" />
+                User Requests
+              </Link>
+
               <Link
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
                   selectedSidebarItem === 'toll-stations'
@@ -100,6 +121,7 @@ export default function AdminDashboard() {
                 <MapPinIcon className="h-4 w-4" />
                 Toll Stations
               </Link>
+
               <Link
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
                   selectedSidebarItem === 'transactions'
@@ -113,34 +135,6 @@ export default function AdminDashboard() {
               >
                 <CreditCardIcon className="h-4 w-4" />
                 Transactions
-              </Link>
-              <Link
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
-                  selectedSidebarItem === 'analytics'
-                    ? 'bg-gray-100 dark:bg-gray-800 text-white'
-                    : ''
-                }`}
-                onClick={() =>
-                  handleSidebarItemClick('analytics')
-                }
-                href="#"
-              >
-                <BarChartIcon className="h-4 w-4" />
-                Analytics
-              </Link>
-              <Link
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
-                  selectedSidebarItem === 'settings'
-                    ? 'bg-gray-100 dark:bg-gray-800 text-white'
-                    : ''
-                }`}
-                onClick={() =>
-                  handleSidebarItemClick('settings')
-                }
-                href="#"
-              >
-                <SettingsIcon className="h-4 w-4" />
-                Settings
               </Link>
             </div>
           </nav>
