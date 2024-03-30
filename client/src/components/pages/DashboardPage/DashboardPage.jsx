@@ -5,21 +5,52 @@ import { useTransactions } from '../../../hooks/TransactionContext'
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
 
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import Button from '@mui/material/Button'
+
 import { VscAccount } from 'react-icons/vsc'
 import { BsQrCodeScan } from 'react-icons/bs'
+import { FaCreditCard } from 'react-icons/fa'
 
 export function DashboardPage() {
   const navigate = useNavigate()
 
-  const { transactions } = useTransactions()
+  const [openDialog, setOpenDialog] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState(null)
+
+  const handleQrCodeClick = () => {
+    setOpenDialog(true)
+  }
+
+  const handlePayWithCash = () => {
+    setPaymentMethod('Cash')
+
+    // Optionally, you can also log the payment method here
+    // axios.post('/api/log-payment-method', {
+    //   userId: currentUser.id,
+    //   paymentMethod: 'Cash',
+    // });
+  }
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
+    setPaymentMethod(null)
+  }
+
+  const handlePayWithQrCode = () => {
+    navigate('/qr-code')
+    handleCloseDialog()
+  }
 
   const handleClick = () => {
     navigate('/account')
   }
 
-  const handleQrCodeClick = () => {
-    navigate('/qr-code')
-  }
+  const { transactions } = useTransactions()
 
   return (
     <div className="max-w-sm mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
@@ -50,9 +81,52 @@ export function DashboardPage() {
           className="flex flex-col items-center cursor-pointer"
           onClick={handleQrCodeClick}
         >
-          <BsQrCodeScan className="text-4xl" />
-          <button className="text-xs mt-2">QR Code</button>
+          <FaCreditCard className="text-4xl" />
+          <button className="text-xs mt-2">Pay Toll</button>
         </div>
+
+        <Dialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {'Payment Method'}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {paymentMethod === 'Cash'
+                ? 'Please proceed to the cash payment area'
+                : 'Do you want to pay with Qr code or Cash'}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>
+              {' '}
+              Close
+            </Button>
+
+            {!paymentMethod && (
+              <>
+                <Button
+                  onClick={handlePayWithCash}
+                  color="primary"
+                >
+                  Cash
+                </Button>
+
+                <Button
+                  onClick={handlePayWithQrCode}
+                  color="primary"
+                  autoFocus
+                >
+                  QR Code
+                </Button>
+              </>
+            )}
+          </DialogActions>
+        </Dialog>
 
         <div className="flex flex-col items-center cursor-pointer">
           <VscAccount className="text-4xl " />
