@@ -1,18 +1,23 @@
 import { useAuth } from '../../../AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export default function LoginPage() {
   const { login } = useAuth()
   const [error, setError] = useState(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleLogin = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
+
     if (!email || !password) {
       setError('Email and password are required.')
+      setIsLoading(false)
       return
     }
 
@@ -22,12 +27,13 @@ export default function LoginPage() {
       navigate('/dashboard')
     } else {
       setError(error)
+      setIsLoading(false)
     }
   }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md relative">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Login to your account
         </h2>
@@ -109,6 +115,14 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      {isLoading && (
+        <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
+          <CircularProgress
+            size={50}
+            sx={{ color: 'black' }}
+          />
+        </div>
+      )}
     </div>
   )
 }

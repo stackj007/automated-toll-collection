@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
+// import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
 import { useTransactions } from '../../../hooks/TransactionContext'
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
@@ -13,7 +13,6 @@ import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
 
 import { VscAccount } from 'react-icons/vsc'
-import { BsQrCodeScan } from 'react-icons/bs'
 import { FaCreditCard } from 'react-icons/fa'
 
 export function DashboardPage() {
