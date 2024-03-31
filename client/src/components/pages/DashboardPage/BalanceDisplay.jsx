@@ -1,5 +1,5 @@
 // src/components/pages/DashboardPage/BalanceDisplay.jsx
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 export default function BalanceDisplay({
   balance,
@@ -7,6 +7,47 @@ export default function BalanceDisplay({
   selectedVehicle,
   setSelectedVehicle,
 }) {
+  const [stripe, setStripe] = useState(null)
+
+  useEffect(() => {
+    if (window.Stripe) {
+      setStripe(window.Stripe('your_stripe_public_key')) // Replace 'stripe_public_key' with  actual Stripe public key
+    } else {
+      document
+        .querySelector('#stripe-js')
+        .addEventListener('load', () => {
+          setStripe(window.Stripe('your_stripe_public_key')) // Replace 'stripe_public_key' with  actual Stripe public key
+        })
+    }
+  }, [])
+
+  const handleRecharge = async () => {
+    if (!stripe) return
+
+    //  placeholder for the actual payment process.
+    //  replace this with  server's endpoint that creates a PaymentIntent.
+    const response = await fetch('/create-payment-intent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ amount: 1000 }),
+    })
+
+    const { clientSecret } = await response.json()
+
+    const { error, paymentIntent } =
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: '{PAYMENT_METHOD_ID}',
+      })
+
+    if (error) {
+      console.log('[error]', error)
+    } else {
+      console.log('[PaymentIntent]', paymentIntent)
+    }
+  }
+
   const handleVehicleChange = (event) => {
     setSelectedVehicle(event.target.value)
   }
@@ -38,6 +79,7 @@ export default function BalanceDisplay({
         <button
           className="bg-[#2E5C63] py-1 px-2 text-xs rounded"
           aria-label="Recharge"
+          onClick={handleRecharge}
         >
           Recharge
         </button>

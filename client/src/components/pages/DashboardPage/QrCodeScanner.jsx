@@ -5,6 +5,46 @@ const QrCodeScanner = () => {
   const videoRef = useRef(null)
   const [scannedData, setScannedData] = useState(null)
   const [showMessage, setShowMessage] = useState(false)
+  const [stripe, setStripe] = useState(null)
+
+  useEffect(() => {
+    if (window.Stripe) {
+      setStripe(window.Stripe('stripe_public_key'))
+    } else {
+      document
+        .querySelector('#stripe-js')
+        .addEventListener('load', () => {
+          setStripe(window.Stripe('stripe_public_key'))
+        })
+    }
+  }, [])
+
+  const handlePayment = async () => {
+    if (!stripe) return
+
+    //  placeholder for the actual payment process.
+    //  replace this with  server's endpoint that creates a PaymentIntent.
+    const response = await fetch('/create-payment-intent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ amount: 1000 }),
+    })
+
+    const { clientSecret } = await response.json()
+
+    const { error, paymentIntent } =
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: '{PAYMENT_METHOD_ID}', // collect from the user
+      })
+
+    if (error) {
+      console.log('[error]', error)
+    } else {
+      console.log('[PaymentIntent]', paymentIntent)
+    }
+  }
 
   useEffect(() => {
     const video = videoRef.current
@@ -39,6 +79,7 @@ const QrCodeScanner = () => {
         if (code) {
           setScannedData(code.data)
           setShowMessage(true)
+          handlePayment()
         }
       }
       requestAnimationFrame(scan)

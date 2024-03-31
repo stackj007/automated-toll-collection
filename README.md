@@ -14,3 +14,6 @@
 
 - [ ] Refactor routes from index.ts to index.ts -> router.ts -> Controller
 - [ ] Add validation to login/register endpoints
+- [ ] Replace 'stripe_public_key' with your actual Stripe public key.
+- [ ] Replace the fetch('/create-payment-intent', {...}) call with the actual server's endpoint that creates a PaymentIntent.
+- [ ] Replace payment_method: '{PAYMENT_METHOD_ID}' with the actual payment method collected from the user.
