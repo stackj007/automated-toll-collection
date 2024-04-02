@@ -7,9 +7,17 @@ import bcrypt from 'bcrypt'
 import passport from './src/passport'
 import {User} from "./src/entity/User";
 import {AppDataSource} from "./src/data-source";
-require('dotenv').config()
+import 'dotenv/config'
+import {UTApi} from "uploadthing/server";
+import {UserVehicleRequest} from "./src/entity/UserVehicleRequest";
+import fileUpload, {UploadedFile} from "express-fileupload";
+import {TypeormStore} from "connect-typeorm";
+import {Session} from "./src/entity/Session";
+
+const utApi = new UTApi()
 
 bodyParser.urlencoded({ extended: false })
+const sessionRepository = AppDataSource.getRepository(Session);
 
 const app = express()
 app.use(express.json())
@@ -19,7 +27,13 @@ const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 1000 * 60 * 60 * 24 * 365 },
+    store: new TypeormStore({
+        cleanupLimit: 2,
+        limitSubquery: false, // If using MariaDB.
+        ttl: 86400
+    }).connect(sessionRepository)
 })
+
 app.use(sessionMiddleware)
 app.use(passport.authenticate('session'))
 app.use(passport.initialize())
@@ -31,6 +45,9 @@ app.use(
     allowedHeaders: 'Content-Type, Authorization',
   })
 )
+app.use(fileUpload({
+  limits: { fileSize: 24 * 1024 * 1024 },
+}));
 
 passport.serializeUser((user: User, done) => {
   AppDataSource.getRepository(User).findOneBy({id: user.id}).then((user) => {
@@ -184,6 +201,108 @@ app.post('/api/edit-user', isAdmin, async (req, res) => {
     res.status(400).json({message: "Error delete the user"})
   }
 });
+
+app.post('/api/user-request', isUserLoggedIn, async (req, res) => {
+  // const [idFront, idBack, drivingLicenseFront, drivingLicenseBack, rcBook, vehiclePhoto, vehicleNumber] =
+  const {vehicleNumber} = req.body
+  if (!vehicleNumber) {
+    return res.status(400).json({message: "vehicle number is required"})
+  }
+
+  if (!req?.files || Object.keys(req?.files).length !== 6) {
+    return res.status(400).send('All files are required');
+  }
+
+  const {idFront, idBack, drivingLicenseFront, drivingLicenseBack, rcBook, vehiclePhoto} = req.files as { [key: string]: UploadedFile }
+
+  // @ts-ignore
+  const uploadedResults: Array<{data: {url: string}, error: string|null }> = await utApi.uploadFiles([
+    // @ts-ignore
+    new File([idFront.data], idFront.name), // @ts-ignore
+    new File([idBack.data], idBack.name),// @ts-ignore
+    new File([drivingLicenseFront.data], drivingLicenseFront.name), // @ts-ignore
+    new File([drivingLicenseBack.data], drivingLicenseBack.name), // @ts-ignore
+    new File([rcBook.data], rcBook.name), // @ts-ignore
+    new File([vehiclePhoto.data], vehiclePhoto.name), // @ts-ignore
+  ]);
+
+  if (uploadedResults.filter((result) => result.error).length > 0) {
+    return res.status(500).json({message: "Error uploading files, please try again"})
+  }
+
+  const urls = uploadedResults.map((result) => result.data.url)
+  const userVehicleRequest = AppDataSource.getRepository(UserVehicleRequest).create({
+    vehicleNumber,
+    idCardFrontUrl: urls[0],
+    idCardBackUrl: urls[1],
+    driverLicenseFrontUrl: urls[2],
+    driverLicenseBackUrl: urls[3],
+    vehicleRCBookUrl: urls[4],
+    vehiclePhotoUrl: urls[5],
+  })
+  // @ts-ignore
+  userVehicleRequest.user = await AppDataSource.getRepository(User).findOneByOrFail({id: req.user?.id})
+
+  await AppDataSource.getRepository(UserVehicleRequest).save(userVehicleRequest)
+  //TODO: normalize user
+  res.json({message: "Request submitted successfully"})
+});
+
+app.get('/api/user-requests', isAdmin, async (req, res) => {
+  try {
+    const userRequests = await AppDataSource.getRepository(UserVehicleRequest).find({relations: ['user'], where: {isApproved: false}})
+    res.json(userRequests)
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error fetching user requests"})
+  }
+});
+
+app.get('/api/approve-request', isAdmin, async (req, res) => {
+    const {id} = req.query
+
+    if (!id) {
+        return res.status(400).json({message: "Request id is required"})
+    }
+
+    try {
+        const userRequest = await AppDataSource.getRepository(UserVehicleRequest).findOneByOrFail({id: Number(id)})
+
+        if (!userRequest) {
+            return res.status(404).json({message: "Request not found"})
+        }
+
+        userRequest.isApproved = true
+        await AppDataSource.getRepository(UserVehicleRequest).save(userRequest)
+
+        res.json({message: "Request approved"})
+    } catch (e) {
+        console.error(e.message)
+        res.status(400).json({message: "Error approving request"})
+    }
+
+});
+
+app.get('/api/reject-request', isAdmin, async (req, res) => {
+    const {id} = req.query
+
+    try {
+        const userRequest = await AppDataSource.getRepository(UserVehicleRequest).findOneByOrFail({id: Number(id)})
+
+        if (!userRequest) {
+            return res.status(404).json({message: "Request not found"})
+        }
+
+        await AppDataSource.getRepository(UserVehicleRequest).delete(userRequest.id)
+
+        res.json({message: "Request rejected"})
+    } catch (e) {
+        console.error(e.message)
+        res.status(400).json({message: "Error rejecting request"})
+    }
+
+});
+
 
 const port = process.env.PORT || 8000
 

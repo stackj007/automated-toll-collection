@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
+import {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {useDocumentsUploaded} from '../../../hooks/DocumentsUploadedContext'
 import documents from '../../../assets/icons/documents.png'
+import axios from "axios";
 
 export function Documents() {
   const navigate = useNavigate()
-  const { setDocumentsUploaded } = useDocumentsUploaded()
+  const {setDocumentsUploaded} = useDocumentsUploaded()
 
   const [step, setStep] = useState(1)
   const [idProof, setIdProof] = useState(null)
@@ -13,6 +14,7 @@ export function Documents() {
   const [vehicleDocuments, setVehicleDocuments] = useState(
     {}
   )
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleNext = () => {
     // Validation logic for each step
@@ -42,12 +44,51 @@ export function Documents() {
     setVehicleDocuments({})
   }
 
+  const handleSend = async () => {
+    // Send the data to the server
+    // If the submission is successful:
+    isSubmitting
+    const [idFront, idBack, drivingLicenseFront, drivingLicenseBack, rcBook, vehiclePhoto, vehicleNumber] =
+      [
+        document.getElementById('id-proof-front').files[0],
+        document.getElementById('id-proof-back').files[0],
+        document.getElementById('driving-license-front').files[0],
+        document.getElementById('driving-license-back').files[0],
+        document.getElementById('rc-book').files[0],
+        document.getElementById('vehicle-photo').files[0],
+        document.getElementById('vehicle-number').value
+      ]
+
+    const formData = new FormData()
+    formData.append('idFront', idFront)
+    formData.append('idBack', idBack)
+    formData.append('drivingLicenseFront', drivingLicenseFront)
+    formData.append('drivingLicenseBack', drivingLicenseBack)
+    formData.append('rcBook', rcBook)
+    formData.append('vehiclePhoto', vehiclePhoto)
+    formData.append('vehicleNumber', vehicleNumber)
+
+    try {
+      const result = await axios.post('/api/user-request', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      setStep(3)
+    } catch (error) {
+      console.error(error)
+      // display the error it below the form
+    } finally {
+      setIsSubmitting(false)
+    }
+
+  }
   const handleIdProofUpload = (event, idType) => {
     if (
       event.target.files &&
       event.target.files.length > 0
     ) {
-      setIdProof({ file: event.target.files[0], idType })
+      setIdProof({file: event.target.files[0], idType})
     }
   }
 
@@ -73,7 +114,7 @@ export function Documents() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {step === 1 && (
+      <div className={step === 1 ? "" : "hidden"}>
         <div className="container mx-auto px-4 py-8">
           <h2>Upload Documents</h2>
           <p className="text-gray-600 mb-4">
@@ -81,7 +122,8 @@ export function Documents() {
             with latest details
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
+            <div
+              className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
               <img
                 src={documents}
                 className="w-11 my-2 mx-auto"
@@ -98,7 +140,8 @@ export function Documents() {
                 }
               />
             </div>
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
+            <div
+              className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
               <img
                 src={documents}
                 className="w-11 my-2 mx-auto"
@@ -115,34 +158,36 @@ export function Documents() {
                 }
               />
             </div>
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
+            <div
+              className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
               <img
                 src={documents}
                 className="w-11 my-2 mx-auto"
               />
-              <label htmlFor="id-proof-front">
+              <label htmlFor="driving-license-front">
                 Driving License (Front)
               </label>
               <input
                 type="file"
-                id="id-proof-front"
+                id="driving-license-front"
                 className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={(event) =>
                   handleIdProofUpload(event, 'front-card')
                 }
               />
             </div>
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
+            <div
+              className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
               <img
                 src={documents}
                 className="w-11 my-2 mx-auto"
               />
-              <label htmlFor="id-proof-back">
+              <label htmlFor="driving-license-back">
                 Driving License (back)
               </label>
               <input
                 type="file"
-                id="id-proof-back"
+                id="driving-license-back"
                 className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={(event) =>
                   handleIdProofUpload(event, 'back-card')
@@ -165,10 +210,10 @@ export function Documents() {
             </button>
           </div>
         </div>
-      )}
+      </div>
 
-      {step === 2 && (
-        <div className="container mx-auto px-4 py-8">
+      <div className={step === 2 ? "" : "hidden"}>
+        <div className="container mx-auto  px-4 py-8">
           <h2 className="text-xl font-bold mb-4">
             Upload Vehicle Documents
           </h2>
@@ -182,7 +227,8 @@ export function Documents() {
             </span>
             <input
               type="text"
-              name="vehicleNumber"
+              name="vehicle-number"
+              id="vehicle-number"
               className="bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
               onChange={handleVehicleDetailsChange}
             />
@@ -195,7 +241,8 @@ export function Documents() {
               </span>
               <input
                 type="file"
-                name="rcBook"
+                name="rc-book"
+                id="rc-book"
                 className="bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={handleVehicleDocumentUpload}
               />
@@ -206,7 +253,8 @@ export function Documents() {
               </span>
               <input
                 type="file"
-                name="vehiclePhoto"
+                name="vehicle-photo"
+                id="vehicle-photo"
                 className="bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onChange={handleVehicleDocumentUpload}
               />
@@ -222,14 +270,15 @@ export function Documents() {
             </button>
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-              onClick={handleNext}
+              onClick={handleSend}
             >
               Submit
             </button>
           </div>
         </div>
-      )}
+      </div>
 
+      {/*TODO: remove*/}
       {step === 3 && (
         <div className="flex flex-col items-center justify-center h-screen">
           <h2 className="text-xl font-bold text-green-500">

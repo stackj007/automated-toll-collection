@@ -7,8 +7,39 @@ import {
   TableBody,
 } from '../../../ui/table'
 import Button from '../../../ui/Button'
+import axios from "axios";
 
 export default function UserRequests() {
+  // TODO: use these requests
+  const fetchUserRequests = async () => {
+    try {
+      const response = await axios.get('/api/user-requests')
+      console.log(response)
+    } catch (error) {
+      console.error('Error fetching user requests:', error)
+    }
+  }
+
+  const approveRequest = async (id) => {
+    try {
+      const response = await axios.post(`/api/approve-request/${id}`)
+      console.log(response)
+    } catch (error) {
+      console.error('Error approving user request:', error)
+    }
+  }
+
+  const rejectRequest = async (id) => {
+    try {
+      const response = await axios.post(`/api/reject-request/${id}`)
+      console.log(response)
+    } catch (error) {
+      console.error('Error rejecting user request:', error)
+    }
+  }
+  fetchUserRequests()
+
+
   const userRequests = [
     {
       id: 1,

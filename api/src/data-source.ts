@@ -1,8 +1,6 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
-import {migration1710905329358} from "./migration/1710905329358-migration";
 import 'dotenv/config'
-import {User} from "./entity/User";
 
 export const AppDataSource = new DataSource({
   type: process.env.DATABASE_TYPE as "mysql"|"postgres",
@@ -10,8 +8,8 @@ export const AppDataSource = new DataSource({
   // url: "mysql://root:root@localhost:3306/TollCollection",
   url: process.env.DATABASE_URL,
   synchronize: true,
-  logging: true,
-  entities: [User],
-  migrations: [migration1710905329358],
+  logging: process.env.DATABASE_LOGGING === "true",
+  entities: ["src/entity/**/*.ts"],
+  migrations: ["src/migration/**/*.ts"],
   subscribers: [],
 })

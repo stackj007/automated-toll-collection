@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne} from "typeorm"
+import {UserVehicleRequest} from "./UserVehicleRequest";
 
 @Entity("user")
 export class User {
@@ -16,4 +17,7 @@ export class User {
 
     @Column({default: false})
     isAdmin: boolean
+
+    @OneToOne(() => UserVehicleRequest, userVehicleRequest => userVehicleRequest.user)
+    userVehicleRequest: UserVehicleRequest|null
 }

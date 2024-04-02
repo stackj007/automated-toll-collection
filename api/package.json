@@ -14,13 +14,16 @@
       "typescript": "4.5.2"
    },
    "dependencies": {
+      "@types/express-fileupload": "^1.5.0",
       "@types/passport": "^1.0.16",
       "axios": "^1.6.7",
       "bcrypt": "^5.1.1",
       "body-parser": "^1.20.2",
       "connect-sqlite3": "^0.9.13",
+      "connect-typeorm": "^2.0.0",
       "dotenv": "^16.4.5",
       "express": "^4.18.3",
+      "express-fileupload": "^1.5.0",
       "express-session": "^1.18.0",
       "mysql": "^2.14.1",
       "passport": "^0.7.0",
@@ -28,7 +31,8 @@
       "pg": "^8.11.3",
       "reflect-metadata": "^0.1.13",
       "socket.io": "^4.7.4",
-      "typeorm": "0.3.12"
+      "typeorm": "0.3.12",
+      "uploadthing": "^6.7.0"
    },
    "scripts": {
       "start": "nodemon --exec ts-node index.ts",
