@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react'
 import {
   Table,
   TableHeader,
@@ -7,10 +8,18 @@ import {
   TableBody,
 } from '../../../ui/table'
 import Button from '../../../ui/Button'
-import axios from "axios";
+import axios from 'axios'
+import DocumentReviewModal from '../../../modals/DocumentReviewModal' // Adjust the import path as necessary
 
 export default function UserRequests() {
-  // TODO: use these requests
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedRequest, setSelectedRequest] =
+    useState(null)
+
+  useEffect(() => {
+    fetchUserRequests()
+  }, [])
+
   const fetchUserRequests = async () => {
     try {
       const response = await axios.get('/api/user-requests')
@@ -20,25 +29,11 @@ export default function UserRequests() {
     }
   }
 
-  const approveRequest = async (id) => {
-    try {
-      const response = await axios.post(`/api/approve-request/${id}`)
-      console.log(response)
-    } catch (error) {
-      console.error('Error approving user request:', error)
-    }
+  const handleRequestSelect = (request) => {
+    console.log(`Selected request with ID: ${request.id}`)
+    setSelectedRequest(request)
+    setIsModalOpen(true)
   }
-
-  const rejectRequest = async (id) => {
-    try {
-      const response = await axios.post(`/api/reject-request/${id}`)
-      console.log(response)
-    } catch (error) {
-      console.error('Error rejecting user request:', error)
-    }
-  }
-  fetchUserRequests()
-
 
   const userRequests = [
     {
@@ -54,14 +49,6 @@ export default function UserRequests() {
       status: 'Pending',
     },
   ]
-
-  const handleAccept = (id) => {
-    console.log(`Accept request with ID: ${id}`)
-  }
-
-  const handleReject = (id) => {
-    console.log(`Reject request with ID: ${id}`)
-  }
 
   return (
     <div>
@@ -84,20 +71,28 @@ export default function UserRequests() {
               <TableCell>{request.status}</TableCell>
               <TableCell>
                 <Button
-                  onClick={() => handleAccept(request.id)}
+                  onClick={() =>
+                    handleRequestSelect(request)
+                  }
                 >
-                  Accept
-                </Button>
-                <Button
-                  onClick={() => handleReject(request.id)}
-                >
-                  Reject
+                  Review
                 </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      {/* Ensure the modal is rendered outside of the table's container */}
+      {selectedRequest && (
+        <DocumentReviewModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          request={selectedRequest}
+          onAccept={() => handleAccept(selectedRequest.id)}
+          onReject={() => handleReject(selectedRequest.id)}
+        />
+      )}
     </div>
   )
 }
