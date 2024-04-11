@@ -1,4 +1,5 @@
-import {ExitIcon} from "@radix-ui/react-icons";
+/* eslint-disable react/prop-types */
+// import { ExitIcon } from '@radix-ui/react-icons'
 
 const DocumentReviewModal = ({
   isOpen,
@@ -22,7 +23,7 @@ const DocumentReviewModal = ({
     {
       name: 'RC Book',
       url: request.vehicleRCBookUrl,
-    }
+    },
   ]
 
   return (
@@ -66,7 +67,7 @@ const DocumentReviewModal = ({
             <img
               src={document.url}
               alt={document.name}
-              className="rounded-lg max-h-52"
+              className="rounded-lg max-h-12"
             />
           </div>
         ))}

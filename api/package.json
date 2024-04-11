@@ -31,7 +31,7 @@
       "pg": "^8.11.3",
       "reflect-metadata": "^0.1.13",
       "socket.io": "^4.7.4",
-      "typeorm": "0.3.12",
+      "typeorm": "^0.3.20",
       "uploadthing": "^6.7.0"
    },
    "scripts": {
