@@ -35,7 +35,8 @@
       "uploadthing": "^6.7.0"
    },
    "scripts": {
-      "start": "nodemon --exec ts-node index.ts",
+      "start": "ts-node index.ts",
+      "dev": "nodemon --exec ts-node index.ts",
       "build": "tsc",
       "typeorm": "typeorm-ts-node-commonjs"
    }

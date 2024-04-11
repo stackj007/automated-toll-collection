@@ -1,7 +1,7 @@
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from "../ui/dialog.jsx";
-import Input from "../ui/Input.jsx";
-import Button from "../ui/Button.jsx";
 import axios from "axios";
+import {Input} from "../../ui/input.jsx";
+import {Button} from "../../ui/button.jsx";
 
 export function EditUserDialog({open, setIsEditDialogOpen, user}) {
   const submit = async (e) => {

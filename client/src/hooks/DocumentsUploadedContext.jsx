@@ -1,7 +1,7 @@
 import { createContext, useState, useContext } from 'react'
 
 const DocumentsUploadedContext = createContext()
-
+// TODO: delete if not used
 export const useDocumentsUploaded = () =>
   useContext(DocumentsUploadedContext)
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from "../ui/dialog.jsx";
-import Button from "../ui/Button.jsx";
+import {Button} from "../../ui/button.jsx";
 
 export function DeleteUserDialog({open, setIsDeleteDialogOpen, user}) {
     const hide = async () => {

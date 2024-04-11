@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Table,
   TableHeader,
@@ -7,14 +7,14 @@ import {
   TableCell,
   TableBody,
 } from '../../../ui/table'
-import Button from '../../../ui/Button'
 import axios from 'axios'
-import DocumentReviewModal from '../../../modals/DocumentReviewModal' // Adjust the import path as necessary
+import DocumentReviewModal from '../../../modals/DocumentReviewModal'
+import {Button} from "../../../../ui/button.jsx";
 
 export default function UserRequests() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedRequest, setSelectedRequest] =
-    useState(null)
+  const [selectedRequest, setSelectedRequest] = useState(null)
+  const [userRequests, setUserRequests] = useState([])
 
   useEffect(() => {
     fetchUserRequests()
@@ -23,9 +23,29 @@ export default function UserRequests() {
   const fetchUserRequests = async () => {
     try {
       const response = await axios.get('/api/user-requests')
-      console.log(response)
+      setUserRequests(response.data)
     } catch (error) {
       console.error('Error fetching user requests:', error)
+    }
+  }
+
+  const handleAccept = async (requestId) => {
+    try {
+      await axios.post(`/api/user-requests/${requestId}/accept`)
+      setUserRequests(userRequests.filter((request) => request.id !== requestId))
+      setIsModalOpen(false)
+    } catch (error) {
+      console.error('Error accepting request:', error)
+    }
+  }
+
+  const handleReject = async (requestId) => {
+    try {
+      await axios.post(`/api/user-requests/${requestId}/reject`)
+      setUserRequests(userRequests.filter((request) => request.id !== requestId))
+      setIsModalOpen(false)
+    } catch (error) {
+      console.error('Error rejecting request:', error)
     }
   }
 
@@ -35,21 +55,6 @@ export default function UserRequests() {
     setIsModalOpen(true)
   }
 
-  const userRequests = [
-    {
-      id: 1,
-      name: 'John Doe',
-      request: 'Request 1',
-      status: 'Pending',
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      request: 'Request 2',
-      status: 'Pending',
-    },
-  ]
-
   return (
     <div>
       <Table>
@@ -57,8 +62,7 @@ export default function UserRequests() {
           <TableRow>
             <TableHead>ID</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Request</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Vehicle Number</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -66,8 +70,8 @@ export default function UserRequests() {
           {userRequests.map((request) => (
             <TableRow key={request.id}>
               <TableCell>{request.id}</TableCell>
-              <TableCell>{request.name}</TableCell>
-              <TableCell>{request.request}</TableCell>
+              <TableCell>{request.user?.name}</TableCell>
+              <TableCell>{request.vehicleNumber}</TableCell>
               <TableCell>{request.status}</TableCell>
               <TableCell>
                 <Button

@@ -13,24 +13,19 @@ export class UserVehicleRequest {
     @Column({unique: true})
     vehicleNumber: string
 
-    @Column()
-    idCardFrontUrl: string
+    @Column({nullable: true})
+    idCardUrl: string
 
-    @Column()
-    idCardBackUrl: string
+    @Column({nullable: true})
+    driverLicenseUrl: string
 
-    @Column()
-    driverLicenseFrontUrl: string
-
-    @Column()
-    driverLicenseBackUrl: string
-
-    @Column()
+    @Column({nullable: true})
     vehicleRCBookUrl: string
 
-    @Column()
-    vehiclePhotoUrl: string
+    @Column({default: "pending"})
+    status: "pending" | "approved" | "rejected"
 
-    @Column({default: false})
-    isApproved: boolean
+    setStatus(status: "pending" | "approved" | "rejected") {
+        this.status = status
+    }
 }

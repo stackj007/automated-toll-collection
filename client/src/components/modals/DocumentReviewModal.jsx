@@ -1,5 +1,4 @@
-// DocumentReviewModal.jsx
-import React from 'react'
+import {ExitIcon} from "@radix-ui/react-icons";
 
 const DocumentReviewModal = ({
   isOpen,
@@ -11,20 +10,19 @@ const DocumentReviewModal = ({
   if (!isOpen) {
     return null
   }
-
-  // Placeholder images for demonstration
   const documents = [
     {
-      id: 1,
-      name: 'ID Proof Front',
-      url: 'https://via.placeholder.com/150',
+      name: 'ID',
+      url: request.idCardUrl,
     },
     {
-      id: 2,
-      name: 'ID Proof Back',
-      url: 'https://via.placeholder.com/150',
+      name: 'Vehicle License',
+      url: request.driverLicenseUrl,
     },
-    // Add more documents as needed
+    {
+      name: 'RC Book',
+      url: request.vehicleRCBookUrl,
+    }
   ]
 
   return (
@@ -47,13 +45,13 @@ const DocumentReviewModal = ({
             <strong className="font-semibold">
               User Name:
             </strong>{' '}
-            {request.name}
+            {request.user.name}
           </p>
           <p>
             <strong className="font-semibold">
-              Request Details:
+              Vehicle Number:
             </strong>{' '}
-            {request.request}
+            {request.vehicleNumber}
           </p>
         </div>
         <h3 className="mt-6 text-xl font-bold">
@@ -61,14 +59,14 @@ const DocumentReviewModal = ({
         </h3>
 
         {documents.map((document) => (
-          <div key={document.id} className="mb-4">
+          <div key={document.name} className="mb-4">
             <h4 className="text-lg font-semibold">
               {document.name}
             </h4>
             <img
               src={document.url}
               alt={document.name}
-              className=" h-auto rounded-lg"
+              className="rounded-lg max-h-52"
             />
           </div>
         ))}

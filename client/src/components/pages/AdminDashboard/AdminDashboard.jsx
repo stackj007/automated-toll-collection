@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import Button from '../../ui/Button'
-import Input from '../../ui/Input'
 
 import UsersContent from '../AdminDashboard/Content/UsersContent'
 import TollStationsContent from '../AdminDashboard/Content/TollStationsContent'
@@ -11,15 +9,15 @@ import UserRequests from './Content/UserRequests'
 import { FaRegComment } from 'react-icons/fa'
 
 import {
-  SettingsIcon,
   UsersIcon,
   SearchIcon,
   Package2Icon,
   MapPinIcon,
   CreditCardIcon,
-  BarChartIcon,
   BellIcon,
 } from '../../ui/icons'
+import {Button} from "../../../ui/button.jsx";
+import {Input} from "../../../ui/input.jsx";
 
 export default function AdminDashboard() {
   const [selectedSidebarItem, setSelectedSideItem] =
@@ -160,41 +158,6 @@ export default function AdminDashboard() {
               </div>
             </form>
           </div>
-          {/*// TODO: fix */}
-          {/*<DropdownMenu>*/}
-          {/*  <DropdownMenuTrigger>*/}
-          {/*    <Button*/}
-          {/*      className="rounded-full border border-gray-200 w-8 h-8 dark:border-gray-800"*/}
-          {/*      size="icon"*/}
-          {/*      variant="ghost"*/}
-          {/*    >*/}
-          {/*      <img*/}
-          {/*        alt="Avatar"*/}
-          {/*        className="rounded-full"*/}
-          {/*        height="32"*/}
-          {/*        src="/placeholder.svg"*/}
-          {/*        style={{*/}
-          {/*          aspectRatio: '32/32',*/}
-          {/*          objectFit: 'cover',*/}
-          {/*        }}*/}
-          {/*        width="32"*/}
-          {/*      />*/}
-          {/*      <span className="sr-only">*/}
-          {/*        Toggle user menu*/}
-          {/*      </span>*/}
-          {/*    </Button>*/}
-          {/*  </DropdownMenuTrigger>*/}
-          {/*  <DropdownMenuContent align="end">*/}
-          {/*    <DropdownMenuLabel>*/}
-          {/*      My Account*/}
-          {/*    </DropdownMenuLabel>*/}
-          {/*    <DropdownMenuSeparator />*/}
-          {/*    <DropdownMenuItem>Settings</DropdownMenuItem>*/}
-          {/*    <DropdownMenuItem>Support</DropdownMenuItem>*/}
-          {/*    <DropdownMenuSeparator />*/}
-          {/*    <DropdownMenuItem>Logout</DropdownMenuItem>*/}
-          {/*  </DropdownMenuContent>*/}
-          {/*</DropdownMenu>*/}
         </header>
 
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">

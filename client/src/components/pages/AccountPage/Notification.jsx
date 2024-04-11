@@ -6,6 +6,7 @@ const Notification = ({ onRedirect, message }) => {
     <div className="mt-3">
       <div className="bg-white shadow-lg rounded-lg p-4">
         <p className="text-sm text-gray-700">{message}</p>
+
         <div className="mt-4">
           <Button
             onClick={onRedirect}

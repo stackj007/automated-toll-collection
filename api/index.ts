@@ -1,5 +1,5 @@
 import express from 'express'
-import { Request, Response } from 'express'
+import {Request, Response} from 'express'
 import session from 'express-session'
 import cors from 'cors'
 import bodyParser from 'body-parser'
@@ -13,25 +13,26 @@ import {UserVehicleRequest} from "./src/entity/UserVehicleRequest";
 import fileUpload, {UploadedFile} from "express-fileupload";
 import {TypeormStore} from "connect-typeorm";
 import {Session} from "./src/entity/Session";
+import {UploadFileResult} from "uploadthing/types";
 
 const utApi = new UTApi()
 
-bodyParser.urlencoded({ extended: false })
+bodyParser.urlencoded({extended: false})
 const sessionRepository = AppDataSource.getRepository(Session);
 
 const app = express()
 app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({extended: true}))
 const sessionMiddleware = session({
   secret: 'cats',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 * 365 },
-    store: new TypeormStore({
-        cleanupLimit: 2,
-        limitSubquery: false, // If using MariaDB.
-        ttl: 86400
-    }).connect(sessionRepository)
+  cookie: {maxAge: 1000 * 60 * 60 * 24 * 365},
+  store: new TypeormStore({
+    cleanupLimit: 2,
+    limitSubquery: false, // If using MariaDB.
+    ttl: 86400
+  }).connect(sessionRepository)
 })
 
 app.use(sessionMiddleware)
@@ -46,17 +47,17 @@ app.use(
   })
 )
 app.use(fileUpload({
-  limits: { fileSize: 24 * 1024 * 1024 },
+  limits: {fileSize: 24 * 1024 * 1024},
 }));
 
 passport.serializeUser((user: User, done) => {
-  AppDataSource.getRepository(User).findOneBy({id: user.id}).then((user) => {
+  AppDataSource.getRepository(User).findOne({where: {id: user.id}, relations: ['userVehicleRequest']}).then((user) => {
     done(null, user);
   });
 });
 
 passport.deserializeUser((user: User, done) => {
-  AppDataSource.getRepository(User).findOneBy({id: user.id}).then((user) => {
+  AppDataSource.getRepository(User).findOne({where: {id: user.id}, relations: ['userVehicleRequest']}).then((user) => {
     done(null, user);
   });
 });
@@ -81,30 +82,30 @@ app.post('/api/register', async (req, res) => {
   if (req.isAuthenticated()) {
     return res
       .status(403)
-      .json({ error: 'Already logged in' })
+      .json({error: 'Already logged in'})
   }
 
-  const { email, password, confirmPassword, name } = req.body
+  const {email, password, confirmPassword, name} = req.body
 
   if (!email && !password && !confirmPassword && name) {
     return res
       .status(403)
-      .json({ error: 'All Fields are required' })
+      .json({error: 'All Fields are required'})
   }
 
   if (confirmPassword !== password) {
     return res
       .status(403)
-      .json({ error: 'Password do not match' })
+      .json({error: 'Password do not match'})
   }
   try {
     const existingUser = await AppDataSource.getRepository(
       User
-    ).findOneBy({ email })
+    ).findOneBy({email})
     if (existingUser) {
       return res
         .status(409)
-        .json({ error: 'Email already exists' })
+        .json({error: 'Email already exists'})
     }
 
     const salt = await bcrypt.genSalt(15)
@@ -120,9 +121,9 @@ app.post('/api/register', async (req, res) => {
     delete user.password
     return res
       .status(200)
-      .json({ message: 'Registration successful', user })
+      .json({message: 'Registration successful', user})
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    return res.status(500).json({message: err.message})
   }
 })
 
@@ -131,7 +132,7 @@ app.post('/api/login',
     failureMessage: 'failed',
   }),
   function (req, res) {
-    res.json({ message: 'Logged in', user: req.user })
+    res.json({message: 'Logged in', user: req.user})
   }
 )
 
@@ -140,7 +141,7 @@ app.post('/api/logout', function (req, res, next) {
     if (err) {
       return next(err)
     }
-    res.json({ message: 'Logged out' })
+    res.json({message: 'Logged out'})
   })
 })
 
@@ -165,7 +166,7 @@ app.get('/api/users', async (req: Request, res: Response) => {
     users.forEach((user) => delete user.password)
     res.json(users)
   } catch (err) {
-    res.status(500).json({ message: err.message })
+    res.status(500).json({message: err.message})
   }
 })
 
@@ -203,27 +204,30 @@ app.post('/api/edit-user', isAdmin, async (req, res) => {
 });
 
 app.post('/api/user-request', isUserLoggedIn, async (req, res) => {
-  // const [idFront, idBack, drivingLicenseFront, drivingLicenseBack, rcBook, vehiclePhoto, vehicleNumber] =
   const {vehicleNumber} = req.body
   if (!vehicleNumber) {
     return res.status(400).json({message: "vehicle number is required"})
   }
 
-  if (!req?.files || Object.keys(req?.files).length !== 6) {
+  if (await AppDataSource.getRepository(UserVehicleRequest).findOneBy({vehicleNumber})) {
+    return res.status(400).json({message: "Vehicle number already exists"})
+  }
+
+  if (!req?.files || Object.keys(req?.files).length !== 3) {
     return res.status(400).send('All files are required');
   }
 
-  const {idFront, idBack, drivingLicenseFront, drivingLicenseBack, rcBook, vehiclePhoto} = req.files as { [key: string]: UploadedFile }
+  // TODO: all .jpg, .jpeg, .png
+  const {id, license, rcBook} = req.files as { [key: string]: UploadedFile }
 
-  // @ts-ignore
-  const uploadedResults: Array<{data: {url: string}, error: string|null }> = await utApi.uploadFiles([
-    // @ts-ignore
-    new File([idFront.data], idFront.name), // @ts-ignore
-    new File([idBack.data], idBack.name),// @ts-ignore
-    new File([drivingLicenseFront.data], drivingLicenseFront.name), // @ts-ignore
-    new File([drivingLicenseBack.data], drivingLicenseBack.name), // @ts-ignore
-    new File([rcBook.data], rcBook.name), // @ts-ignore
-    new File([vehiclePhoto.data], vehiclePhoto.name), // @ts-ignore
+  if (!id || !license || !rcBook) {
+    return res.status(400).send('All files are required');
+  }
+
+  const uploadedResults: UploadFileResult[] = await utApi.uploadFiles([
+    new File([id.data], id.name),
+    new File([license.data], license.name),
+    new File([rcBook.data], rcBook.name),
   ]);
 
   if (uploadedResults.filter((result) => result.error).length > 0) {
@@ -233,24 +237,23 @@ app.post('/api/user-request', isUserLoggedIn, async (req, res) => {
   const urls = uploadedResults.map((result) => result.data.url)
   const userVehicleRequest = AppDataSource.getRepository(UserVehicleRequest).create({
     vehicleNumber,
-    idCardFrontUrl: urls[0],
-    idCardBackUrl: urls[1],
-    driverLicenseFrontUrl: urls[2],
-    driverLicenseBackUrl: urls[3],
-    vehicleRCBookUrl: urls[4],
-    vehiclePhotoUrl: urls[5],
+    idCardUrl: urls[0],
+    driverLicenseUrl: urls[1],
+    vehicleRCBookUrl: urls[2],
+    user: req.user as unknown as User
   })
-  // @ts-ignore
-  userVehicleRequest.user = await AppDataSource.getRepository(User).findOneByOrFail({id: req.user?.id})
+
 
   await AppDataSource.getRepository(UserVehicleRequest).save(userVehicleRequest)
-  //TODO: normalize user
-  res.json({message: "Request submitted successfully"})
+
+  res.json({message: "Request submitted successfully", request: userVehicleRequest})
 });
 
-app.get('/api/user-requests', isAdmin, async (req, res) => {
+app.get('/api/user-request', isUserLoggedIn, async (req, res) => {
   try {
-    const userRequests = await AppDataSource.getRepository(UserVehicleRequest).find({relations: ['user'], where: {isApproved: false}})
+    const userRequests = await AppDataSource.getRepository(UserVehicleRequest).findOne({
+      where: {user: req.user}
+    })
     res.json(userRequests)
   } catch (e) {
     console.error(e.message)
@@ -258,49 +261,62 @@ app.get('/api/user-requests', isAdmin, async (req, res) => {
   }
 });
 
-app.get('/api/approve-request', isAdmin, async (req, res) => {
-    const {id} = req.query
+app.get('/api/user-requests', isAdmin, async (req, res) => {
+  try {
+    const userRequests = await AppDataSource.getRepository(UserVehicleRequest).find({
+      relations: ['user'],
+      where: {status: "pending"}
+    })
+    res.json(userRequests)
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error fetching user requests"})
+  }
+});
 
-    if (!id) {
-        return res.status(400).json({message: "Request id is required"})
+app.post('/api/user-requests/:id/accept', isAdmin, async (req, res) => {
+  const {id} = req.params
+
+  if (!id) {
+    return res.status(400).json({message: "Request id is required"})
+  }
+
+  try {
+    const userRequest = await AppDataSource.getRepository(UserVehicleRequest).findOneByOrFail({id: Number(id)})
+
+    if (!userRequest) {
+      return res.status(404).json({message: "Request not found"})
     }
 
-    try {
-        const userRequest = await AppDataSource.getRepository(UserVehicleRequest).findOneByOrFail({id: Number(id)})
+    userRequest.setStatus("approved")
+    await AppDataSource.getRepository(UserVehicleRequest).save(userRequest)
 
-        if (!userRequest) {
-            return res.status(404).json({message: "Request not found"})
-        }
-
-        userRequest.isApproved = true
-        await AppDataSource.getRepository(UserVehicleRequest).save(userRequest)
-
-        res.json({message: "Request approved"})
-    } catch (e) {
-        console.error(e.message)
-        res.status(400).json({message: "Error approving request"})
-    }
+    res.json({message: "Request approved"})
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error approving request"})
+  }
 
 });
 
-app.get('/api/reject-request', isAdmin, async (req, res) => {
-    const {id} = req.query
+app.post('/api/user-requests/:id/reject', isAdmin, async (req, res) => {
+  const {id} = req.params
 
-    try {
-        const userRequest = await AppDataSource.getRepository(UserVehicleRequest).findOneByOrFail({id: Number(id)})
+  try {
+    const userRequest = await AppDataSource.getRepository(UserVehicleRequest).findOneByOrFail({id: Number(id)})
 
-        if (!userRequest) {
-            return res.status(404).json({message: "Request not found"})
-        }
-
-        await AppDataSource.getRepository(UserVehicleRequest).delete(userRequest.id)
-
-        res.json({message: "Request rejected"})
-    } catch (e) {
-        console.error(e.message)
-        res.status(400).json({message: "Error rejecting request"})
+    if (!userRequest) {
+      return res.status(404).json({message: "Request not found"})
     }
 
+    userRequest.setStatus("rejected")
+    await AppDataSource.getRepository(UserVehicleRequest).save(userRequest)
+
+    res.json({message: "Request rejected"})
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error rejecting request"})
+  }
 });
 
 

@@ -1,291 +1,135 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
-import documents from '../../../assets/icons/documents.png'
+import {CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card} from "../../../ui/card"
+import {Input} from "../../../ui//input"
+import {Button} from "../../../ui//button"
+import {Label} from "../../../ui/label.jsx";
+import axios from "axios";
+import {useEffect, useState} from "react";
+import {useAuth} from "../../../AuthContext.jsx";
+import {ClockIcon, FileIcon} from "@radix-ui/react-icons";
+import {UsersIcon} from "../../ui/icons/index.jsx";
+
+function RequestForm({onSubmit}) {
+  return <div className="max-w-6xl m-auto my-10">
+    <form className="space-y-4" id="requestForm" onSubmit={onSubmit}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Submit request</CardTitle>
+          <CardDescription>Enter the details and submit your request.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="id">ID card</Label>
+            <Input name="id" accept=".jpg, .jpeg, .png" id="id" type="file" required/>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="vehicleNumber">Vehicle number</Label>
+            <Input name="vehicleNumber" id="vehicle-license" placeholder="Enter vehicle number" required/>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="license">Vehicle license</Label>
+            <Input name="license" accept=".jpg, .jpeg, .png" id="license" type="file" required/>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="rcBook">RC book</Label>
+            <Input name="rcBook" accept=".jpg, .jpeg, .png" id="rc" type="file" required/>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button type="submit" className="ml-auto">Submit</Button>
+        </CardFooter>
+      </Card>
+    </form>
+  </div>;
+}
+
+
+export default function PendingRequest({user}) {
+  return (<div className="flex flex-col items-center space-y-4 m-auto justify-center">
+    <div className="flex items-center space-x-4">
+      <ClockIcon className="h-6 w-6 text-gray-500"/>
+      <div className="grid gap-1">
+        <div>Your request is pending</div>
+        <div className="font-medium">We are processing your request. This may take a few hours.</div>
+      </div>
+    </div>
+    <Card className="w-full max-w-sm">
+      <CardContent className="p-6">
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <UsersIcon className="h-6 w-6"/>
+            <div className="font-semibold">{user.name}</div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <FileIcon className="h-6 w-6"/>
+            <div className="font-semibold">Request ID: {user.userVehicleRequest.id}</div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <CarIcon/>
+            <div className="font-semibold">Vehicle Number: {user.userVehicleRequest.vehicleNumber}</div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="font-semibold">Status: {user.userVehicleRequest.status}</div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </div>)
+}
+
+const CarIcon = () => {
+  return (
+    <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+         xmlnsXlink="http://www.w3.org/1999/xlink"
+         width="20px" height="20px" viewBox="0 0 31.445 31.445"
+         xmlSpace="preserve">
+    <g>
+      <g>
+        <path d="M7.592,16.86c-1.77,0-3.203,1.434-3.203,3.204s1.434,3.204,3.203,3.204c1.768,0,3.203-1.434,3.203-3.204
+          S9.36,16.86,7.592,16.86z M7.592,21.032c-0.532,0-0.968-0.434-0.968-0.967s0.436-0.967,0.968-0.967
+          c0.531,0,0.966,0.434,0.966,0.967S8.124,21.032,7.592,21.032z"/>
+        <path d="M30.915,17.439l-0.524-4.262c-0.103-0.818-0.818-1.418-1.643-1.373L27.6,11.868l-3.564-3.211
+          c-0.344-0.309-0.787-0.479-1.249-0.479l-7.241-0.001c-1.625,0-3.201,0.555-4.468,1.573l-4.04,3.246l-5.433,1.358
+          c-0.698,0.174-1.188,0.802-1.188,1.521v1.566C0.187,17.44,0,17.626,0,17.856v2.071c0,0.295,0.239,0.534,0.534,0.534h3.067
+          c-0.013-0.133-0.04-0.26-0.04-0.396c0-2.227,1.804-4.029,4.03-4.029s4.029,1.802,4.029,4.029c0,0.137-0.028,0.264-0.041,0.396
+          h8.493c-0.012-0.133-0.039-0.26-0.039-0.396c0-2.227,1.804-4.029,4.029-4.029c2.227,0,4.028,1.802,4.028,4.029
+          c0,0.137-0.026,0.264-0.04,0.396h2.861c0.295,0,0.533-0.239,0.533-0.534v-1.953C31.449,17.68,31.21,17.439,30.915,17.439z
+           M20.168,12.202l-10.102,0.511L12,11.158c1.051-0.845,2.357-1.305,3.706-1.305h4.462V12.202z M21.846,12.117V9.854h0.657
+          c0.228,0,0.447,0.084,0.616,0.237l2.062,1.856L21.846,12.117z"/>
+        <path d="M24.064,16.86c-1.77,0-3.203,1.434-3.203,3.204s1.434,3.204,3.203,3.204c1.769,0,3.203-1.434,3.203-3.204
+          S25.833,16.86,24.064,16.86z M24.064,21.032c-0.533,0-0.967-0.434-0.967-0.967s0.434-0.967,0.967-0.967
+          c0.531,0,0.967,0.434,0.967,0.967S24.596,21.032,24.064,21.032z"/>
+      </g>
+    </g>
+  </svg>
+  )
+}
 
 export function Documents() {
-  const navigate = useNavigate()
-  const { setDocumentsUploaded } = useDocumentsUploaded()
+  const {user, setUser} = useAuth()
 
-  const [step, setStep] = useState(1)
-  const [idProof, setIdProof] = useState(null)
-  const [vehicleDetails, setVehicleDetails] = useState({})
-  const [vehicleDocuments, setVehicleDocuments] = useState(
-    {}
-  )
-
-  const handleNext = () => {
-    // Validation logic for each step
-    if (step === 1 && !idProof) {
-      alert('Please upload your ID proof')
-      return
+  useEffect(() => {
+    if (!user || user?.isAdmin) {
+      throw new Error('User is not authorized to view this page')
     }
-    if (step === 2 && !Object.keys(vehicleDetails).length) {
-      alert('Please enter your vehicle details')
-      return
-    }
-    if (
-      step === 2 &&
-      !Object.keys(vehicleDocuments).length
-    ) {
-      alert('Please upload your vehicle documents')
-      return
-    }
+  }, [user])
 
-    setStep(step + 1)
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
 
-  const handleCancel = () => {
-    setStep(1)
-    setIdProof(null)
-    setVehicleDetails({})
-    setVehicleDocuments({})
-  }
-
-  const handleIdProofUpload = (event, idType) => {
-    if (
-      event.target.files &&
-      event.target.files.length > 0
-    ) {
-      setIdProof({ file: event.target.files[0], idType })
-    }
-  }
-
-  const handleVehicleDetailsChange = (event) => {
-    setVehicleDetails({
-      ...vehicleDetails,
-      [event.target.name]: event.target.value,
-    })
-  }
-
-  const handleVehicleDocumentUpload = (event) => {
-    setVehicleDocuments({
-      ...vehicleDocuments,
-      [event.target.name]: event.target.files[0],
-    })
-  }
-
-  const handleSubmit = async () => {
-    console.log('Submitting documents...')
-
-    // Prepare the document data
-    const formData = new FormData()
-    formData.append(
-      'vehicleNumber',
-      vehicleDetails.vehicleNumber
-    )
-    formData.append('idFront', idProof.file)
-    formData.append('idBack', idProof.file) // Assuming both front and back are the same file for simplicity
-    formData.append(
-      'drivingLicenseFront',
-      vehicleDocuments.rcBook
-    )
-    formData.append(
-      'drivingLicenseBack',
-      vehicleDocuments.rcBook
-    ) // Assuming both front and back are the same file for simplicity
-    formData.append('rcBook', vehicleDocuments.rcBook)
-    formData.append(
-      'vehiclePhoto',
-      vehicleDocuments.vehiclePhoto
-    )
-
-    // Send the document data to the server
     try {
-      const response = await fetch('/api/user-request', {
-        method: 'POST',
-        body: formData,
+      const response = await axios.post('/api/user-request', new FormData(e.target))
+      const request = response.data.request
+      setUser((user) => {
+        user.userVehicleRequest = request
+
+        return user
       })
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-
-      // If the submission is successful:
-      setDocumentsUploaded(true)
-      navigate('/qr-code')
+      window.location.reload()
     } catch (error) {
       console.error('Error submitting documents:', error)
     }
   }
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      {step === 1 && (
-        <div className="container mx-auto px-4 py-8">
-          <h2>Upload Documents</h2>
-          <p className="text-gray-600 mb-4">
-            Please upload your ID proof which are updated
-            with latest details
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
-              <img
-                src={documents}
-                className="w-11 my-2 mx-auto"
-              />
-              <label htmlFor="id-proof-front">
-                Id Card (Front)
-              </label>
-              <input
-                type="file"
-                id="id-proof-front"
-                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onChange={(event) =>
-                  handleIdProofUpload(event, 'front-card')
-                }
-              />
-            </div>
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
-              <img
-                src={documents}
-                className="w-11 my-2 mx-auto"
-              />
-              <label htmlFor="id-proof-back">
-                Id Card (back)
-              </label>
-              <input
-                type="file"
-                id="id-proof-back"
-                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onChange={(event) =>
-                  handleIdProofUpload(event, 'back-card')
-                }
-              />
-            </div>
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
-              <img
-                src={documents}
-                className="w-11 my-2 mx-auto"
-              />
-              <label htmlFor="id-proof-front">
-                Driving License (Front)
-              </label>
-              <input
-                type="file"
-                id="id-proof-front"
-                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onChange={(event) =>
-                  handleIdProofUpload(event, 'front-card')
-                }
-              />
-            </div>
-            <div className="flex flex-col items-center justify-center py-5 border-dashed border-2 border-sky-500 rounded-md">
-              <img
-                src={documents}
-                className="w-11 my-2 mx-auto"
-              />
-              <label htmlFor="id-proof-back">
-                Driving License (back)
-              </label>
-              <input
-                type="file"
-                id="id-proof-back"
-                className="bg-gray-100 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onChange={(event) =>
-                  handleIdProofUpload(event, 'back-card')
-                }
-              />
-            </div>
-          </div>
-          <div className="flex justify-end space-x-4">
-            <button
-              className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
-              onClick={handleCancel}
-            >
-              Cancel
-            </button>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-              onClick={handleNext}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className="container mx-auto px-4 py-8">
-          <h2 className="text-xl font-bold mb-4">
-            Upload Vehicle Documents
-          </h2>
-          <p className="text-gray-600 mb-4">
-            Please upload your Vehicle details
-          </p>
-
-          <label className="flex items-center space-x-4">
-            <span className="text-gray-600 w-48">
-              Vehicle Number:
-            </span>
-            <input
-              type="text"
-              name="vehicleNumber"
-              className="bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-              onChange={handleVehicleDetailsChange}
-            />
-          </label>
-
-          <div className="flex flex-col space-y-4">
-            <label className="flex items-center space-x-4">
-              <span className="text-gray-600 w-48">
-                Vehicle RC Book:
-              </span>
-              <input
-                type="file"
-                name="rcBook"
-                className="bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onChange={handleVehicleDocumentUpload}
-              />
-            </label>
-            <label className="flex items-center space-x-4">
-              <span className="text-gray-600 w-48">
-                Vehicle Photo:
-              </span>
-              <input
-                type="file"
-                name="vehiclePhoto"
-                className="bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onChange={handleVehicleDocumentUpload}
-              />
-            </label>
-          </div>
-
-          <div className="flex justify-end space-x-4">
-            <button
-              className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 mr-4"
-              onClick={handleCancel}
-            >
-              Cancel
-            </button>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-              onClick={handleNext}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-      )}
-
-      {step === 3 && (
-        <div className="flex flex-col items-center justify-center h-screen">
-          <h2 className="text-xl font-bold text-green-500">
-            Success
-          </h2>
-          <p className="text-gray-600 text-center mt-4">
-            Your documents have been uploaded. Please go to
-            the nearest toll gate or office to collect your
-            QR code.
-          </p>
-          <button
-            className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-black-700"
-            onClick={handleSubmit}
-          >
-            <h2>Qr Code </h2>
-          </button>
-        </div>
-      )}
-    </div>
-  )
+  return user?.userVehicleRequest ? <PendingRequest user={user}/> : <RequestForm onSubmit={handleSubmit}/>;
 }
+
