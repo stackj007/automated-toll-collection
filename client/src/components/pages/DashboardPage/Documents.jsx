@@ -3,7 +3,7 @@ import {Input} from "../../../ui//input"
 import {Button} from "../../../ui//button"
 import {Label} from "../../../ui/label.jsx";
 import axios from "axios";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useAuth} from "../../../AuthContext.jsx";
 import {ClockIcon, FileIcon} from "@radix-ui/react-icons";
 import {UsersIcon} from "../../ui/icons/index.jsx";
@@ -19,7 +19,7 @@ function RequestForm({onSubmit}) {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="id">ID card</Label>
-            <Input name="id" accept=".jpg, .jpeg, .png" id="id" type="file" required/>
+            <Input name="id" accept=".jpg, .jpeg, .png" id="id" typquired/>
           </div>
           <div className="space-y-2">
             <Label htmlFor="vehicleNumber">Vehicle number</Label>

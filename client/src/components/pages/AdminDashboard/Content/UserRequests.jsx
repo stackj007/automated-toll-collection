@@ -1,12 +1,5 @@
 import { useState, useEffect } from 'react'
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableBody,
-} from '../../../ui/table'
+import {TableHeader, TableBody, TableCell, TableRow, Table, TableHead} from "../../../../ui/table.jsx";
 import axios from 'axios'
 import DocumentReviewModal from '../../../modals/DocumentReviewModal'
 import {Button} from "../../../../ui/button.jsx";

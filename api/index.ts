@@ -14,7 +14,10 @@ import fileUpload, {UploadedFile} from "express-fileupload";
 import {TypeormStore} from "connect-typeorm";
 import {Session} from "./src/entity/Session";
 import {UploadFileResult} from "uploadthing/types";
+import {TollGate} from "./src/entity/TollGate";
+import {Stripe} from "stripe";
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const utApi = new UTApi()
 
 bodyParser.urlencoded({extended: false})
@@ -30,7 +33,7 @@ const sessionMiddleware = session({
   cookie: {maxAge: 1000 * 60 * 60 * 24 * 365},
   store: new TypeormStore({
     cleanupLimit: 2,
-    limitSubquery: false, // If using MariaDB.
+    limitSubquery: false,
     ttl: 86400
   }).connect(sessionRepository)
 })
@@ -150,9 +153,9 @@ app.get('/api/user',
     if (req.user) {
       // @ts-ignore
       delete req.user.password
-      res.json({ user: req.user })
+      res.json({user: req.user})
     } else {
-      res.status(403).json({ error: 'Not logged in' })
+      res.status(403).json({error: 'Not logged in'})
     }
   }
 )
@@ -319,6 +322,83 @@ app.post('/api/user-requests/:id/reject', isAdmin, async (req, res) => {
   }
 });
 
+app.get('/api/toll-gates', isAdmin, async (req, res) => {
+  try {
+    const tollGates = await AppDataSource.getRepository(TollGate).find()
+    res.json(tollGates)
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error fetching toll gates"})
+  }
+});
+
+app.post('/api/toll-gates', isAdmin, async (req, res) => {
+  const {address, fee} = req.body
+
+  if (!address || !fee || !Number(fee)) {
+    return res.status(400).json({message: "All fields are required"})
+  }
+
+  try {
+    const tollGate = AppDataSource.getRepository(TollGate).create({
+      address,
+      fee: Number(fee)
+    })
+
+    await AppDataSource.getRepository(TollGate).save(tollGate)
+    res.json({message: "Toll gate created successfully"})
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: `Error creating toll gate: ${e.message}`})
+  }
+});
+
+app.delete('/api/toll-gates/:id', isAdmin, async (req, res) => {
+  const {id} = req.params
+
+  try {
+    await AppDataSource.getRepository(TollGate).delete(id)
+    res.json({message: "Toll gate deleted"})
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: `Error deleting toll gate with id ${id}: ${e.message}`})
+  }
+});
+
+app.get('/api/toll-gates/pay/:uuid', isUserLoggedIn, async (req, res) => {
+  try {
+    const tollGate = await AppDataSource.getRepository(TollGate).findOneByOrFail({uuid: req.params.uuid})
+
+    if (!tollGate) {
+      return res.status(404).json({message: "Toll gate not found"})
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'EGP',
+            product_data: {
+              name: 'Toll Gate Fee',
+            },
+            unit_amount: tollGate.fee * 100,
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `${process.env.FRONTEND_URL}/success`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+    });
+
+    res.json({url: session.url});
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: `Error paying for toll gate: ${e.message}`})
+  }
+});
+
 
 const port = process.env.PORT || 8000
 
@@ -331,4 +411,3 @@ AppDataSource.initialize()
   .catch((error) => {
     console.log('Error: ', error)
   })
-

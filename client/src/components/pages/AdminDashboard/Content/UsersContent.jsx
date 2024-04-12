@@ -1,14 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableBody,
-} from '../../../ui/table' // TODO: i recommend using a table component, i recommend https://tanstack.com/table
+import {TableHeader, TableBody, TableCell, TableRow, Table, TableHead} from "../../../../ui/table.jsx";
 import { TrashIcon, FileEditIcon } from '../../../ui/icons'
 import { DeleteUserDialog } from '../../../modals/DeleteUserDialog.jsx'
 import { EditUserDialog } from '../../../modals/EditUserDialog.jsx'
