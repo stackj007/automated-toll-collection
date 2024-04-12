@@ -10,7 +10,7 @@ import {
 
 import axios from 'axios'
 import DocumentReviewModal from '../../../modals/DocumentReviewModal'
-import { Button } from '../../../../ui/button.jsx'
+import { Button } from '../../../ui/button.jsx'
 
 export default function UserRequests() {
   const [isModalOpen, setIsModalOpen] = useState(false)

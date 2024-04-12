@@ -1,5 +1,5 @@
 // Notification.jsx
-import { Button } from '../../../ui/button'
+import { Button } from '../../ui/button'
 
 const Notification = ({ onRedirect, message }) => {
   return (

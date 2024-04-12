@@ -16,8 +16,8 @@ import {
   CreditCardIcon,
   BellIcon,
 } from '../../ui/icons'
-import {Button} from "../../../ui/button.jsx";
-import {Input} from "../../../ui/input.jsx";
+import { Button } from '../../ui/button.jsx'
+import { Input } from '../../ui/input.jsx'
 
 export default function AdminDashboard() {
   const [selectedSidebarItem, setSelectedSideItem] =

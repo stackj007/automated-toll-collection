@@ -17,8 +17,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '../../../../ui/card.jsx'
-import { Button } from '../../../../ui/button.jsx'
+} from '../../../ui/card.jsx'
+import { Button } from '../../../ui/button.jsx'
 
 export default function UsersContent() {
   const [users, setUsers] = useState([])

@@ -10,7 +10,7 @@ import { PlusIcon } from '@radix-ui/react-icons'
 import AddTollGateModal from '../../../modals/AddTollGateModal'
 
 import axios from 'axios'
-import { Button } from '../../../../ui/button.jsx'
+import { Button } from '../../../ui/button.jsx'
 
 const TollStationsContent = () => {
   const [tollGates, setTollGates] = useState([])

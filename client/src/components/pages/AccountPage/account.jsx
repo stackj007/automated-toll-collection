@@ -8,10 +8,10 @@ import {
   CardHeader,
   CardContent,
   Card,
-} from '../../../ui/card'
-import { Label } from '../../../ui/label'
-import { Input } from '../../../ui/input'
-import { Button } from '../../../ui/button'
+} from '../../ui/card'
+import { Label } from '../../ui/label'
+import { Input } from '../../ui/input'
+import { Button } from '../../ui/button'
 
 export default function Account() {
   const navigate = useNavigate()
