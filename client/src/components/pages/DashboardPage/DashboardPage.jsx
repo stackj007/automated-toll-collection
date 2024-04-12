@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
 import { useTransactions } from '../../../hooks/TransactionContext'
-import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
+import BalanceDisplay from '../DashboardPage/BalanceDisplay'
+import RechargeModal from '../../modals/RechargeModal'
 
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -16,6 +17,43 @@ import { VscAccount } from 'react-icons/vsc'
 import { FaCreditCard } from 'react-icons/fa'
 
 export function DashboardPage() {
+  const [isRechargeModalOpen, setIsRechargeModalOpen] =
+    useState(false)
+
+  const [balance, setBalance] = useState(0)
+
+  const [message, setMessage] = useState('')
+
+  const handleOpenRechargeModal = () => {
+    setIsRechargeModalOpen(true)
+  }
+
+  const handleCloseRechargeModal = () => {
+    console.log('Attempting to close the dialog...')
+    setIsRechargeModalOpen(false)
+  }
+
+  const handleRecharge = (amount) => {
+    return new Promise((resolve, reject) => {
+      if (isNaN(amount) || amount <= 0) {
+        setMessage(
+          'Please enter a valid amount greater than 0.'
+        )
+        reject('Invalid amount')
+      } else {
+        setBalance((prevBalance) => {
+          const newBalance =
+            prevBalance + parseFloat(amount)
+          setMessage(
+            `Recharge successful! Your new balance is: ${newBalance}`
+          )
+          return newBalance
+        })
+        resolve()
+      }
+    })
+  }
+
   const navigate = useNavigate()
 
   const [openDialog, setOpenDialog] = useState(false)
@@ -60,12 +98,17 @@ export function DashboardPage() {
         <h2 className="text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
           Welcome back!
         </h2>
-        {/* <MoreIcon className="text-gray-500" /> */}
       </div>
       <BalanceDisplay
-        balance="223"
+        onOpenRechargeModal={handleOpenRechargeModal}
+        balance={balance}
         vehicleNumber="DL 06 DD 2561"
       />
+      {message && (
+        <div className="mt-2 text-sm text-center">
+          {message}
+        </div>
+      )}
 
       <div className="mt-6 grid grid-cols-3 gap-4 text-center">
         <div
@@ -83,6 +126,12 @@ export function DashboardPage() {
           <FaCreditCard className="text-4xl" />
           <button className="text-xs mt-2">Pay Toll</button>
         </div>
+
+        <RechargeModal
+          open={isRechargeModalOpen}
+          handleClose={handleCloseRechargeModal}
+          onRecharge={handleRecharge}
+        />
 
         <Dialog
           open={openDialog}
