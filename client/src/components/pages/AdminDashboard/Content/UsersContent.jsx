@@ -1,12 +1,24 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import {TableHeader, TableBody, TableCell, TableRow, Table, TableHead} from "../../../../ui/table.jsx";
+import {
+  TableHeader,
+  TableBody,
+  TableCell,
+  TableRow,
+  Table,
+  TableHead,
+} from '../../../ui/table/table'
 import { TrashIcon, FileEditIcon } from '../../../ui/icons'
 import { DeleteUserDialog } from '../../../modals/DeleteUserDialog.jsx'
 import { EditUserDialog } from '../../../modals/EditUserDialog.jsx'
-import {Card, CardContent, CardHeader, CardTitle} from "../../../../ui/card.jsx";
-import {Button} from "../../../../ui/button.jsx";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '../../../../ui/card.jsx'
+import { Button } from '../../../../ui/button.jsx'
 
 export default function UsersContent() {
   const [users, setUsers] = useState([])

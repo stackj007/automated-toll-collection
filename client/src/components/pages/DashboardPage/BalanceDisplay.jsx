@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // src/components/pages/DashboardPage/BalanceDisplay.jsx
 import { useEffect, useState } from 'react'
 

@@ -1,12 +1,21 @@
 import { useState, useEffect } from 'react'
-import {TableHeader, TableBody, TableCell, TableRow, Table, TableHead} from "../../../../ui/table.jsx";
+import {
+  TableHeader,
+  TableBody,
+  TableCell,
+  TableRow,
+  Table,
+  TableHead,
+} from '../../../ui/table/table'
+
 import axios from 'axios'
 import DocumentReviewModal from '../../../modals/DocumentReviewModal'
-import {Button} from "../../../../ui/button.jsx";
+import { Button } from '../../../../ui/button.jsx'
 
 export default function UserRequests() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedRequest, setSelectedRequest] = useState(null)
+  const [selectedRequest, setSelectedRequest] =
+    useState(null)
   const [userRequests, setUserRequests] = useState([])
 
   useEffect(() => {
@@ -24,8 +33,14 @@ export default function UserRequests() {
 
   const handleAccept = async (requestId) => {
     try {
-      await axios.post(`/api/user-requests/${requestId}/accept`)
-      setUserRequests(userRequests.filter((request) => request.id !== requestId))
+      await axios.post(
+        `/api/user-requests/${requestId}/accept`
+      )
+      setUserRequests(
+        userRequests.filter(
+          (request) => request.id !== requestId
+        )
+      )
       setIsModalOpen(false)
     } catch (error) {
       console.error('Error accepting request:', error)
@@ -34,8 +49,14 @@ export default function UserRequests() {
 
   const handleReject = async (requestId) => {
     try {
-      await axios.post(`/api/user-requests/${requestId}/reject`)
-      setUserRequests(userRequests.filter((request) => request.id !== requestId))
+      await axios.post(
+        `/api/user-requests/${requestId}/reject`
+      )
+      setUserRequests(
+        userRequests.filter(
+          (request) => request.id !== requestId
+        )
+      )
       setIsModalOpen(false)
     } catch (error) {
       console.error('Error rejecting request:', error)
