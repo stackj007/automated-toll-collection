@@ -4,13 +4,13 @@
 
 #### frontend
 
-- [ ] Fix /component/ui, use shadcn properly (using npx instead)
+- [x] Fix /component/ui, use shadcn properly (using npx instead)
 - [x] Add validation to login/register forms
 - [ ] Rename header to navbar
 - [ ] Remove all module.css files, restructure pages directory to have no sub-directories
 - [ ] Resolve other TODO in code
 - [ ] replace all icons with radix icons (if possible)
-- [ ] put merge /ui folder in /components/ui folder
+- [x] put merge /ui folder in /components/ui folder
 
 #### backend
 
