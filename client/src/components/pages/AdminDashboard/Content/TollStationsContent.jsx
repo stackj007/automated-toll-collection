@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react'
-import {
-  TableHeader,
-  TableBody,
-  TableCell,
-  TableRow,
-  Table,
-} from '../../../ui/table/table'
+import {Table, TableBody, TableCell, TableHeader, TableRow} from "../../../ui/table/Table.jsx";
+
 import { PlusIcon } from '@radix-ui/react-icons'
 import AddTollGateModal from '../../../modals/AddTollGateModal'
 
