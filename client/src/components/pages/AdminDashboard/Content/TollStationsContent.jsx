@@ -5,7 +5,7 @@ import {
   TableCell,
   TableHeader,
   TableRow,
-} from '../../../ui/table/table'
+} from '../../../ui/table/Table.jsx'
 
 import { PlusIcon } from '@radix-ui/react-icons'
 import AddTollGateModal from '../../../modals/AddTollGateModal'

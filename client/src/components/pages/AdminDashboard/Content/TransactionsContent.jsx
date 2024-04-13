@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import {
   useTable,
   useSortBy,
@@ -8,11 +7,11 @@ import {
 import { Input } from '../../../ui/input'
 import {
   Table,
-  TableHeader,
   TableBody,
-  TableRow,
   TableCell,
-} from '../../../ui/table/table'
+  TableHeader,
+  TableRow,
+} from '../../../ui/table/Table.jsx'
 
 export default function TransactionsContent() {
   const [data, setData] = useState([])

@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react'
+
+import axios from 'axios'
+import DocumentReviewModal from '../../../modals/DocumentReviewModal'
+import { Button } from '../../../ui/button.jsx'
 import {
   Table,
   TableBody,
@@ -6,11 +10,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../../../ui/table/table'
-
-import axios from 'axios'
-import DocumentReviewModal from '../../../modals/DocumentReviewModal'
-import { Button } from '../../../ui/button.jsx'
+} from '../../../ui/table/Table.jsx'
 
 export default function UserRequests() {
   const [isModalOpen, setIsModalOpen] = useState(false)

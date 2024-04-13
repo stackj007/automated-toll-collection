@@ -16,6 +16,7 @@ import {Session} from "./src/entity/Session";
 import {UploadFileResult} from "uploadthing/types";
 import {TollGate} from "./src/entity/TollGate";
 import {Stripe} from "stripe";
+import {Transaction} from "./src/entity/Transaction";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const utApi = new UTApi()
@@ -42,6 +43,9 @@ app.use(sessionMiddleware)
 app.use(passport.authenticate('session'))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(bodyParser.raw({type: "*/*"}))  // for stripe webhook
+app.use(bodyParser.json())
+
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -71,7 +75,7 @@ function isUserLoggedIn(
   res: Response,
   next: any
 ) {
-  req.user !== null ? next() : res.sendStatus(401)
+  req.user ? next() : res.sendStatus(401)
 }
 
 function isAdmin(req: Request, res: Response, next: any) {
@@ -346,7 +350,7 @@ app.post('/api/toll-gates', isAdmin, async (req, res) => {
     })
 
     await AppDataSource.getRepository(TollGate).save(tollGate)
-    res.json({message: "Toll gate created successfully"})
+    res.json({message: "Toll gate created successfully", tollGate})
   } catch (e) {
     console.error(e.message)
     res.status(400).json({message: `Error creating toll gate: ${e.message}`})
@@ -365,13 +369,33 @@ app.delete('/api/toll-gates/:id', isAdmin, async (req, res) => {
   }
 });
 
-app.get('/api/toll-gates/pay/:uuid', isUserLoggedIn, async (req, res) => {
+app.get('/api/toll-gates/pay/:uuid', async (req, res) => {
   try {
     const tollGate = await AppDataSource.getRepository(TollGate).findOneByOrFail({uuid: req.params.uuid})
 
     if (!tollGate) {
       return res.status(404).json({message: "Toll gate not found"})
     }
+
+    const user = req.user as User | null
+    if (user && tollGate.fee < Number(user?.balance)) {
+      const transaction = AppDataSource.getRepository(Transaction).create({
+        amount: String(tollGate.fee),
+        user: user,
+        status: "completed",
+      })
+
+      user.balance = String(Number(user.balance) - tollGate.fee)
+
+      await AppDataSource.getRepository(User).save(user)
+      await AppDataSource.getRepository(Transaction).save(transaction)
+
+      return res.redirect(303, `${process.env.FRONTEND_URL}/success`);
+    }
+    const transaction = AppDataSource.getRepository(Transaction).create({
+      amount: String(tollGate.fee),
+      user: user
+    })
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -392,13 +416,131 @@ app.get('/api/toll-gates/pay/:uuid', isUserLoggedIn, async (req, res) => {
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
     });
 
-    res.json({url: session.url});
+    transaction.stripeSessionId = session.id
+    await AppDataSource.getRepository(Transaction).save(transaction)
+
+    res.redirect(303, session.url);
   } catch (e) {
     console.error(e.message)
     res.status(400).json({message: `Error paying for toll gate: ${e.message}`})
   }
 });
 
+const handleTransaction = async (status: "completed" | "failed", stripeSessionId: string) => {
+  const transaction = await AppDataSource.getRepository(Transaction).findOne({where: {stripeSessionId}, relations: ['user']})
+  transaction.status = status
+  await AppDataSource.getRepository(Transaction).save(transaction)
+
+  if (transaction.user && transaction.type === "deposit") {
+    transaction.user.balance = String(Number(transaction.user.balance) + Number(transaction.amount))
+    await AppDataSource.getRepository(User).save(transaction.user)
+  }
+}
+
+app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), async (request, response) => {
+  const event = await stripe.events.retrieve(request.body.id);
+
+  switch (event.type) {
+    case 'checkout.session.async_payment_failed':
+      const checkoutSessionAsyncPaymentFailed = event.data.object;
+      await handleTransaction("failed", checkoutSessionAsyncPaymentFailed.id)
+      break;
+    case 'checkout.session.async_payment_succeeded':
+      const checkoutSessionAsyncPaymentSucceeded = event.data.object;
+      await handleTransaction("completed", checkoutSessionAsyncPaymentSucceeded.id)
+      break;
+    case 'checkout.session.completed':
+      const checkoutSessionCompleted = event.data.object;
+      await handleTransaction("completed", checkoutSessionCompleted.id)
+      break;
+    case 'checkout.session.expired':
+      const checkoutSessionExpired = event.data.object;
+      await handleTransaction("failed", checkoutSessionExpired.id)
+      break;
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  response.send();
+});
+
+app.get('/api/transactions', isAdmin, async (req, res) => {
+  try {
+    const transactions = await AppDataSource.getRepository(Transaction).find()
+    res.json(transactions)
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error fetching transactions"})
+  }
+});
+
+app.get('/api/transactions/:id', async (req, res) => {
+  try {
+    const transaction = await AppDataSource.getRepository(Transaction).findOneByOrFail({id: req.params.id})
+
+    if (!transaction) {
+      return res.status(404).json({message: "Transaction not found"})
+    }
+
+    res.json(transaction)
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error fetching transaction"})
+  }
+});
+
+app.get('/api/transactions/user', isUserLoggedIn, async (req, res) => {
+  try {
+    const transactions = await AppDataSource.getRepository(Transaction).find({where: {user: req.user}})
+    res.json(transactions)
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: "Error fetching transactions"})
+  }
+});
+
+app.post('/api/recharge', isUserLoggedIn, async (req, res) => {
+  const {amount} = req.body
+
+  if (!amount || !Number(amount)) {
+    return res.status(400).json({message: "Amount is required"})
+  }
+
+  try {
+    const transaction = AppDataSource.getRepository(Transaction).create({
+      amount: String(amount),
+      user: req.user,
+      type: "deposit"
+    })
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'EGP',
+            product_data: {
+              name: 'Recharge',
+            },
+            unit_amount: Number(amount) * 100,
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `${process.env.FRONTEND_URL}/success`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+    });
+
+    transaction.stripeSessionId = session.id
+    await AppDataSource.getRepository(Transaction).save(transaction)
+
+    res.json({message: "Recharge initiated", url: session.url})
+  } catch (e) {
+    console.error(e.message)
+    res.status(400).json({message: `Error recharging: ${e.message}`})
+  }
+});
 
 const port = process.env.PORT || 8000
 

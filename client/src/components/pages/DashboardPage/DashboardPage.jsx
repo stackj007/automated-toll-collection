@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 // import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
-import { useTransactions } from '../../../hooks/TransactionContext'
+import {useTransactions} from '../../../hooks/TransactionContext'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import RechargeModal from '../../modals/RechargeModal'
@@ -13,14 +13,15 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
 
-import { VscAccount } from 'react-icons/vsc'
-import { FaCreditCard } from 'react-icons/fa'
+import {VscAccount} from 'react-icons/vsc'
+import {FaCreditCard} from 'react-icons/fa'
+import axios from "axios";
+import {useAuth} from "../../../AuthContext.jsx";
 
 export function DashboardPage() {
+  const {user} = useAuth()
   const [isRechargeModalOpen, setIsRechargeModalOpen] =
     useState(false)
-
-  const [balance, setBalance] = useState(0)
 
   const [message, setMessage] = useState('')
 
@@ -33,25 +34,22 @@ export function DashboardPage() {
     setIsRechargeModalOpen(false)
   }
 
-  const handleRecharge = (amount) => {
-    return new Promise((resolve, reject) => {
-      if (isNaN(amount) || amount <= 0) {
-        setMessage(
-          'Please enter a valid amount greater than 0.'
-        )
-        reject('Invalid amount')
-      } else {
-        setBalance((prevBalance) => {
-          const newBalance =
-            prevBalance + parseFloat(amount)
-          setMessage(
-            `Recharge successful! Your new balance is: ${newBalance}`
-          )
-          return newBalance
-        })
-        resolve()
-      }
-    })
+  const handleRecharge = async (amount) => {
+    if (isNaN(amount) || amount <= 0) {
+      setMessage('Please enter a valid amount greater than 0.')
+      return
+    }
+
+    try {
+      const response = await axios.post('/api/recharge', {
+        amount: amount,
+      });
+
+      window.location = response.data.url
+    } catch (error) {
+      setMessage('Recharge failed. Please try again.')
+    }
+
   }
 
   const navigate = useNavigate()
@@ -87,7 +85,7 @@ export function DashboardPage() {
     navigate('/account')
   }
 
-  const { transactions } = useTransactions()
+  const {transactions} = useTransactions()
 
   return (
     <div className="max-w-sm mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
@@ -101,7 +99,7 @@ export function DashboardPage() {
       </div>
       <BalanceDisplay
         onOpenRechargeModal={handleOpenRechargeModal}
-        balance={balance}
+        balance={user.balance}
         vehicleNumber="DL 06 DD 2561"
       />
       {message && (
@@ -115,7 +113,7 @@ export function DashboardPage() {
           className="flex flex-col items-center"
           onClick={handleClick}
         >
-          <VscAccount className="text-4xl cursor-pointer" />
+          <VscAccount className="text-4xl cursor-pointer"/>
           <button className="text-xs mt-2">Account</button>
         </div>
 
@@ -123,7 +121,7 @@ export function DashboardPage() {
           className="flex flex-col items-center cursor-pointer"
           onClick={handleQrCodeClick}
         >
-          <FaCreditCard className="text-4xl" />
+          <FaCreditCard className="text-4xl"/>
           <button className="text-xs mt-2">Pay Toll</button>
         </div>
 
@@ -177,7 +175,7 @@ export function DashboardPage() {
         </Dialog>
 
         <div className="flex flex-col items-center cursor-pointer">
-          <VscAccount className="text-4xl " />
+          <VscAccount className="text-4xl "/>
           <button className="text-xs mt-2">Vehicle</button>
         </div>
       </div>

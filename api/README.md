@@ -1,15 +1,15 @@
-# Awesome Project Build with TypeORM
-
 Steps to run this project:
 
 1. Run `npm i` command
 2. adjust .env file to your database configuration
 3. Run `npm start` command
 
-
-
-
-Sure, here is the documentation for each route in your `index.ts` file in the format you requested:
+Using stripe
+1. Create an account on stripe
+2. Get the secret key and public key
+3. Add the keys to the .env file
+4. install Stripe CLI
+5. Run `stripe listen --forward-to localhost:8000/api/webhooks` to listen for events
 
 ## Routes documentation(AI-Generated)
 1. Test Server
@@ -140,3 +140,33 @@ Sure, here is the documentation for each route in your `index.ts` file in the fo
     - Method: GET
     - Path Parameters:
         - uuid: UUID of the toll gate to pay for (required)
+
+18. Get All Transactions
+    - Description: Gets all transactions
+    - Authorization: User must be an admin
+    - Path: `/api/transactions`
+    - Method: GET
+
+20. Get User Transactions
+    - Description: Gets all transactions of a user
+    - Authorization: User must be logged in
+    - Path: `/api/transactions/user`
+    - Method: GET
+
+21. Get Transaction
+    - Description: Gets a transaction
+    - Authorization: None
+    - Path: `/api/transactions/:id`
+    - Method: GET
+    - Path Parameters:
+        - id: ID of the transaction to get (required)
+        - 
+21. Recharge
+    - Description: Recharges the user's balance
+    - Authorization: User must be logged in
+    - Path: `/api/recharge`
+    - Method: POST
+    - Request Body:
+        - amount: Amount to recharge (required)
+    - Response Body:
+        - url: URL to redirect to for payment

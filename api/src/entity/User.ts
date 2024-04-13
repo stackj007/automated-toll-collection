@@ -1,5 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne} from "typeorm"
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany} from "typeorm"
 import {UserVehicleRequest} from "./UserVehicleRequest";
+import {Transaction} from "./Transaction";
 
 @Entity("user")
 export class User {
@@ -18,6 +19,12 @@ export class User {
     @Column({default: false})
     isAdmin: boolean
 
+    @Column({default: '0'})
+    balance: string
+
     @OneToOne(() => UserVehicleRequest, userVehicleRequest => userVehicleRequest.user)
     userVehicleRequest: UserVehicleRequest|null
+
+    @OneToMany(() => Transaction, Transaction => Transaction.user)
+    transactions: Transaction[]
 }

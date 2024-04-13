@@ -4,11 +4,10 @@ import axios from 'axios'
 import {
   Table,
   TableBody,
-  TableCell,
-  TableHead,
+  TableCell, TableHead,
   TableHeader,
   TableRow,
-} from '../../../ui/table/table'
+} from '../../../ui/table/Table.jsx'
 
 import { TrashIcon, FileEditIcon } from '../../../ui/icons'
 import { DeleteUserDialog } from '../../../modals/DeleteUserDialog.jsx'
