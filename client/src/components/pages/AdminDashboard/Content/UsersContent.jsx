@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "../../../ui/table/Table.jsx";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../../ui/table/table'
 
 import { TrashIcon, FileEditIcon } from '../../../ui/icons'
 import { DeleteUserDialog } from '../../../modals/DeleteUserDialog.jsx'
