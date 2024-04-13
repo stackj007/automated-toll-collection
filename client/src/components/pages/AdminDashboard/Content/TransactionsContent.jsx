@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import {
+  useTable,
+  useSortBy,
+  useFilters,
+} from 'react-table'
+import { Input } from '../../../ui/input'
 import {
   Table,
   TableHeader,
@@ -9,81 +15,116 @@ import {
 } from '../../../ui/table/table'
 
 export default function TransactionsContent() {
-  const [transactions, setTransactions] = useState([
-    { id: 1, userId: 101, amount: 50, date: '2023-04-01' },
-    { id: 2, userId: 102, amount: 30, date: '2023-04-02' },
-    { id: 3, userId: 103, amount: 50, date: '2023-04-01' },
-    { id: 4, userId: 104, amount: 30, date: '2023-04-02' },
-    { id: 5, userId: 105, amount: 50, date: '2023-04-01' },
-    { id: 6, userId: 106, amount: 30, date: '2023-04-02' },
-    { id: 7, userId: 107, amount: 50, date: '2023-04-01' },
-    { id: 8, userId: 108, amount: 30, date: '2023-04-02' },
-  ])
+  const [data, setData] = useState([])
+  const [filterInput, setFilterInput] = useState('')
 
-  const [users, setUsers] = useState([])
-  const [search, setSearch] = useState('')
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Transaction ID',
+        accessor: 'id',
+      },
+      { Header: 'User Name', accessor: 'userName' },
+      { Header: 'User ID', accessor: 'userId' },
+      { Header: 'Amount', accessor: 'amount' },
+      { Header: 'Date', accessor: 'date' },
+    ],
+    []
+  )
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('/api/users')
-        setUsers(response.data)
-      } catch (error) {
-        console.error('Error fetching users:', error)
-      }
-    }
+    const demoData = [
+      {
+        id: '1',
+        userName: 'jim ',
+        userId: 'user1',
+        amount: '100',
+        date: '2022-01-01',
+      },
+      {
+        id: '2',
+        userName: 'blank ',
+        userId: 'user2',
+        amount: '200',
+        date: '2022-01-02',
+      },
+      {
+        id: '3',
+        userName: ' ss',
+        userId: 'user3',
+        amount: '300',
+        date: '2022-01-03',
+      },
+    ]
 
-    fetchUsers()
+    setData(demoData)
   }, [])
 
-  // Function to find user name by userId
-  const findUserName = (userId) => {
-    const user = users.find((user) => user.id === userId)
-    return user ? user.name : 'Unknown'
-  }
-
-  // Filter transactions based on search input
-  const filteredTransactions = transactions.filter(
-    (transaction) =>
-      Object.values(transaction).some((val) =>
-        val
-          .toString()
-          .toLowerCase()
-          .includes(search.toLowerCase())
-      )
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    setAllFilters,
+  } = useTable(
+    {
+      columns,
+      data,
+    },
+    useFilters,
+    useSortBy
   )
+
+  const handleFilterChange = (e) => {
+    const value = e.target.value || undefined
+    setFilterInput(value)
+    setAllFilters([{ id: 'id', value }])
+  }
 
   return (
     <div>
       <h2>Transactions</h2>
-      <input
-        type="text"
-        placeholder="Search transactions"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+      <Input
+        placeholder="Filter transactions..."
+        value={filterInput}
+        onChange={handleFilterChange}
       />
-      <Table>
+
+      <Table {...getTableProps()}>
         <TableHeader>
-          <TableRow>
-            <TableCell>Transaction ID</TableCell>
-            <TableCell>User Name</TableCell>
-            <TableCell>User ID</TableCell>
-            <TableCell>Amount</TableCell>
-            <TableCell>Date</TableCell>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredTransactions.map((transaction) => (
-            <TableRow key={transaction.id}>
-              <TableCell>{transaction.id}</TableCell>
-              <TableCell>
-                {findUserName(transaction.userId)}
-              </TableCell>
-              <TableCell>{transaction.userId}</TableCell>
-              <TableCell>{transaction.amount}</TableCell>
-              <TableCell>{transaction.date}</TableCell>
+          {headerGroups.map((headerGroup, i) => (
+            <TableRow
+              {...headerGroup.getHeaderGroupProps()}
+              key={i}
+            >
+              {headerGroup.headers.map((column, j) => (
+                <TableCell
+                  {...column.getHeaderProps()}
+                  key={j}
+                >
+                  {column.render('Header')}
+                </TableCell>
+              ))}
             </TableRow>
           ))}
+        </TableHeader>
+        <TableBody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row)
+            return (
+              <TableRow {...row.getRowProps()} key={i}>
+                {row.cells.map((cell, j) => (
+                  <TableCell
+                    {...cell.getCellProps()}
+                    key={j}
+                  >
+                    {cell.render('Cell')}
+                  </TableCell>
+                ))}
+              </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </div>
