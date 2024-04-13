@@ -33,7 +33,7 @@
       "reflect-metadata": "^0.1.13",
       "socket.io": "^4.7.4",
       "stripe": "^15.1.0",
-      "typeorm": "^0.3.20",
+      "typeorm": "^0.3.12",
       "uploadthing": "^6.7.0"
    },
    "scripts": {
