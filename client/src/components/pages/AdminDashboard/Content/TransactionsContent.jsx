@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '../../../ui/table/table'
+import {Table, TableBody, TableCell, TableHeader, TableRow} from "../../../ui/table/Table.jsx";
+
 
 export default function TransactionsContent() {
   const [transactions, setTransactions] = useState([

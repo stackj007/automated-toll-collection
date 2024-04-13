@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-// AddTollGateModal.jsx
 import { useState } from 'react'
 
 const AddTollGateModal = ({
