@@ -548,8 +548,9 @@ AppDataSource.initialize()
   .then(() => {
     console.log('Database is connected')
     const server = app.listen(port)
-    module.exports = app;
   })
   .catch((error) => {
     console.log('Error: ', error)
   })
+
+module.exports = app;
