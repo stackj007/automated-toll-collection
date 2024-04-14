@@ -466,7 +466,7 @@ app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), async (
 
 app.get('/api/transactions', isAdmin, async (req, res) => {
   try {
-    const transactions = await AppDataSource.getRepository(Transaction).find()
+    const transactions = await AppDataSource.getRepository(Transaction).find({relations: ['user']});
     res.json(transactions)
   } catch (e) {
     console.error(e.message)
@@ -476,7 +476,8 @@ app.get('/api/transactions', isAdmin, async (req, res) => {
 
 app.get('/api/transactions/:id', async (req, res) => {
   try {
-    const transaction = await AppDataSource.getRepository(Transaction).findOneByOrFail({id: req.params.id})
+    const {id} = req.params
+    const transaction = await AppDataSource.getRepository(Transaction).findOne({where: {id}, relations: ['user']})
 
     if (!transaction) {
       return res.status(404).json({message: "Transaction not found"})
@@ -491,7 +492,7 @@ app.get('/api/transactions/:id', async (req, res) => {
 
 app.get('/api/transactions/user', isUserLoggedIn, async (req, res) => {
   try {
-    const transactions = await AppDataSource.getRepository(Transaction).find({where: {user: req.user}})
+    const transactions = await AppDataSource.getRepository(Transaction).find({where: {user: req.user}, relations: ['user']})
     res.json(transactions)
   } catch (e) {
     console.error(e.message)
@@ -552,5 +553,4 @@ AppDataSource.initialize()
   .catch((error) => {
     console.log('Error: ', error)
   })
-
 module.exports = app;
