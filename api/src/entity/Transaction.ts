@@ -1,28 +1,39 @@
-import {Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, Index} from "typeorm"
-import {User} from "./User";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  JoinColumn,
+  ManyToOne,
+  Index,
+} from 'typeorm'
+import { User } from './User'
 
-@Entity("transaction")
+@Entity('transaction')
 export class Transaction {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Index()
-  @Column({unique: true, nullable: true})
-  stripeSessionId: string|null
+  @Column({ unique: true, nullable: true })
+  stripeSessionId: string | null
 
-  @ManyToOne(() => User, user => user.transactions, {nullable: true})
+  @ManyToOne(() => User, (user) => user.transactions, {
+    nullable: true,
+  })
   @JoinColumn()
-  user: User|null
+  user: User | null
 
   @Column()
   amount: string
 
-  @Column({default: "pending"})
-  status: "pending" | "completed" | "failed"
+  @Column({ default: 'pending' })
+  status: 'pending' | 'completed' | 'failed'
 
-  @Column({default: "fee"})
-  type: "fee" | "deposit"
+  @Column({ default: 'fee' })
+  type: 'fee' | 'deposit'
 
-  @Column({type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   date: Date
 }
