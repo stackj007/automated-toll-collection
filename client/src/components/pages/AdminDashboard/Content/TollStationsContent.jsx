@@ -63,7 +63,7 @@ const TollStationsContent = () => {
         '/api/toll-gates',
         gateDetails
       )
-      setTollGates([...tollGates, response.data])
+      setTollGates([...tollGates, response.data.tollGate])
     } catch (error) {
       console.error(
         'Error adding toll gate:',
