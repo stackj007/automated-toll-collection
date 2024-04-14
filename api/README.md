@@ -5,13 +5,15 @@ Steps to run this project:
 3. Run `npm start` command
 
 Using stripe
+
 1. Create an account on stripe
 2. Get the secret key and public key
 3. Add the keys to the .env file
 4. install Stripe CLI
-5. Run `stripe listen --forward-to localhost:8000/api/webhooks` to listen for events
+5. Run `stripe listen --forward-to localhost:8000/api/stripe-webhook` to listen for events
 
 ## Routes documentation(AI-Generated)
+
 1. Test Server
     - Description: Test route to check if the server is running
     - Authorization: None
@@ -146,21 +148,20 @@ Using stripe
     - Authorization: User must be an admin
     - Path: `/api/transactions`
     - Method: GET
-
-20. Get User Transactions
+19. Get User Transactions
     - Description: Gets all transactions of a user
     - Authorization: User must be logged in
     - Path: `/api/transactions/user`
     - Method: GET
 
-21. Get Transaction
+20. Get Transaction
     - Description: Gets a transaction
     - Authorization: None
     - Path: `/api/transactions/:id`
     - Method: GET
     - Path Parameters:
         - id: ID of the transaction to get (required)
-        - 
+        -
 21. Recharge
     - Description: Recharges the user's balance
     - Authorization: User must be logged in
