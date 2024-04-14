@@ -1,9 +1,5 @@
-import {
-  createContext,
-  useState,
-  useContext,
-} from 'react'
-import axios from "axios";
+import { createContext, useState, useContext } from 'react'
+import axios from 'axios'
 
 const AuthContext = createContext()
 
@@ -11,19 +7,22 @@ export const useAuth = () => {
   return useContext(AuthContext)
 }
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({})
 
   const login = async (email, password) => {
     try {
       const response = await axios.post('/api/login', {
         email: email,
-        password: password
+        password: password,
       })
       setUser(response.data.user)
       return [true, null]
     } catch (error) {
-      return [false, error.response.data?.error ?? error.response.data]
+      return [
+        false,
+        error.response.data?.error ?? error.response.data,
+      ]
     }
   }
 
@@ -31,24 +30,36 @@ export const AuthProvider = ({children}) => {
     try {
       await axios.post('/api/logout')
       setUser(null)
+      window.location.href = '/login'
       return [true, null]
     } catch (error) {
-      return [false, error.response.data?.error ?? error.response.data]
+      return [
+        false,
+        error.response.data?.error ?? error.response.data,
+      ]
     }
   }
 
-  const register = async (email, password, confirmPassword, name) => {
+  const register = async (
+    email,
+    password,
+    confirmPassword,
+    name
+  ) => {
     try {
       const response = await axios.post('/api/register', {
         email,
         password,
         confirmPassword,
-        name
+        name,
       })
       setUser(response.data.user)
       return [true, null]
     } catch (error) {
-      return [false, error.response.data?.error ?? error.response.data]
+      return [
+        false,
+        error.response.data?.error ?? error.response.data,
+      ]
     }
   }
 
@@ -68,12 +79,12 @@ export const AuthProvider = ({children}) => {
     register,
     fetchUser,
     user,
-    setUser
+    setUser,
   }
 
   return (
-      <AuthContext.Provider value={value}>
-        {children}
-      </AuthContext.Provider>
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
   )
 }

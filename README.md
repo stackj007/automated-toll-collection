@@ -12,13 +12,13 @@
 - [ ] replace all icons with radix icons (if possible)
 - [x] Replace search in tables with builtin filterting https://ui.shadcn.com/docs/components/data-table#filtering
 - [x] fix addtollGateModal, should add toll gate once the request is 200 without refreshing
-- [ ] / shouldn't redirect to login, should be/login
-- [ ] fix links for admins (shouldn't see account, home, contact-us)
-- [ ] remove contacts us
+- [x] / shouldn't redirect to login, should be/login
+- [x] fix links for admins (shouldn't see account, home, contact-us)
+- [x] remove contacts us
 - [ ] remove notification
 - [ ] remove documents if approved
 - [ ] guest should see the landing page with no thing else other than login/signup
-- [ ] admin can only see the dashboard
+- [x] admin can only see the dashboard
 - [ ] remove tolls/contact-us from navbar
 - [ ] dashboard should be accessible by a link (in navbar or somewhere else)
 - [ ] Add success page for transaction
