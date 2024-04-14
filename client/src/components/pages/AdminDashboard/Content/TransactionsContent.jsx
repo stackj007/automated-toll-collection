@@ -13,6 +13,8 @@ import {
   TableRow,
 } from '../../../ui/table/Table.jsx'
 
+import axios from 'axios'
+
 export default function TransactionsContent() {
   const [data, setData] = useState([])
   const [filterInput, setFilterInput] = useState('')
@@ -23,40 +25,26 @@ export default function TransactionsContent() {
         Header: 'Transaction ID',
         accessor: 'id',
       },
-      { Header: 'User Name', accessor: 'userName' },
+
       { Header: 'User ID', accessor: 'userId' },
       { Header: 'Amount', accessor: 'amount' },
+      { Header: 'Type', accessor: 'type' },
+      { Header: 'Status', accessor: 'status' },
       { Header: 'Date', accessor: 'date' },
     ],
     []
   )
 
   useEffect(() => {
-    const demoData = [
-      {
-        id: '1',
-        userName: 'jim ',
-        userId: 'user1',
-        amount: '100',
-        date: '2022-01-01',
-      },
-      {
-        id: '2',
-        userName: 'blank ',
-        userId: 'user2',
-        amount: '200',
-        date: '2022-01-02',
-      },
-      {
-        id: '3',
-        userName: ' ss',
-        userId: 'user3',
-        amount: '300',
-        date: '2022-01-03',
-      },
-    ]
-
-    setData(demoData)
+    const fetchTransactions = async () => {
+      try {
+        const response = await axios.get('api/transactions')
+        setData(response.data)
+      } catch (error) {
+        console.error('Error fetching transactions:', error)
+      }
+    }
+    fetchTransactions()
   }, [])
 
   const {
