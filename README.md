@@ -19,8 +19,8 @@
 - [ ] remove documents if approved
 - [ ] guest should see the landing page with no thing else other than login/signup
 - [x] admin can only see the dashboard
-- [ ] remove tolls/contact-us from navbar
-- [ ] dashboard should be accessible by a link (in navbar or somewhere else)
+- [x] remove tolls/contact-us from navbar
+- [x] dashboard should be accessible by a link (in navbar or somewhere else)
 - [ ] Add success page for transaction
 - [ ] Add rejected page for transaction (on cancellation)
 - [ ] Resolve other TODO in code

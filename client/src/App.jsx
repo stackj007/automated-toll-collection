@@ -21,15 +21,23 @@ import ProfileCompletion from './components/pages/DashboardPage/ProfileCompletio
 import QrCodePage from './components/pages/DashboardPage/QrCodeScanner'
 import TransactionHistoryDetails from './components/pages/AccountPage/TransactionHistoryDetails'
 
+import CircularProgress from '@mui/material/CircularProgress'
+
 function App() {
   axios.defaults.withCredentials = true
   axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL
 
-  const { fetchUser, user } = useAuth()
+  const { fetchUser, user, loading } = useAuth()
 
   useEffect(() => {
     fetchUser()
   }, [])
+
+  if (loading) {
+    return (
+      <CircularProgress size={50} sx={{ color: 'black' }} />
+    )
+  }
 
   return (
     <TransactionProvider>
