@@ -4,7 +4,8 @@ import axios from 'axios'
 import {
   Table,
   TableBody,
-  TableCell, TableHead,
+  TableCell,
+  TableHead,
   TableHeader,
   TableRow,
 } from '../../../ui/table/Table.jsx'
@@ -27,6 +28,10 @@ export default function UsersContent() {
   const [isDeleteModalOpened, setIsDeleteModalOpened] =
     useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
+
+  useEffect(() => {
+    localStorage.setItem('lastVisitedPage', 'users')
+  }, [])
 
   useEffect(() => {
     const fetchUsers = async () => {

@@ -18,6 +18,10 @@ const TollStationsContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
+    localStorage.setItem('lastVisitedPage', 'tollStations')
+  }, [])
+
+  useEffect(() => {
     fetchTollGates()
   }, [])
 

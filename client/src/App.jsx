@@ -22,7 +22,11 @@ import QrCodePage from './components/pages/DashboardPage/QrCodeScanner'
 import TransactionHistoryDetails from './components/pages/AccountPage/TransactionHistoryDetails'
 
 import CircularProgress from '@mui/material/CircularProgress'
+import TransactionsContent from './components/pages/AdminDashboard/Content/TransactionsContent'
+import UsersContent from './components/pages/AdminDashboard/Content/UsersContent'
+import UserRequests from './components/pages/AdminDashboard/Content/UserRequests'
 
+import TollStationsContent from './components/pages/AdminDashboard/Content/TollStationsContent'
 function App() {
   axios.defaults.withCredentials = true
   axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL
@@ -79,6 +83,28 @@ function App() {
               path="/transaction-history-details"
               element={<TransactionHistoryDetails />}
             />
+
+            <Route
+              path="/admin"
+              element={<AdminDashboard />}
+            >
+              <Route
+                path="users"
+                element={<UsersContent />}
+              />
+              <Route
+                path="transactions"
+                element={<TransactionsContent />}
+              />
+              <Route
+                path="userRequests"
+                element={<UserRequests />}
+              />
+              <Route
+                path="tollStations"
+                element={<TollStationsContent />}
+              />
+            </Route>
           </Routes>
         </Router>
       </DocumentsUploadedProvider>

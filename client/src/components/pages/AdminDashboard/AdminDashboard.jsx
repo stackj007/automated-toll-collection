@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import UsersContent from '../AdminDashboard/Content/UsersContent'
 import TollStationsContent from '../AdminDashboard/Content/TollStationsContent'
@@ -21,7 +21,52 @@ import { Input } from '../../ui/input.jsx'
 
 export default function AdminDashboard() {
   const [selectedSidebarItem, setSelectedSideItem] =
-    useState('users')
+    useState(() => {
+      const lastVisitedPage = localStorage.getItem(
+        'lastVisitedPage'
+      )
+      return lastVisitedPage ? lastVisitedPage : 'users'
+    })
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const lastVisitedPage = localStorage.getItem(
+      'lastVisitedPage'
+    )
+    console.log('Last visited page:', lastVisitedPage)
+
+    if (lastVisitedPage) {
+      switch (lastVisitedPage) {
+        case 'users':
+          setSelectedSideItem('users')
+          navigate('users')
+          break
+        case 'transactions':
+          setSelectedSideItem('transactions')
+          navigate('transactions')
+          break
+        case 'userRequests':
+          setSelectedSideItem('userRequests')
+          navigate('userRequests')
+          break
+        case 'tollStations':
+          setSelectedSideItem('tollStations')
+          navigate('tollStations')
+          break
+
+        default:
+          setSelectedSideItem('users')
+          navigate('users')
+      }
+    }
+
+    window.onbeforeunload = () => {
+      localStorage.setItem(
+        'lastVisitedPage',
+        selectedSidebarItem
+      )
+    }
+  }, [navigate, selectedSidebarItem])
 
   const handleSidebarItemClick = (item) => {
     setSelectedSideItem(item)
@@ -32,13 +77,13 @@ export default function AdminDashboard() {
       case 'users':
         return <UsersContent />
 
-      case 'toll-stations':
+      case 'tollStations':
         return <TollStationsContent />
 
       case 'transactions':
         return <TransactionsContent />
 
-      case 'user-requests':
+      case 'userRequests':
         return <UserRequests />
 
       default:
@@ -92,12 +137,12 @@ export default function AdminDashboard() {
 
               <Link
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
-                  selectedSidebarItem === 'user-requests'
+                  selectedSidebarItem === 'userRequests'
                     ? 'bg-gray-100 dark:bg-gray-800 text-white'
                     : ''
                 }`}
                 onClick={() =>
-                  handleSidebarItemClick('user-requests')
+                  handleSidebarItemClick('userRequests')
                 }
                 href="#"
               >
@@ -107,12 +152,12 @@ export default function AdminDashboard() {
 
               <Link
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
-                  selectedSidebarItem === 'toll-stations'
+                  selectedSidebarItem === 'tollStations'
                     ? 'bg-gray-100 dark:bg-gray-800 text-white'
                     : ''
                 }`}
                 onClick={() =>
-                  handleSidebarItemClick('toll-stations')
+                  handleSidebarItemClick('tollStations')
                 }
                 href="#"
               >

@@ -19,6 +19,10 @@ export default function UserRequests() {
   const [userRequests, setUserRequests] = useState([])
 
   useEffect(() => {
+    localStorage.setItem('lastVisitedPage', 'userRequests')
+  }, [])
+
+  useEffect(() => {
     fetchUserRequests()
   }, [])
 

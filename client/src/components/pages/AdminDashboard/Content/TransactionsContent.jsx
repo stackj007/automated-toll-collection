@@ -19,6 +19,10 @@ export default function TransactionsContent() {
   const [data, setData] = useState([])
   const [filterInput, setFilterInput] = useState('')
 
+  useEffect(() => {
+    localStorage.setItem('lastVisitedPage', 'transactions')
+  }, [])
+
   const columns = React.useMemo(
     () => [
       {
