@@ -25,7 +25,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import TransactionsContent from './components/pages/AdminDashboard/Content/TransactionsContent'
 import UsersContent from './components/pages/AdminDashboard/Content/UsersContent'
 import UserRequests from './components/pages/AdminDashboard/Content/UserRequests'
-
+import SuccessPage from './components/pages/SuccessPage/SuccessPage'
 import TollStationsContent from './components/pages/AdminDashboard/Content/TollStationsContent'
 function App() {
   axios.defaults.withCredentials = true
@@ -70,6 +70,10 @@ function App() {
             />
 
             <Route path="/account" element={<Account />} />
+            <Route
+              path="/success"
+              element={<SuccessPage />}
+            />
 
             <Route
               path="/profile-completion"
@@ -89,19 +93,19 @@ function App() {
               element={<AdminDashboard />}
             >
               <Route
-                path="users"
+                path="/admin/users"
                 element={<UsersContent />}
               />
               <Route
-                path="transactions"
+                path="/admin/transactions"
                 element={<TransactionsContent />}
               />
               <Route
-                path="userRequests"
+                path="/admin/userRequests"
                 element={<UserRequests />}
               />
               <Route
-                path="tollStations"
+                path="/admin/tollStations"
                 element={<TollStationsContent />}
               />
             </Route>

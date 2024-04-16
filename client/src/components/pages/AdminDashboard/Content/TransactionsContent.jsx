@@ -30,7 +30,7 @@ export default function TransactionsContent() {
         accessor: 'id',
       },
 
-      { Header: 'User ID', accessor: 'userId' },
+      { Header: 'User ID', accessor: 'user.id' },
       { Header: 'Amount', accessor: 'amount' },
       { Header: 'Type', accessor: 'type' },
       { Header: 'Status', accessor: 'status' },
@@ -43,6 +43,7 @@ export default function TransactionsContent() {
     const fetchTransactions = async () => {
       try {
         const response = await axios.get('api/transactions')
+        console.log(response.data)
         setData(response.data)
       } catch (error) {
         console.error('Error fetching transactions:', error)

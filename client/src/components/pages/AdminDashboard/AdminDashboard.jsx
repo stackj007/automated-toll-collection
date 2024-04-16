@@ -33,30 +33,30 @@ export default function AdminDashboard() {
     const lastVisitedPage = localStorage.getItem(
       'lastVisitedPage'
     )
-    console.log('Last visited page:', lastVisitedPage)
+    console.log(' Last visited page is', lastVisitedPage)
 
     if (lastVisitedPage) {
       switch (lastVisitedPage) {
         case 'users':
           setSelectedSideItem('users')
-          navigate('users')
+          navigate('/admin/users')
           break
         case 'transactions':
           setSelectedSideItem('transactions')
-          navigate('transactions')
+          navigate('/admin/transactions')
           break
         case 'userRequests':
           setSelectedSideItem('userRequests')
-          navigate('userRequests')
+          navigate('/admin/userRequests')
           break
         case 'tollStations':
           setSelectedSideItem('tollStations')
-          navigate('tollStations')
+          navigate('/admin/tollStations')
           break
 
         default:
           setSelectedSideItem('users')
-          navigate('users')
+          navigate('/admin/users')
       }
     }
 
