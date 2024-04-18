@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { createConnection } from 'typeorm'
+import { DataSource } from 'typeorm'
 import 'dotenv/config'
 import { Session } from './entity/Session'
 import { TollGate } from './entity/TollGate'
@@ -7,7 +7,7 @@ import { Transaction } from './entity/Transaction'
 import { User } from './entity/User'
 import { UserVehicleRequest } from './entity/UserVehicleRequest'
 
-export const AppDataSource = createConnection({
+export const AppDataSource = new DataSource({
   type: process.env.DATABASE_TYPE as 'mysql' | 'postgres',
   url: process.env.DATABASE_URL,
   synchronize: false,
