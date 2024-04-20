@@ -6,6 +6,7 @@ import { TollGate } from './entity/TollGate'
 import { Transaction } from './entity/Transaction'
 import { User } from './entity/User'
 import { UserVehicleRequest } from './entity/UserVehicleRequest'
+import {Migration1713240724393} from "./migration/1713240724393-migration";
 
 export const AppDataSource = new DataSource({
   type: process.env.DATABASE_TYPE as 'mysql' | 'postgres',
@@ -14,12 +15,12 @@ export const AppDataSource = new DataSource({
   migrationsRun: true,
   logging: process.env.DATABASE_LOGGING === 'true',
   entities: [
-    Session,
-    TollGate,
-    Transaction,
     User,
+    Session,
     UserVehicleRequest,
+    Transaction,
+    TollGate,
   ],
-  migrations: ['src/migration/**/*.ts'],
+  migrations: [Migration1713240724393],
   subscribers: [],
 })

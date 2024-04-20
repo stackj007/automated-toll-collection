@@ -24,8 +24,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const utApi = new UTApi()
 
 bodyParser.urlencoded({ extended: false })
-const sessionRepository =
-  AppDataSource.getRepository(Session)
+const sessionRepository = AppDataSource.getRepository(Session)
 
 const app = express()
 app.use(express.json())
@@ -700,10 +699,7 @@ app.get(
   }
 )
 
-app.post(
-  '/api/recharge',
-  isUserLoggedIn,
-  async (req, res) => {
+app.post('/api/recharge', isUserLoggedIn, async (req, res) => {
     const { amount } = req.body
 
     if (!amount || !Number(amount)) {
@@ -758,16 +754,17 @@ app.post(
         .json({ message: `Error recharging: ${e.message}` })
     }
   }
-)
+);
+app.get('/api/health-check', (req, res) => {
+    res.send('OK')
+  }
+);
 
-const port = process.env.PORT || 8000
-
-AppDataSource.initialize()
-  .then(() => {
+(async () => {
+    await AppDataSource.initialize()
     console.log('Database is connected')
-    const server = app.listen(port)
-  })
-  .catch((error) => {
-    console.log('Error: ', error)
-  })
-module.exports = app
+    app.listen(process.env.PORT || 8000)
+
+    module.exports = app
+})()
+
