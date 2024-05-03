@@ -1,4 +1,7 @@
 # Automated Toll Collection
+## how to start
+- download docker-compose
+- exec `docker-compose up` in the terminal
 
 ### Todo
 

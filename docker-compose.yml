@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  client:
+    build: ./client
+    volumes:
+      - ./client:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - api
+
+  api:
+    build: ./api
+    volumes:
+      - ./api:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+    command: sh -c "while ! nc -z db 3306; do sleep 3; done; npm run dev"
+
+  stripe-listener:
+    image: stripe/stripe-cli
+    command: listen --forward-to api:8000/api/stripe-webhook --api-key sk_test_51KXK3iAg4VmTB9NOREyIgqvDncCu4OtASg0EW2GxeWLpDBuq6ouf1MickrnbeqZ5vXVkzWf7fvqpHLa78KyymY0300ZkrOvXdV
+    restart: always
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=TollCollection
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql-data:
