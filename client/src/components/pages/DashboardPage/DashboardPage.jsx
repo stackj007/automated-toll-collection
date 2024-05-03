@@ -23,6 +23,7 @@ export function DashboardPage() {
   const [isRechargeModalOpen, setIsRechargeModalOpen] =
     useState(false)
 
+
   const [message, setMessage] = useState('')
 
   const handleOpenRechargeModal = () => {

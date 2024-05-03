@@ -189,3 +189,5 @@ Using stripe
       - amount: Amount to recharge (required)
     - Response Body:
       - url: URL to redirect to for payment
+
+

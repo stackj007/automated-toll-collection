@@ -1,39 +1,39 @@
 import express from 'express'
-import { Request, Response } from 'express'
+import {Request, Response} from 'express'
 import session from 'express-session'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import bcrypt from 'bcrypt'
 import passport from './src/passport'
-import { User } from './src/entity/User'
-import { AppDataSource } from './src/data-source'
+import {User} from './src/entity/User'
+import {AppDataSource} from './src/data-source'
 import 'dotenv/config'
-import { UTApi } from 'uploadthing/server'
-import { UserVehicleRequest } from './src/entity/UserVehicleRequest'
+import {UTApi} from 'uploadthing/server'
+import {UserVehicleRequest} from './src/entity/UserVehicleRequest'
 import fileUpload, {
   UploadedFile,
 } from 'express-fileupload'
-import { TypeormStore } from 'connect-typeorm'
-import { Session } from './src/entity/Session'
-import { UploadFileResult } from 'uploadthing/types'
-import { TollGate } from './src/entity/TollGate'
-import { Stripe } from 'stripe'
-import { Transaction } from './src/entity/Transaction'
+import {TypeormStore} from 'connect-typeorm'
+import {Session} from './src/entity/Session'
+import {UploadFileResult} from 'uploadthing/types'
+import {TollGate} from './src/entity/TollGate'
+import {Stripe} from 'stripe'
+import {Transaction} from './src/entity/Transaction'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const utApi = new UTApi()
 
-bodyParser.urlencoded({ extended: false })
+bodyParser.urlencoded({extended: false})
 const sessionRepository = AppDataSource.getRepository(Session)
 
 const app = express()
 app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({extended: true}))
 const sessionMiddleware = session({
   secret: 'cats',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 * 365 },
+  cookie: {maxAge: 1000 * 60 * 60 * 24 * 365},
   store: new TypeormStore({
     cleanupLimit: 2,
     limitSubquery: false,
@@ -45,7 +45,7 @@ app.use(sessionMiddleware)
 app.use(passport.authenticate('session'))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(bodyParser.raw({ type: '*/*' })) // for stripe webhook
+app.use(bodyParser.raw({type: '*/*'})) // for stripe webhook
 app.use(bodyParser.json())
 
 app.use(
@@ -57,14 +57,14 @@ app.use(
 )
 app.use(
   fileUpload({
-    limits: { fileSize: 24 * 1024 * 1024 },
+    limits: {fileSize: 24 * 1024 * 1024},
   })
 )
 
 passport.serializeUser((user: User, done) => {
   AppDataSource.getRepository(User)
     .findOne({
-      where: { id: user.id },
+      where: {id: user.id},
       relations: ['userVehicleRequest'],
     })
     .then((user) => {
@@ -75,7 +75,7 @@ passport.serializeUser((user: User, done) => {
 passport.deserializeUser((user: User, done) => {
   AppDataSource.getRepository(User)
     .findOne({
-      where: { id: user.id },
+      where: {id: user.id},
       relations: ['userVehicleRequest'],
     })
     .then((user) => {
@@ -102,31 +102,31 @@ app.post('/api/register', async (req, res) => {
   if (req.isAuthenticated()) {
     return res
       .status(403)
-      .json({ error: 'Already logged in' })
+      .json({error: 'Already logged in'})
   }
 
-  const { email, password, confirmPassword, name } =
+  const {email, password, confirmPassword, name} =
     req.body
 
   if (!email && !password && !confirmPassword && name) {
     return res
       .status(403)
-      .json({ error: 'All Fields are required' })
+      .json({error: 'All Fields are required'})
   }
 
   if (confirmPassword !== password) {
     return res
       .status(403)
-      .json({ error: 'Password do not match' })
+      .json({error: 'Password do not match'})
   }
   try {
     const existingUser = await AppDataSource.getRepository(
       User
-    ).findOneBy({ email })
+    ).findOneBy({email})
     if (existingUser) {
       return res
         .status(409)
-        .json({ error: 'Email already exists' })
+        .json({error: 'Email already exists'})
     }
 
     const salt = await bcrypt.genSalt(15)
@@ -139,12 +139,11 @@ app.post('/api/register', async (req, res) => {
     })
     await AppDataSource.getRepository(User).save(user)
 
-    delete user.password
-    return res
-      .status(200)
-      .json({ message: 'Registration successful', user })
+    passport.authenticate('local', {failureMessage: 'Incorrect email or password'})(req, res, () => {
+      return res.json({message: 'Logged in', user: req.user});
+    });
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    return res.status(500).json({message: err.message})
   }
 })
 
@@ -154,7 +153,7 @@ app.post(
     failureMessage: 'failed',
   }),
   function (req, res) {
-    res.json({ message: 'Logged in', user: req.user })
+    res.json({message: 'Logged in', user: req.user})
   }
 )
 
@@ -163,7 +162,7 @@ app.post('/api/logout', function (req, res, next) {
     if (err) {
       return next(err)
     }
-    res.json({ message: 'Logged out' })
+    res.json({message: 'Logged out'})
   })
 })
 
@@ -173,9 +172,9 @@ app.get(
     if (req.user) {
       // @ts-ignore
       delete req.user.password
-      res.json({ user: req.user })
+      res.json({user: req.user})
     } else {
-      res.status(403).json({ error: 'Not logged in' })
+      res.status(403).json({error: 'Not logged in'})
     }
   }
 )
@@ -191,49 +190,49 @@ app.get(
       users.forEach((user) => delete user.password)
       res.json(users)
     } catch (err) {
-      res.status(500).json({ message: err.message })
+      res.status(500).json({message: err.message})
     }
   }
 )
 
 app.post('/api/delete-user', isAdmin, async (req, res) => {
-  const { id } = req.body
+  const {id} = req.body
 
   try {
     await AppDataSource.getRepository(User).delete(id)
-    res.json({ message: 'User deleted' })
+    res.json({message: 'User deleted'})
   } catch (e) {
     console.error(e.message)
     res
       .status(400)
-      .json({ message: 'Error delete the user' })
+      .json({message: 'Error delete the user'})
   }
 })
 
 app.post('/api/edit-user', isAdmin, async (req, res) => {
-  const { id, name, email } = req.body
+  const {id, name, email} = req.body
 
   try {
     const user = await AppDataSource.getRepository(
       User
-    ).findOneBy({ id })
+    ).findOneBy({id})
 
     if (!user) {
       res
         .status(404)
-        .json({ message: "user doesn't not exist" })
+        .json({message: "user doesn't not exist"})
     }
 
     user.name = name
     user.email = email
 
     await AppDataSource.getRepository(User).save(user)
-    res.json({ message: 'User deleted' })
+    res.json({message: 'User deleted'})
   } catch (e) {
     console.error(e.message)
     res
       .status(400)
-      .json({ message: 'Error delete the user' })
+      .json({message: 'Error delete the user'})
   }
 })
 
@@ -241,21 +240,21 @@ app.post(
   '/api/user-request',
   isUserLoggedIn,
   async (req, res) => {
-    const { vehicleNumber } = req.body
+    const {vehicleNumber} = req.body
     if (!vehicleNumber) {
       return res
         .status(400)
-        .json({ message: 'vehicle number is required' })
+        .json({message: 'vehicle number is required'})
     }
 
     if (
       await AppDataSource.getRepository(
         UserVehicleRequest
-      ).findOneBy({ vehicleNumber })
+      ).findOneBy({vehicleNumber})
     ) {
       return res
         .status(400)
-        .json({ message: 'Vehicle number already exists' })
+        .json({message: 'Vehicle number already exists'})
     }
 
     if (
@@ -266,7 +265,7 @@ app.post(
     }
 
     // TODO: all .jpg, .jpeg, .png
-    const { id, license, rcBook } = req.files as {
+    const {id, license, rcBook} = req.files as {
       [key: string]: UploadedFile
     }
 
@@ -326,14 +325,14 @@ app.get(
         await AppDataSource.getRepository(
           UserVehicleRequest
         ).findOne({
-          where: { user: req.user },
+          where: {user: req.user},
         })
       res.json(userRequests)
     } catch (e) {
       console.error(e.message)
       res
         .status(400)
-        .json({ message: 'Error fetching user requests' })
+        .json({message: 'Error fetching user requests'})
     }
   }
 )
@@ -344,14 +343,14 @@ app.get('/api/user-requests', isAdmin, async (req, res) => {
       UserVehicleRequest
     ).find({
       relations: ['user'],
-      where: { status: 'pending' },
+      where: {status: 'pending'},
     })
     res.json(userRequests)
   } catch (e) {
     console.error(e.message)
     res
       .status(400)
-      .json({ message: 'Error fetching user requests' })
+      .json({message: 'Error fetching user requests'})
   }
 })
 
@@ -359,23 +358,23 @@ app.post(
   '/api/user-requests/:id/accept',
   isAdmin,
   async (req, res) => {
-    const { id } = req.params
+    const {id} = req.params
 
     if (!id) {
       return res
         .status(400)
-        .json({ message: 'Request id is required' })
+        .json({message: 'Request id is required'})
     }
 
     try {
       const userRequest = await AppDataSource.getRepository(
         UserVehicleRequest
-      ).findOneByOrFail({ id: Number(id) })
+      ).findOneByOrFail({id: Number(id)})
 
       if (!userRequest) {
         return res
           .status(404)
-          .json({ message: 'Request not found' })
+          .json({message: 'Request not found'})
       }
 
       userRequest.setStatus('approved')
@@ -383,12 +382,12 @@ app.post(
         UserVehicleRequest
       ).save(userRequest)
 
-      res.json({ message: 'Request approved' })
+      res.json({message: 'Request approved'})
     } catch (e) {
       console.error(e.message)
       res
         .status(400)
-        .json({ message: 'Error approving request' })
+        .json({message: 'Error approving request'})
     }
   }
 )
@@ -397,17 +396,17 @@ app.post(
   '/api/user-requests/:id/reject',
   isAdmin,
   async (req, res) => {
-    const { id } = req.params
+    const {id} = req.params
 
     try {
       const userRequest = await AppDataSource.getRepository(
         UserVehicleRequest
-      ).findOneByOrFail({ id: Number(id) })
+      ).findOneByOrFail({id: Number(id)})
 
       if (!userRequest) {
         return res
           .status(404)
-          .json({ message: 'Request not found' })
+          .json({message: 'Request not found'})
       }
 
       userRequest.setStatus('rejected')
@@ -415,12 +414,12 @@ app.post(
         UserVehicleRequest
       ).save(userRequest)
 
-      res.json({ message: 'Request rejected' })
+      res.json({message: 'Request rejected'})
     } catch (e) {
       console.error(e.message)
       res
         .status(400)
-        .json({ message: 'Error rejecting request' })
+        .json({message: 'Error rejecting request'})
     }
   }
 )
@@ -435,17 +434,17 @@ app.get('/api/toll-gates', isAdmin, async (req, res) => {
     console.error(e.message)
     res
       .status(400)
-      .json({ message: 'Error fetching toll gates' })
+      .json({message: 'Error fetching toll gates'})
   }
 })
 
 app.post('/api/toll-gates', isAdmin, async (req, res) => {
-  const { address, fee } = req.body
+  const {address, fee} = req.body
 
   if (!address || !fee || !Number(fee)) {
     return res
       .status(400)
-      .json({ message: 'All fields are required' })
+      .json({message: 'All fields are required'})
   }
 
   try {
@@ -477,11 +476,11 @@ app.delete(
   '/api/toll-gates/:id',
   isAdmin,
   async (req, res) => {
-    const { id } = req.params
+    const {id} = req.params
 
     try {
       await AppDataSource.getRepository(TollGate).delete(id)
-      res.json({ message: 'Toll gate deleted' })
+      res.json({message: 'Toll gate deleted'})
     } catch (e) {
       console.error(e.message)
       res
@@ -497,12 +496,12 @@ app.get('/api/toll-gates/pay/:uuid', async (req, res) => {
   try {
     const tollGate = await AppDataSource.getRepository(
       TollGate
-    ).findOneByOrFail({ uuid: req.params.uuid })
+    ).findOneByOrFail({uuid: req.params.uuid})
 
     if (!tollGate) {
       return res
         .status(404)
-        .json({ message: 'Toll gate not found' })
+        .json({message: 'Toll gate not found'})
     }
 
     const user = req.user as User | null
@@ -578,7 +577,7 @@ const handleTransaction = async (
   const transaction = await AppDataSource.getRepository(
     Transaction
   ).findOne({
-    where: { stripeSessionId },
+    where: {stripeSessionId},
     relations: ['user'],
   })
   transaction.status = status
@@ -589,7 +588,7 @@ const handleTransaction = async (
   if (transaction.user && transaction.type === 'deposit') {
     transaction.user.balance = String(
       Number(transaction.user.balance) +
-        Number(transaction.amount)
+      Number(transaction.amount)
     )
     await AppDataSource.getRepository(User).save(
       transaction.user
@@ -599,7 +598,7 @@ const handleTransaction = async (
 
 app.post(
   '/api/stripe-webhook',
-  express.raw({ type: 'application/json' }),
+  express.raw({type: 'application/json'}),
   async (request, response) => {
     const event = await stripe.events.retrieve(
       request.body.id
@@ -648,27 +647,27 @@ app.get('/api/transactions', isAdmin, async (req, res) => {
   try {
     const transactions = await AppDataSource.getRepository(
       Transaction
-    ).find({ relations: ['user'] })
+    ).find({relations: ['user']})
     res.json(transactions)
   } catch (e) {
     console.error(e.message)
     res
       .status(400)
-      .json({ message: 'Error fetching transactions' })
+      .json({message: 'Error fetching transactions'})
   }
 })
 
 app.get('/api/transactions/:id', async (req, res) => {
   try {
-    const { id } = req.params
+    const {id} = req.params
     const transaction = await AppDataSource.getRepository(
       Transaction
-    ).findOne({ where: { id }, relations: ['user'] })
+    ).findOne({where: {id}, relations: ['user']})
 
     if (!transaction) {
       return res
         .status(404)
-        .json({ message: 'Transaction not found' })
+        .json({message: 'Transaction not found'})
     }
 
     res.json(transaction)
@@ -676,7 +675,7 @@ app.get('/api/transactions/:id', async (req, res) => {
     console.error(e.message)
     res
       .status(400)
-      .json({ message: 'Error fetching transaction' })
+      .json({message: 'Error fetching transaction'})
   }
 })
 
@@ -687,25 +686,25 @@ app.get(
     try {
       const transactions =
         await AppDataSource.getRepository(Transaction).find(
-          { where: { user: req.user }, relations: ['user'] }
+          {where: {user: req.user}, relations: ['user']}
         )
       res.json(transactions)
     } catch (e) {
       console.error(e.message)
       res
         .status(400)
-        .json({ message: 'Error fetching transactions' })
+        .json({message: 'Error fetching transactions'})
     }
   }
 )
 
 app.post('/api/recharge', isUserLoggedIn, async (req, res) => {
-    const { amount } = req.body
+    const {amount} = req.body
 
     if (!amount || !Number(amount)) {
       return res
         .status(400)
-        .json({ message: 'Amount is required' })
+        .json({message: 'Amount is required'})
     }
 
     try {
@@ -751,7 +750,7 @@ app.post('/api/recharge', isUserLoggedIn, async (req, res) => {
       console.error(e.message)
       res
         .status(400)
-        .json({ message: `Error recharging: ${e.message}` })
+        .json({message: `Error recharging: ${e.message}`})
     }
   }
 );
@@ -761,10 +760,10 @@ app.get('/api/health-check', (req, res) => {
 );
 
 (async () => {
-    await AppDataSource.initialize()
-    console.log('Database is connected')
-    app.listen(process.env.PORT || 8000)
+  await AppDataSource.initialize()
+  console.log('Database is connected')
+  app.listen(process.env.PORT || 8000)
 
-    module.exports = app
+  module.exports = app
 })()
 
