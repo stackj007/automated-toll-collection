@@ -7,3 +7,5 @@ temp/
 .vercel/
 .vercel
 mysql_data/
+api/.env
+client/.env

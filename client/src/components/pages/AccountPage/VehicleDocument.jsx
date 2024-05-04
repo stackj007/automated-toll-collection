@@ -1,7 +1,6 @@
-// Notification.jsx
 import { Button } from '../../ui/button'
 
-const Notification = ({ onRedirect, message }) => {
+const VehicleDocument = ({ onRedirect, message }) => {
   return (
     <div className="mt-3">
       <div className="bg-white shadow-lg rounded-lg p-4">
@@ -22,4 +21,4 @@ const Notification = ({ onRedirect, message }) => {
   )
 }
 
-export default Notification
+export default VehicleDocument

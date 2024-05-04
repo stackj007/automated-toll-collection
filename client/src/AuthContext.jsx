@@ -96,6 +96,10 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const isVerified = (user) => {
+    return user?.userVehicleRequest?.status === "approved"
+  }
+
   const value = {
     loading,
     login,
@@ -104,6 +108,7 @@ export const AuthProvider = ({ children }) => {
     fetchUser,
     user,
     setUser,
+    isVerified
   }
 
   return (

@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom'
 import {DocumentsUploadedProvider} from './hooks/DocumentsUploadedContext'
 import {TransactionProvider} from './hooks/TransactionContext'
-// import LandingPage from './components/pages/LandingPage/LandingPage'
 import LoginPage from './components/pages/LoginPage/LoginPage'
 import SignUp from './components/pages/SignUp/SignUp'
 import Header from './components/Header.jsx'
@@ -27,6 +26,7 @@ import UsersContent from './components/pages/AdminDashboard/Content/UsersContent
 import UserRequests from './components/pages/AdminDashboard/Content/UserRequests'
 import SuccessPage from './components/pages/SuccessPage/SuccessPage'
 import TollStationsContent from './components/pages/AdminDashboard/Content/TollStationsContent'
+import LandingPage from "./components/pages/LandingPage/LandingPage.jsx";
 
 function App() {
   axios.defaults.withCredentials = true
@@ -48,10 +48,10 @@ function App() {
     <TransactionProvider>
       <DocumentsUploadedProvider>
         <Router>
-          {!user?.isAdmin && <Header/>}
+          {<Header />}
 
           <Routes>
-            <Route path="/" element={<LoginPage/>}/>
+            <Route path="/" element={<LandingPage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/signup" element={<SignUp/>}/>
             {!!user && <>

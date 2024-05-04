@@ -14,6 +14,7 @@ import { useEffect } from 'react'
 import { useAuth } from '../../../AuthContext.jsx'
 import { ClockIcon, FileIcon } from '@radix-ui/react-icons'
 import { UsersIcon } from '../../ui/icons/index.jsx'
+import CircularProgress from "@mui/material/CircularProgress";
 
 function RequestForm({ onSubmit }) {
   return (
@@ -37,7 +38,8 @@ function RequestForm({ onSubmit }) {
                 name="id"
                 accept=".jpg, .jpeg, .png"
                 id="id"
-                typquired
+                type="file"
+                required
               />
             </div>
             <div className="space-y-2">

@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
-import Notification from './Notification'
+import VehicleDocument from './VehicleDocument.jsx'
 import {
   CardTitle,
   CardDescription,
@@ -9,21 +7,36 @@ import {
   CardContent,
   Card,
 } from '../../ui/card'
-import { Label } from '../../ui/label'
-import { Input } from '../../ui/input'
 import { Button } from '../../ui/button'
+import {useAuth} from "../../../AuthContext.jsx";
 
-export default function Account() {
+
+function PendingAccount () {
   const navigate = useNavigate()
-  const { documentsUploaded, setDocumentsUploaded } =
-    useDocumentsUploaded()
 
   const handleRedirectToDocuments = () => {
-    setDocumentsUploaded(true)
     navigate('/documents')
   }
 
-  const { vehicle } = true
+  return (<div className="max-w-6xl mx-auto text-center">
+    <Card>
+      <CardHeader>
+        <CardTitle>Vehicle Request</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <VehicleDocument
+          message="Please complete your vehicle information in the Documents page."
+          onRedirect={handleRedirectToDocuments}
+        />
+      </CardContent>
+    </Card>
+  </div>
+  )
+}
+
+function AuthorizeAccount() {
+  const navigate = useNavigate()
+
 
   return (
     <div className="container mx-auto px-4 lg:px-8 xl:px-0">
@@ -52,7 +65,7 @@ export default function Account() {
               <CardTitle>Notification</CardTitle>
             </CardHeader>
             <CardContent>
-              <Notification
+              <VehicleDocument
                 onRedirect={handleRedirectToDocuments}
                 message="Please complete your vehicle information in the Documents page."
               />
@@ -143,4 +156,13 @@ export default function Account() {
       </div>
     </div>
   )
+}
+
+export default function Account() {
+  const {user} = useAuth()
+
+  const hasVehicle = user.userVehicleRequest
+
+  return hasVehicle ? <AuthorizeAccount /> : <PendingAccount />
+
 }

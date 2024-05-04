@@ -19,7 +19,14 @@ import axios from 'axios'
 import { useAuth } from '../../../AuthContext.jsx'
 
 export function DashboardPage() {
-  const { user } = useAuth()
+  const { isVerified, user } = useAuth()
+
+  const navigate = useNavigate()
+
+  if (!isVerified(user)) {
+    navigate('/account')
+  }
+
   const [isRechargeModalOpen, setIsRechargeModalOpen] =
     useState(false)
 
@@ -54,7 +61,6 @@ export function DashboardPage() {
     }
   }
 
-  const navigate = useNavigate()
 
   const [openDialog, setOpenDialog] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState(null)

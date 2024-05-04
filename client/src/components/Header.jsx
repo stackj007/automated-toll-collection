@@ -53,7 +53,7 @@ function Header() {
             ) : (
               <>
                 <Link
-                  className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+                  className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 m-auto"
                   to="/login"
                 >
                   Login

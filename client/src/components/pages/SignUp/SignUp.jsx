@@ -1,10 +1,13 @@
 import { useAuth } from '../../../AuthContext.jsx'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import {Input} from "../../ui/input.jsx";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function SignUp() {
   const { register } = useAuth()
   const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -12,6 +15,7 @@ export default function SignUp() {
   const navigate = useNavigate()
 
   const handleRegister = async (e) => {
+    setIsLoading(true)
     e.preventDefault()
     if (!email || !password || !confirmPassword || !name) {
       setError('All fields are required.')
@@ -29,10 +33,11 @@ export default function SignUp() {
       name
     )
     if (result) {
-      navigate('/dashboard')
+      navigate('/account')
     } else {
       setError(error)
     }
+    setIsLoading(false)
   }
 
   return (
@@ -77,8 +82,8 @@ export default function SignUp() {
                 Full Name
               </label>
               <div className="mt-1">
-                <input
-                  autoComplete="email"
+                <Input
+                  autoComplete="name"
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                   id="name"
                   name="name"
@@ -87,6 +92,7 @@ export default function SignUp() {
                   placeholder="Enter your name"
                   required
                   type="text"
+                  minLength="3"
                 />
               </div>
             </div>
@@ -99,7 +105,7 @@ export default function SignUp() {
               </label>
               <div className="mt-1">
                 <input
-                  autoComplete="current-password"
+                  autoComplete="password"
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                   id="password"
                   name="password"
@@ -110,6 +116,7 @@ export default function SignUp() {
                   placeholder="Enter your password"
                   required
                   type="password"
+                  minLength="8"
                 />
               </div>
             </div>
@@ -133,6 +140,7 @@ export default function SignUp() {
                   placeholder="Confirm your password"
                   required
                   type="password"
+                  minLength="8"
                 />
               </div>
             </div>
@@ -159,6 +167,14 @@ export default function SignUp() {
           </div>
         </div>
       </div>
+      {isLoading && (
+        <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
+          <CircularProgress
+            size={50}
+            sx={{ color: 'black' }}
+          />
+        </div>
+      )}
     </div>
   )
 }

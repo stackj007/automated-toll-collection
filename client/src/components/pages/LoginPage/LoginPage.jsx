@@ -10,6 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+  const {user} = useAuth()
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -24,7 +25,12 @@ export default function LoginPage() {
     const [res, error] = await login(email, password)
 
     if (res) {
-      navigate('/dashboard')
+      if(user?.userVehicleRequest.status === "approved") {
+        navigate('/dashboard')
+        return
+      }
+
+      navigate('/document')
     } else {
       setError(error)
       setIsLoading(false)

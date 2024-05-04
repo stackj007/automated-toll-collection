@@ -83,6 +83,7 @@ Using stripe
      - id: ID of the user to edit (required)
      - name: New name for the user (optional)
      - email: New email for the user (optional)
+     - isAdmin: make the user admin
 
 9. Submit User Request
 

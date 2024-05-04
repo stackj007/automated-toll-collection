@@ -60,6 +60,7 @@ export default function AdminDashboard() {
       }
     }
 
+    // TODO: use uri
     window.onbeforeunload = () => {
       localStorage.setItem(
         'lastVisitedPage',
@@ -95,24 +96,12 @@ export default function AdminDashboard() {
       <div className="hidden border-r lg:block">
         <div className="flex h-full flex-col gap-2">
           <div className="flex h-[60px] items-center border-b px-6">
-            <Link
+            <span
               className="flex items-center gap-2 font-semibold"
-              href="#"
-              /*  TODO: change href -> to */
             >
               <Package2Icon className="h-6 w-6" />
               <span className="">Express Inc</span>
-            </Link>
-            <Button
-              className="ml-auto h-8 w-8"
-              size="icon"
-              variant="outline"
-            >
-              <BellIcon className="h-4 w-4" />
-              <span className="sr-only">
-                Toggle notifications
-              </span>
-            </Button>
+            </span>
           </div>
           <nav className="flex-1 overflow-auto px-4">
             {/*///////

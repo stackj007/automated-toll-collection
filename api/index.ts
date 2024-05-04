@@ -23,7 +23,6 @@ import {Transaction} from './src/entity/Transaction'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const utApi = new UTApi()
 
-bodyParser.urlencoded({extended: false})
 const sessionRepository = AppDataSource.getRepository(Session)
 
 const app = express()
@@ -100,24 +99,21 @@ app.get('/', (req, res) => res.send('Express on Vercel'))
 
 app.post('/api/register', async (req, res) => {
   if (req.isAuthenticated()) {
-    return res
-      .status(403)
-      .json({error: 'Already logged in'})
+    return res.status(403).json({error: 'Already logged in'})
   }
 
-  const {email, password, confirmPassword, name} =
-    req.body
+  const {email, password, confirmPassword, name} = req.body
 
-  if (!email && !password && !confirmPassword && name) {
-    return res
-      .status(403)
-      .json({error: 'All Fields are required'})
+  if (!email || !password || !confirmPassword || !name) {
+    return res.status(403).json({error: 'All Fields are required'})
+  }
+
+  if (password.length < 8) {
+    return res.status(403)
   }
 
   if (confirmPassword !== password) {
-    return res
-      .status(403)
-      .json({error: 'Password do not match'})
+    return res.status(403).json({error: 'Password do not match'})
   }
   try {
     const existingUser = await AppDataSource.getRepository(
@@ -210,7 +206,7 @@ app.post('/api/delete-user', isAdmin, async (req, res) => {
 })
 
 app.post('/api/edit-user', isAdmin, async (req, res) => {
-  const {id, name, email} = req.body
+  const {id, name, email, isAdmin} = req.body
 
   try {
     const user = await AppDataSource.getRepository(
@@ -225,6 +221,7 @@ app.post('/api/edit-user', isAdmin, async (req, res) => {
 
     user.name = name
     user.email = email
+    user.isAdmin = isAdmin
 
     await AppDataSource.getRepository(User).save(user)
     res.json({message: 'User deleted'})
@@ -647,7 +644,7 @@ app.get('/api/transactions', isAdmin, async (req, res) => {
   try {
     const transactions = await AppDataSource.getRepository(
       Transaction
-    ).find({relations: ['user']})
+    ).find({relations: ['user'], order: {date: 'DESC'}})
     res.json(transactions)
   } catch (e) {
     console.error(e.message)

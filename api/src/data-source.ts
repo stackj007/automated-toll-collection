@@ -8,7 +8,6 @@ import { User } from './entity/User';
 import { UserVehicleRequest } from './entity/UserVehicleRequest';
 import { Migration1713240724393 } from "./migration/1713240724393-migration";
 
-console.log(process.env.DATABASE_URL);
 export const AppDataSource = new DataSource({
   type: process.env.DATABASE_TYPE as 'mysql' | 'postgres',
   url: process.env.DATABASE_URL,
