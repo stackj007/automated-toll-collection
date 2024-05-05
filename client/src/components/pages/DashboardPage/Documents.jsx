@@ -14,38 +14,35 @@ import { useEffect } from 'react'
 import { useAuth } from '../../../AuthContext.jsx'
 import { ClockIcon, FileIcon } from '@radix-ui/react-icons'
 import { UsersIcon } from '../../ui/icons/index.jsx'
-import CircularProgress from "@mui/material/CircularProgress";
+import PropTypes from 'prop-types'
+
+PendingRequest.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    userVehicleRequest: PropTypes.shape({
+      id: PropTypes.string,
+      vehicleNumber: PropTypes.string,
+      status: PropTypes.string,
+    }),
+  }),
+}
 
 function RequestForm({ onSubmit }) {
   return (
     <div className="max-w-6xl m-auto my-10">
-      <form
-        className="space-y-4"
-        id="requestForm"
-        onSubmit={onSubmit}
-      >
+      <form className="space-y-4" id="requestForm" onSubmit={onSubmit}>
         <Card>
           <CardHeader>
             <CardTitle>Submit request</CardTitle>
-            <CardDescription>
-              Enter the details and submit your request.
-            </CardDescription>
+            <CardDescription>Enter the details and submit your request.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="id">ID card</Label>
-              <Input
-                name="id"
-                accept=".jpg, .jpeg, .png"
-                id="id"
-                type="file"
-                required
-              />
+              <Input name="id" accept=".jpg, .jpeg, .png" id="id" type="file" required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vehicleNumber">
-                Vehicle number
-              </Label>
+              <Label htmlFor="vehicleNumber">Vehicle number</Label>
               <Input
                 name="vehicleNumber"
                 id="vehicle-license"
@@ -54,9 +51,7 @@ function RequestForm({ onSubmit }) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="license">
-                Vehicle license
-              </Label>
+              <Label htmlFor="license">Vehicle license</Label>
               <Input
                 name="license"
                 accept=".jpg, .jpeg, .png"
@@ -87,6 +82,10 @@ function RequestForm({ onSubmit }) {
   )
 }
 
+RequestForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+}
+
 export default function PendingRequest({ user }) {
   return (
     <div className="flex flex-col items-center space-y-4 m-auto justify-center">
@@ -95,8 +94,7 @@ export default function PendingRequest({ user }) {
         <div className="grid gap-1">
           <div>Your request is pending</div>
           <div className="font-medium">
-            We are processing your request. This may take a
-            few hours.
+            We are processing your request. This may take a few hours.
           </div>
         </div>
       </div>
@@ -105,9 +103,7 @@ export default function PendingRequest({ user }) {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <UsersIcon className="h-6 w-6" />
-              <div className="font-semibold">
-                {user.name}
-              </div>
+              <div className="font-semibold">{user.name}</div>
             </div>
             <div className="flex items-center space-x-2">
               <FileIcon className="h-6 w-6" />
@@ -118,8 +114,7 @@ export default function PendingRequest({ user }) {
             <div className="flex items-center space-x-2">
               <CarIcon />
               <div className="font-semibold">
-                Vehicle Number:{' '}
-                {user.userVehicleRequest.vehicleNumber}
+                Vehicle Number: {user.userVehicleRequest.vehicleNumber}
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -180,9 +175,7 @@ export function Documents() {
 
   useEffect(() => {
     if (!user || user?.isAdmin) {
-      throw new Error(
-        'User is not authorized to view this page'
-      )
+      throw new Error('User is not authorized to view this page')
     }
   }, [user])
 
@@ -190,10 +183,7 @@ export function Documents() {
     e.preventDefault()
 
     try {
-      const response = await axios.post(
-        '/api/user-request',
-        new FormData(e.target)
-      )
+      const response = await axios.post('/api/user-request', new FormData(e.target))
       const request = response.data.request
       setUser((user) => {
         user.userVehicleRequest = request

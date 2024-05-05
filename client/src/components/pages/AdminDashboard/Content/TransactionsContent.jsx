@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  useTable,
-  useSortBy,
-  useFilters,
-} from 'react-table'
+import { useTable, useSortBy, useFilters } from 'react-table'
 import { Input } from '../../../ui/input'
 import {
   Table,
@@ -13,11 +9,19 @@ import {
   TableRow,
 } from '../../../ui/table/Table.jsx'
 
-import axios from 'axios'
+import { useTransactions } from '../../../../hooks/useTransactions'
 
-export default function TransactionsContent() {
-  const [data, setData] = useState([])
+export default function TransactionsContent({ showLastFour = false }) {
   const [filterInput, setFilterInput] = useState('')
+  const [displayedTransactions, setDisplayedTransactions] = useState([])
+
+  const { transactions, isLoading, error } = useTransactions()
+
+  useEffect(() => {
+    if (transactions) {
+      setDisplayedTransactions(showLastFour ? transactions.slice(-4) : transactions)
+    }
+  }, [transactions, showLastFour])
 
   useEffect(() => {
     localStorage.setItem('lastVisitedPage', 'transactions')
@@ -39,19 +43,6 @@ export default function TransactionsContent() {
     []
   )
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const response = await axios.get('api/transactions')
-        console.log(response.data)
-        setData(response.data)
-      } catch (error) {
-        console.error('Error fetching transactions:', error)
-      }
-    }
-    fetchTransactions()
-  }, [])
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -62,11 +53,14 @@ export default function TransactionsContent() {
   } = useTable(
     {
       columns,
-      data,
+      data: displayedTransactions,
     },
     useFilters,
     useSortBy
   )
+
+  if (isLoading) return <p>Loading...</p>
+  if (error) return <p>{error.message}</p>
 
   const handleFilterChange = (e) => {
     const value = e.target.value || undefined
@@ -86,15 +80,9 @@ export default function TransactionsContent() {
       <Table {...getTableProps()}>
         <TableHeader>
           {headerGroups.map((headerGroup, i) => (
-            <TableRow
-              {...headerGroup.getHeaderGroupProps()}
-              key={i}
-            >
+            <TableRow {...headerGroup.getHeaderGroupProps()} key={i}>
               {headerGroup.headers.map((column, j) => (
-                <TableCell
-                  {...column.getHeaderProps()}
-                  key={j}
-                >
+                <TableCell {...column.getHeaderProps()} key={j}>
                   {column.render('Header')}
                 </TableCell>
               ))}
@@ -107,10 +95,7 @@ export default function TransactionsContent() {
             return (
               <TableRow {...row.getRowProps()} key={i}>
                 {row.cells.map((cell, j) => (
-                  <TableCell
-                    {...cell.getCellProps()}
-                    key={j}
-                  >
+                  <TableCell {...cell.getCellProps()} key={j}>
                     {cell.render('Cell')}
                   </TableCell>
                 ))}

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
-import { useTransactions } from '../../../hooks/TransactionContext'
+import { useTransactions } from '../../../hooks/useTransactions'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import RechargeModal from '../../modals/RechargeModal'
+import TransactionsContent from '../AdminDashboard/Content/TransactionsContent'
 
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -19,17 +20,15 @@ import axios from 'axios'
 import { useAuth } from '../../../AuthContext.jsx'
 
 export function DashboardPage() {
-  const { isVerified, user } = useAuth()
-
   const navigate = useNavigate()
 
-  if (!isVerified(user)) {
+  const { isVerified, user } = useAuth()
+
+  if (!isVerified) {
     navigate('/account')
   }
 
-  const [isRechargeModalOpen, setIsRechargeModalOpen] =
-    useState(false)
-
+  const [isRechargeModalOpen, setIsRechargeModalOpen] = useState(false)
 
   const [message, setMessage] = useState('')
 
@@ -44,9 +43,7 @@ export function DashboardPage() {
 
   const handleRecharge = async (amount) => {
     if (isNaN(amount) || amount <= 0) {
-      setMessage(
-        'Please enter a valid amount greater than 0.'
-      )
+      setMessage('Please enter a valid amount greater than 0.')
       return
     }
 
@@ -61,7 +58,6 @@ export function DashboardPage() {
     }
   }
 
-
   const [openDialog, setOpenDialog] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState(null)
 
@@ -71,12 +67,6 @@ export function DashboardPage() {
 
   const handlePayWithCash = () => {
     setPaymentMethod('Cash')
-
-    // Optionally, you can also log the payment method here
-    // axios.post('/api/log-payment-method', {
-    //   userId: currentUser.id,
-    //   paymentMethod: 'Cash',
-    // });
   }
 
   const handleCloseDialog = () => {
@@ -95,6 +85,8 @@ export function DashboardPage() {
 
   const { transactions } = useTransactions()
 
+  console.log('Transactions:', transactions)
+
   return (
     <div className="max-w-sm mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
       <div className="text-center">
@@ -110,17 +102,10 @@ export function DashboardPage() {
         balance={user ? user.balance : 0}
         vehicleNumber="DL 06 DD 2561"
       />
-      {message && (
-        <div className="mt-2 text-sm text-center">
-          {message}
-        </div>
-      )}
+      {message && <div className="mt-2 text-sm text-center">{message}</div>}
 
       <div className="mt-6 grid grid-cols-3 gap-4 text-center">
-        <div
-          className="flex flex-col items-center"
-          onClick={handleClick}
-        >
+        <div className="flex flex-col items-center" onClick={handleClick}>
           <VscAccount className="text-4xl cursor-pointer" />
           <button className="text-xs mt-2">Account</button>
         </div>
@@ -145,9 +130,7 @@ export function DashboardPage() {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
-            {'Payment Method'}
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">{'Payment Method'}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               {paymentMethod === 'Cash'
@@ -156,25 +139,15 @@ export function DashboardPage() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDialog}>
-              {' '}
-              Close
-            </Button>
+            <Button onClick={handleCloseDialog}> Close</Button>
 
             {!paymentMethod && (
               <>
-                <Button
-                  onClick={handlePayWithCash}
-                  color="primary"
-                >
+                <Button onClick={handlePayWithCash} color="primary">
                   Cash
                 </Button>
 
-                <Button
-                  onClick={handlePayWithQrCode}
-                  color="primary"
-                  autoFocus
-                >
+                <Button onClick={handlePayWithQrCode} color="primary" autoFocus>
                   QR Code
                 </Button>
               </>
@@ -189,20 +162,12 @@ export function DashboardPage() {
       </div>
 
       <div className="mt-6 mb-6">
-        <h3 className="text-lg text-center font-semibold fle ">
-          Transaction history
-        </h3>
+        <h3 className="text-lg text-center font-semibold fle ">Transaction history</h3>
 
         <div>
-          {transactions.map((transaction, index) => (
-            <TransactionHistoryItem
-              key={index}
-              location={transaction.location}
-              date={transaction.date}
-              amount={transaction.amount}
-            />
-          ))}
+          <TransactionsContent showLastFour={true} />
         </div>
+
         <button
           className="text-xs mt-4 mx-auto flex justify-center"
           onClick={() => {
