@@ -1,9 +1,9 @@
 // TransactionHistoryDetails.jsx
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
-import { useTransactions } from '../../../hooks/useTransactions'
+import useLastFourTransactions from '../../../hooks/useLastFourTransactions'
 
 const TransactionHistoryDetails = () => {
-  const { transactions } = useTransactions()
+  const { transactions } = useLastFourTransactions()
 
   return (
     <div className="mt-4 flex flex-col items-center">

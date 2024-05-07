@@ -1,13 +1,14 @@
-export default function TransactionHistoryItem({ location, date, amount }) {
+export default function TransactionHistoryItem({ transaction }) {
   console.log('TransactionHistoryItem component rendered')
-  console.log('Props:', { location, date, amount })
+  console.log('Transaction:', transaction)
+
   return (
     <div className="py-3 border-b border-gray-200 flex justify-between p-4">
       <div>
-        <p className="text-sm font-medium">{location}</p>
-        <p className="text-xs text-gray-500">{date}</p>
+        <p className="text-sm font-medium">{transaction.location}</p>
+        <p className="text-xs text-gray-500">{transaction.date}</p>
       </div>
-      <p className="text-sm font-medium">£ {amount}</p>
+      <p className="text-sm font-medium">£ {transaction.amount}</p>
     </div>
   )
 }

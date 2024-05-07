@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
-import { useTransactions } from '../../../hooks/useTransactions'
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
 import BalanceDisplay from '../DashboardPage/BalanceDisplay'
 import RechargeModal from '../../modals/RechargeModal'
-import TransactionsContent from '../AdminDashboard/Content/TransactionsContent'
+import useLastFourTransactions from '../../../hooks/useLastFourTransactions'
 
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -29,7 +28,6 @@ export function DashboardPage() {
   }
 
   const [isRechargeModalOpen, setIsRechargeModalOpen] = useState(false)
-
   const [message, setMessage] = useState('')
 
   const handleOpenRechargeModal = () => {
@@ -83,7 +81,7 @@ export function DashboardPage() {
     navigate('/account')
   }
 
-  const { transactions } = useTransactions()
+  const { transactions, isLoading, error } = useLastFourTransactions()
 
   console.log('Transactions:', transactions)
 
@@ -164,9 +162,15 @@ export function DashboardPage() {
       <div className="mt-6 mb-6">
         <h3 className="text-lg text-center font-semibold fle ">Transaction history</h3>
 
-        <div>
-          <TransactionsContent showLastFour={true} />
-        </div>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          transactions.map((transaction, index) => (
+            <TransactionHistoryItem key={index} transaction={transaction} />
+          ))
+        )}
 
         <button
           className="text-xs mt-4 mx-auto flex justify-center"

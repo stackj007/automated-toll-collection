@@ -11,17 +11,10 @@ import {
 
 import { useTransactions } from '../../../../hooks/useTransactions'
 
-export default function TransactionsContent({ showLastFour = false }) {
+export default function TransactionsContent() {
   const [filterInput, setFilterInput] = useState('')
-  const [displayedTransactions, setDisplayedTransactions] = useState([])
 
   const { transactions, isLoading, error } = useTransactions()
-
-  useEffect(() => {
-    if (transactions) {
-      setDisplayedTransactions(showLastFour ? transactions.slice(-4) : transactions)
-    }
-  }, [transactions, showLastFour])
 
   useEffect(() => {
     localStorage.setItem('lastVisitedPage', 'transactions')
@@ -33,7 +26,6 @@ export default function TransactionsContent({ showLastFour = false }) {
         Header: 'Transaction ID',
         accessor: 'id',
       },
-
       { Header: 'User ID', accessor: 'user.id' },
       { Header: 'Amount', accessor: 'amount' },
       { Header: 'Type', accessor: 'type' },
@@ -53,7 +45,7 @@ export default function TransactionsContent({ showLastFour = false }) {
   } = useTable(
     {
       columns,
-      data: displayedTransactions,
+      data: transactions, // Use transactions directly
     },
     useFilters,
     useSortBy
