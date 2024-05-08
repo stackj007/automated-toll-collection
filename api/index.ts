@@ -23,7 +23,7 @@ import {Transaction} from './src/entity/Transaction'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const utApi = new UTApi()
 
-const sessionRepository = AppDataSource.getRepository(Session)
+const sessionRepository = AppDataSorce.getRepository(Session)
 
 const app = express()
 app.use(express.json())
@@ -52,6 +52,7 @@ app.use(
     origin: process.env.FRONTEND_URL,
     credentials: true,
     allowedHeaders: 'Content-Type, Authorization',
+    methods: ['PUT', 'DELETE', 'POST', 'GET', 'PATCH']
   })
 )
 app.use(
