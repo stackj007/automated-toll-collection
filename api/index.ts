@@ -655,6 +655,25 @@ app.get('/api/transactions', isAdmin, async (req, res) => {
   }
 })
 
+app.get(
+  '/api/transactions/user',
+  isUserLoggedIn,
+  async (req, res) => {
+    try {
+      const transactions =
+        await AppDataSource.getRepository(Transaction).find(
+          {where: {user: req.user}, relations: ['user']}
+        )
+      res.json(transactions)
+    } catch (e) {
+      console.error(e.message)
+      res
+        .status(400)
+        .json({message: 'Error fetching transactions'})
+    }
+  }
+)
+
 app.get('/api/transactions/:id', async (req, res) => {
   try {
     const {id} = req.params
@@ -676,25 +695,6 @@ app.get('/api/transactions/:id', async (req, res) => {
       .json({message: 'Error fetching transaction'})
   }
 })
-
-app.get(
-  '/api/transactions/user',
-  isUserLoggedIn,
-  async (req, res) => {
-    try {
-      const transactions =
-        await AppDataSource.getRepository(Transaction).find(
-          {where: {user: req.user}, relations: ['user']}
-        )
-      res.json(transactions)
-    } catch (e) {
-      console.error(e.message)
-      res
-        .status(400)
-        .json({message: 'Error fetching transactions'})
-    }
-  }
-)
 
 app.post('/api/recharge', isUserLoggedIn, async (req, res) => {
     const {amount} = req.body
