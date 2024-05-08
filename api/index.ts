@@ -23,7 +23,7 @@ import {Transaction} from './src/entity/Transaction'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const utApi = new UTApi()
 
-const sessionRepository = AppDataSorce.getRepository(Session)
+const sessionRepository = AppDataSource.getRepository(Session)
 
 const app = express()
 app.use(express.json())
