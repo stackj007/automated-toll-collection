@@ -1,4 +1,4 @@
-import { useAuth } from '../../../AuthContext'
+import { useAuth } from '../../AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-  const {user} = useAuth()
+  const { user } = useAuth()
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -25,7 +25,7 @@ export default function LoginPage() {
     const [res, error] = await login(email, password)
 
     if (res) {
-      if(user?.userVehicleRequest.status === "approved") {
+      if (user?.userVehicleRequest.status === 'approved') {
         navigate('/dashboard')
         return
       }
@@ -47,18 +47,10 @@ export default function LoginPage() {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {/*  Login form */}
-          <form
-            onSubmit={handleLogin}
-            action="#"
-            className="space-y-6"
-            method="POST"
-          >
+          <form onSubmit={handleLogin} action="#" className="space-y-6" method="POST">
             {/*  Email input field */}
             <div>
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="email"
-              >
+              <label className="block text-sm font-medium text-gray-700" htmlFor="email">
                 Email Address
               </label>
               <div className="mt-1">
@@ -89,20 +81,14 @@ export default function LoginPage() {
                   id="password"
                   name="password"
                   value={password}
-                  onChange={(e) =>
-                    setPassword(e.target.value)
-                  }
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
                   type="password"
                 />
               </div>
             </div>
-            {error && (
-              <div className="text-red-500 text-s text-center">
-                {error}
-              </div>
-            )}
+            {error && <div className="text-red-500 text-s text-center">{error}</div>}
             <div>
               <button
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
@@ -123,10 +109,7 @@ export default function LoginPage() {
       </div>
       {isLoading && (
         <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
-          <CircularProgress
-            size={50}
-            sx={{ color: 'black' }}
-          />
+          <CircularProgress size={50} sx={{ color: 'black' }} />
         </div>
       )}
     </div>

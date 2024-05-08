@@ -1,8 +1,8 @@
-import { useAuth } from '../../../AuthContext.jsx'
+import { useAuth } from '../../AuthContext.jsx'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import {Input} from "../../ui/input.jsx";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Input } from '../ui/input.jsx'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export default function SignUp() {
   const { register } = useAuth()
@@ -26,12 +26,7 @@ export default function SignUp() {
       return
     }
 
-    const [result, error] = await register(
-      email,
-      password,
-      confirmPassword,
-      name
-    )
+    const [result, error] = await register(email, password, confirmPassword, name)
     if (result) {
       navigate('/account')
     } else {
@@ -49,15 +44,9 @@ export default function SignUp() {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form
-            className="space-y-6"
-            onSubmit={handleRegister}
-          >
+          <form className="space-y-6" onSubmit={handleRegister}>
             <div>
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="email"
-              >
+              <label className="block text-sm font-medium text-gray-700" htmlFor="email">
                 Email Address
               </label>
               <div className="mt-1">
@@ -75,10 +64,7 @@ export default function SignUp() {
               </div>
             </div>
             <div>
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="name"
-              >
+              <label className="block text-sm font-medium text-gray-700" htmlFor="name">
                 Full Name
               </label>
               <div className="mt-1">
@@ -110,9 +96,7 @@ export default function SignUp() {
                   id="password"
                   name="password"
                   value={password}
-                  onChange={(e) =>
-                    setPassword(e.target.value)
-                  }
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
                   type="password"
@@ -134,9 +118,7 @@ export default function SignUp() {
                   id="password-confirm"
                   name="password-confirm"
                   value={confirmPassword}
-                  onChange={(e) =>
-                    setConfirmPassword(e.target.value)
-                  }
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
                   required
                   type="password"
@@ -144,11 +126,7 @@ export default function SignUp() {
                 />
               </div>
             </div>
-            {error && (
-              <div className="text-red-500 text-s text-center">
-                {error}
-              </div>
-            )}
+            {error && <div className="text-red-500 text-s text-center">{error}</div>}
             <div>
               <button
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
@@ -169,10 +147,7 @@ export default function SignUp() {
       </div>
       {isLoading && (
         <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
-          <CircularProgress
-            size={50}
-            sx={{ color: 'black' }}
-          />
+          <CircularProgress size={50} sx={{ color: 'black' }} />
         </div>
       )}
     </div>

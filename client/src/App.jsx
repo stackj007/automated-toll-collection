@@ -1,14 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { DocumentsUploadedProvider } from './hooks/DocumentsUploadedContext'
 import { TransactionProvider } from './hooks/useTransactions'
-import LoginPage from './components/pages/LoginPage/LoginPage'
-import SignUp from './components/pages/SignUp/SignUp'
-import Header from './components/Header.jsx'
+import LoginPage from './components/pages/LoginPage'
+import SignUp from './components/pages/SignUp'
+import Header from './components/Nav.jsx'
 import './tailwind.css'
 import axios from 'axios'
 import { useAuth } from './AuthContext.jsx'
 import { useEffect } from 'react'
-import { DashboardPage } from './components/pages/DashboardPage/DashboardPage.jsx'
+import { DashboardPage } from './components/pages/DashboardPage/UserDashboard.jsx'
 import { Documents } from './components/pages/DashboardPage/Documents.jsx'
 import AdminDashboard from './components/pages/AdminDashboard/AdminDashboard.jsx'
 import Account from './components/pages/AccountPage/account.jsx'
@@ -20,7 +20,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import TransactionsContent from './components/pages/AdminDashboard/Content/TransactionsContent'
 import UsersContent from './components/pages/AdminDashboard/Content/UsersContent'
 import UserRequests from './components/pages/AdminDashboard/Content/UserRequests'
-import SuccessPage from './components/pages/SuccessPage/SuccessPage'
+import SuccessPage from './components/pages/SuccessPage'
 import TollStationsContent from './components/pages/AdminDashboard/Content/TollStationsContent'
 import LandingPage from './components/pages/LandingPage/LandingPage.jsx'
 
@@ -52,18 +52,17 @@ function App() {
               <>
                 <Route
                   path="/dashboard"
+                  element={user?.isAdmin ? <AdminDashboard /> : <DashboardPage />}
+                />
+
+                <Route
+                  path="/documents"
                   element={
-                    user?.isAdmin ? (
-                      <AdminDashboard /> // TODO: bad naming, rename to UserDashboard or any other
-                    ) : (
-                      <DashboardPage />
-                    )
+                    user?.isApproved ? <Navigate to="/dashboard" /> : <Documents />
                   }
                 />
 
-                <Route path="/documents" element={<Documents />} />
-
-                <Route path="/account" element={<Account />} />
+                {!user?.isAdmin && <Route path="/account" element={<Account />} />}
                 <Route path="/success" element={<SuccessPage />} />
 
                 <Route path="/profile-completion" element={<ProfileCompletion />} />

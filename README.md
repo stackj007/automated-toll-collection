@@ -12,14 +12,14 @@
 - [ ] user-dashboard fix GUI for desktop
 - [x] make user-dashboard use real transaction
 - [x] fix user-dashboard view more
-- [ ] admin can't access /account
-- [ ] fix navbar for user
+- [x] admin can't access /account
+- [x] fix navbar for user
 - [ ] Add isAdmin option to edit-user
 - [x] add edit-tollgate
-- [ ] Rename header to navbar
-- [ ] restructure pages directory to have no sub-directories
+- [x] Rename header to navbar
+- [x] restructure pages directory to have no sub-directories
 - [ ] replace all icons with radix icons (if possible)
-- [ ] remove documents if approved
+- [] remove documents if approved
 - [ ] replace localstorage with URI in AdminDashboard
 - [ ] add isLoading circular buffer to documents.jsx submit
 - [ ] fix useless stripe call

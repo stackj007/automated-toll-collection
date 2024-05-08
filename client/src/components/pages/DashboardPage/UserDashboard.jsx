@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
-import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
-import BalanceDisplay from '../DashboardPage/BalanceDisplay'
+import TransactionHistoryItem from './TransactionHistoryItem'
+import BalanceDisplay from './BalanceDisplay'
 import RechargeModal from '../../modals/RechargeModal'
 import useLastFourTransactions from '../../../hooks/useLastFourTransactions'
 

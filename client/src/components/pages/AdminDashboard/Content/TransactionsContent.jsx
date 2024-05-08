@@ -30,7 +30,14 @@ export default function TransactionsContent() {
       { Header: 'Amount', accessor: 'amount' },
       { Header: 'Type', accessor: 'type' },
       { Header: 'Status', accessor: 'status' },
-      { Header: 'Date', accessor: 'date' },
+      {
+        Header: 'Date',
+        accessor: 'date',
+        Cell: ({ value }) => {
+          const date = new Date(value)
+          return date.toLocaleDateString()
+        },
+      },
     ],
     []
   )
@@ -45,7 +52,7 @@ export default function TransactionsContent() {
   } = useTable(
     {
       columns,
-      data: transactions, // Use transactions directly
+      data: transactions,
     },
     useFilters,
     useSortBy
