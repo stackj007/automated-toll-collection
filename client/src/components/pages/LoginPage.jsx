@@ -25,12 +25,12 @@ export default function LoginPage() {
     const [res, error] = await login(email, password)
 
     if (res) {
-      if (user?.userVehicleRequest.status === 'approved') {
+      if (user?.userVehicleRequest?.status === 'approved' || user?.isAdmin) {
         navigate('/dashboard')
         return
       }
 
-      navigate('/document')
+      navigate('/documents')
     } else {
       setError(error)
       setIsLoading(false)
