@@ -8,14 +8,19 @@ import {
 } from '../../../ui/table/Table.jsx'
 
 import { PlusIcon } from '@radix-ui/react-icons'
-import AddTollGateModal from '../../../modals/AddTollGateModal'
+import NewTollGateDialog from '../../../modals/AddTollGateModal.jsx'
+import DeleteTollGateDialog from '../../../modals/DeleteTollGateDialog.jsx'
+import EditTollGateDialog from '../../../modals/EditTollGateDialog.jsx'
 
 import axios from 'axios'
 import { Button } from '../../../ui/button.jsx'
 
 const TollStationsContent = () => {
   const [tollGates, setTollGates] = useState([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [selectedStation, setSelectedStation] = useState(null)
 
   useEffect(() => {
     localStorage.setItem('lastVisitedPage', 'tollStations')
@@ -35,10 +40,7 @@ const TollStationsContent = () => {
   }
 
   const tollGateLink = (station) => {
-    return (
-      import.meta.env.VITE_BACKEND_URL +
-      `/api/toll-gates/pay/${station.uuid}`
-    )
+    return import.meta.env.VITE_BACKEND_URL + `/api/toll-gates/pay/${station.uuid}`
   }
 
   const QRLink = (station) => {
@@ -47,32 +49,17 @@ const TollStationsContent = () => {
     )}`
   }
 
-  const deleteTollGate = async (id) => {
-    try {
-      await axios.delete(`/api/toll-gates/${id}`)
-      setTollGates(
-        tollGates.filter((station) => station.id !== id)
-      )
-    } catch (error) {
-      console.error(
-        'Error deleting toll gate:',
-        error.message
-      )
-    }
+  const deleteTollGate = (station) => {
+    setSelectedStation(station)
+    setIsDeleteDialogOpen(true)
   }
 
   const addTollGate = async (gateDetails) => {
     try {
-      const response = await axios.post(
-        '/api/toll-gates',
-        gateDetails
-      )
+      const response = await axios.post('/api/toll-gates', gateDetails)
       setTollGates([...tollGates, response.data.tollGate])
     } catch (error) {
-      console.error(
-        'Error adding toll gate:',
-        error.message
-      )
+      console.error('Error adding toll gate:', error.message)
     }
   }
 
@@ -80,14 +67,11 @@ const TollStationsContent = () => {
     await addTollGate(gateDetails)
   }
 
-  // TODO: fix style
-  //   TODO: add new toll gate (Done)
-
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4 ">
         Toll Stations
-        <button onClick={() => setIsModalOpen(true)}>
+        <button onClick={() => setIsDialogOpen(true)}>
           <PlusIcon className="mx-7 " />
         </button>
       </h2>
@@ -111,11 +95,17 @@ const TollStationsContent = () => {
                 <img src={QRLink(station)} alt="QR Code" />
               </TableCell>
               <TableCell>
-                <Button
-                  variant="destructive"
-                  onClick={() => deleteTollGate(station.id)}
-                >
+                <Button variant="destructive" onClick={() => deleteTollGate(station)}>
                   Delete
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    setSelectedStation(station)
+                    setIsEditDialogOpen(true)
+                  }}
+                >
+                  Edit
                 </Button>
               </TableCell>
             </TableRow>
@@ -123,10 +113,22 @@ const TollStationsContent = () => {
         </TableBody>
       </Table>
 
-      <AddTollGateModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      <NewTollGateDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
         onAddTollGate={handleAddTollGate}
+      />
+
+      <DeleteTollGateDialog
+        open={isDeleteDialogOpen}
+        setIsDeleteDialogOpen={setIsDeleteDialogOpen}
+        station={selectedStation}
+      />
+
+      <EditTollGateDialog
+        open={isEditDialogOpen}
+        setIsEditDialogOpen={setIsEditDialogOpen}
+        station={selectedStation}
       />
     </div>
   )

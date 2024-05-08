@@ -9,15 +9,15 @@ import {
 } from '../ui/dialog.jsx'
 import { Button } from '../ui/button.jsx'
 
-export default function DeleteUserDialog({ open, setIsDeleteDialogOpen, user }) {
-  const hide = async () => {
+export default function DeleteTollGateDialog({ open, setIsDeleteDialogOpen, station }) {
+  const deleteStation = async () => {
     try {
-      await axios.post('/api/delete-user', { id: user?.id })
+      await axios.delete(`/api/toll-gates/${station?.id}`)
       setIsDeleteDialogOpen(false)
-      window.location.reload() // maybe replace the new to refresh with setUsers((users) => users.filter(u => u.id !== user.id))
+      window.location.reload()
     } catch (e) {
       console.error(e)
-      alert(e.message) // replace with a better error handling
+      alert(e.message)
     }
   }
 
@@ -25,14 +25,14 @@ export default function DeleteUserDialog({ open, setIsDeleteDialogOpen, user }) 
     <Dialog open={open} onOpenChange={setIsDeleteDialogOpen}>
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
-          <DialogTitle>Delete user</DialogTitle>
+          <DialogTitle>Delete Toll Gate</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete {user?.name}?
+            Are you sure you want to delete the toll gate at {station?.address}?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button type="submit" className="destructive" onClick={hide}>
-            delete
+          <Button className="destructive" onClick={deleteStation}>
+            Delete
           </Button>
         </DialogFooter>
       </DialogContent>
