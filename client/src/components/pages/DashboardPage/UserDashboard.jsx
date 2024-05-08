@@ -23,7 +23,7 @@ export function DashboardPage() {
 
   const { isVerified, user } = useAuth()
 
-  if (!isVerified) {
+  if (!isVerified(user)) {
     navigate('/account')
   }
 
@@ -81,15 +81,13 @@ export function DashboardPage() {
     navigate('/account')
   }
 
-  const { transactions, isLoading, error } = useLastFourTransactions()
-
-  console.log('Transactions:', transactions)
+  const { transactions, isLoading, error } = useLastFourTransactions({limit: 4})
 
   return (
     <div className="max-w-sm mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
       <div className="text-center">
         <h1 className="text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-          Hey,
+          Hey, {user.name}
         </h1>
         <h2 className="text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
           Welcome back!

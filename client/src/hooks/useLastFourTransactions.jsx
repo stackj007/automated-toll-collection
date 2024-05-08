@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-const useLastFourTransactions = () => {
+const useLastFourTransactions = ({limit}) => {
   const [transactions, setTransactions] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -11,7 +11,12 @@ const useLastFourTransactions = () => {
       try {
         const response = await axios.get('api/transactions/user')
 
-        setTransactions(response.data.slice(0, 4))
+        if (limit) {
+          setTransactions(response.data.slice(0, limit))
+        } else {
+          setTransactions(response.data)
+        }
+
         setIsLoading(false)
       } catch (err) {
         setError(err)

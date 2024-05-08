@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }) => {
         const response = await axios.get('/api/user')
         setUser(response.data.user)
       } catch (error) {
-        console.error('Error fetching user:', error)
         setUser(null)
       } finally {
         setLoading(false)
@@ -40,10 +39,10 @@ export const AuthProvider = ({ children }) => {
         password: password,
       })
       setUser(response.data.user)
-      return [true, null]
+      return [response.data.user, null]
     } catch (error) {
       return [
-        false,
+        null,
         error.response.data?.error ?? error.response.data,
       ]
     }
@@ -91,7 +90,6 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.get('/api/user')
       setUser(response.data.user)
     } catch (error) {
-      console.error('Error fetching user:', error)
       setUser(null)
     }
   }

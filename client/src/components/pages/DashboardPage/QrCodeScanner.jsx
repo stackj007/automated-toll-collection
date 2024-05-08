@@ -9,7 +9,7 @@ const QrCodeScanner = () => {
 
   async function handleQR(data) {
     if (!isURL(data)) {
-      throw new Error('Invalid URL')
+      throw new Error(`Invalid URL: ${data}`)
     }
 
     window.location = data

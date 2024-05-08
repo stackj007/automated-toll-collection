@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 const TransactionContext = React.createContext()
+// TODO: don't use providers here, serves no purpose
 
 export const TransactionProvider = ({ children }) => {
   const [transactions, setTransactions] = React.useState([])
