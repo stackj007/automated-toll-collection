@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, Generated} from "typeorm"
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, Generated, OneToMany} from "typeorm"
+import {Transaction} from "./Transaction";
 
 @Entity("tollGate")
 export class TollGate {
@@ -14,4 +15,7 @@ export class TollGate {
 
   @Column()
   fee: number
+
+  @OneToMany(() => Transaction, Transaction => Transaction.tollGate)
+  transactions: Transaction[]
 }

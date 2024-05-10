@@ -27,11 +27,17 @@
 - [ ] useLastFourTransactions => useTransactions and use {limit} as parameter
 - [ ] format date in transactionHistory, and put the formatDate function in utils.js to be used everywhere
 - [ ] remove unused components (manually or use a tool)
+- [ ] add unit tests
+- [ ] show the gate in transaction history
+- [ ] create alert modal, use it everywhere instead of alert()
+
 #### backend
 
-- [x] fix upload
-- [ ] add relation between transaction and tollgate (transaction.tollGate: TollGate|null)
-- [ ] add edit-tollgate
-- [ ] Add restriction isVerified to backend endpoints
-- [ ] Refactor routes from index.ts to index.ts -> router.ts -> Controller
+- [x] add relation between transaction and tollgate (transaction.tollGate: TollGate|null)
+- [x] add edit-tollgate
+- [x] Add restriction isVerified to backend endpoints
+- [x] Refactor routes from index.ts to index.ts -> router.ts -> Controller
+- [ ] switch to restapi
 - [ ] fix docker-compose
+- [ ] add unit tests
+- [ ] add integration tests

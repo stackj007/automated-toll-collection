@@ -22,14 +22,7 @@ export default function EditTollGateDialog({ open, setIsEditDialogOpen, station 
     if (!address || !fee) return alert('Please fill in all fields')
 
     try {
-      // Delete the existing toll gate
-      await axios.delete(`/api/toll-gates/${id}`)
-
-      // Create a new toll gate with the updated details
-      await axios.post('/api/toll-gates', {
-        address,
-        fee,
-      })
+      await axios.put(`/api/toll-gates/${id}`, {address, fee})
       setIsEditDialogOpen(false)
       window.location.reload()
     } catch (e) {

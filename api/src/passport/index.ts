@@ -31,4 +31,26 @@ passport.use(
         }
     ));
 
+passport.serializeUser((user: User, done) => {
+  AppDataSource.getRepository(User)
+    .findOne({
+      where: {id: user.id},
+      relations: ['userVehicleRequest'],
+    })
+    .then((user) => {
+      done(null, user)
+    })
+})
+
+passport.deserializeUser((user: User, done) => {
+  AppDataSource.getRepository(User)
+    .findOne({
+      where: {id: user.id},
+      relations: ['userVehicleRequest'],
+    })
+    .then((user) => {
+      done(null, user)
+    })
+})
+
 export default passport;

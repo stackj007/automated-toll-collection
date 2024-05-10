@@ -46,7 +46,7 @@ export function DashboardPage() {
     }
 
     try {
-      const response = await axios.post('/api/recharge', {
+      const response = await axios.post('/api/user/balance', {
         amount: amount,
       })
 

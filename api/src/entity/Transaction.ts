@@ -4,9 +4,9 @@ import {
   Column,
   JoinColumn,
   ManyToOne,
-  Index,
 } from 'typeorm'
 import { User } from './User'
+import {TollGate} from "./TollGate";
 
 @Entity('transaction')
 export class Transaction {
@@ -16,11 +16,13 @@ export class Transaction {
   @Column({ unique: true, nullable: true })
   stripeSessionId: string | null
 
-  @ManyToOne(() => User, (user) => user.transactions, {
-    nullable: true,
-  })
+  @ManyToOne(() => User, (user) => user.transactions, {nullable: true})
   @JoinColumn()
   user: User | null
+
+  @ManyToOne(() => TollGate, (tollgate) => tollgate.transactions, {nullable: true})
+  @JoinColumn()
+  tollGate: TollGate | null
 
   @Column()
   amount: string
