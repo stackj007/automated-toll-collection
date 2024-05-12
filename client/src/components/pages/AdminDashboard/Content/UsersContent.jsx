@@ -10,7 +10,8 @@ import {
   TableRow,
 } from '../../../ui/table/Table.jsx'
 
-import { TrashIcon, FileEditIcon } from '../../../ui/icons'
+import { FiFileText, FiTrash2 } from 'react-icons/fi'
+
 import DeleteUserDialog from '../../../modals/../modals/DeleteUserDialog.jsx'
 import { EditUserDialog } from '../../../modals/EditUserDialog.jsx'
 import { Card, CardContent, CardHeader, CardTitle } from '../../../ui/card.jsx'
@@ -122,7 +123,7 @@ export default function UsersContent() {
                       color="blue"
                       onClick={() => handleEdit(user)}
                     >
-                      <FileEditIcon className="h-4 w-4" />
+                      <FiFileText className="h-4 w-4" />
                     </Button>
                     <Button
                       size="icon"
@@ -130,7 +131,7 @@ export default function UsersContent() {
                       color="red"
                       onClick={() => handleDelete(user)}
                     >
-                      <TrashIcon className="h-4 w-4" />
+                      <FiTrash2 className="h-4 w-4" />
                     </Button>
                   </TableCell>
                 </TableRow>

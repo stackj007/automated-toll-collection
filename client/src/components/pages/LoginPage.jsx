@@ -22,17 +22,16 @@ export default function LoginPage() {
     }
 
     const [user, error] = await login(email, password)
+    setIsLoading(false)
 
     if (user) {
       if (user?.userVehicleRequest?.status === 'approved' || user?.isAdmin) {
         navigate('/dashboard')
-        return
+      } else {
+        navigate('/documents')
       }
-
-      navigate('/documents')
     } else {
       setError(error)
-      setIsLoading(false)
     }
   }
 

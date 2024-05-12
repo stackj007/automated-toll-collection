@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { BsSearch } from 'react-icons/bs'
-import { FaRegComment } from 'react-icons/fa'
-import { UsersIcon, Package2Icon, MapPinIcon, CreditCardIcon } from '../../ui/icons'
+import { FaRegComment, FaCreditCard, FaUsers } from 'react-icons/fa'
+import { FiMapPin, FiBox } from 'react-icons/fi'
 
 import UsersContent from '../AdminDashboard/Content/UsersContent'
 import TollStationsContent from '../AdminDashboard/Content/TollStationsContent'
@@ -51,7 +51,7 @@ export default function AdminDashboard() {
         <div className="flex h-full flex-col gap-2">
           <div className="flex h-[60px] items-center border-b px-6">
             <span className="flex items-center gap-2 font-semibold">
-              <Package2Icon className="h-6 w-6" />
+              <FiBox className="h-6 w-6" />
               <span className="">Express Inc</span>
             </span>
           </div>
@@ -68,10 +68,10 @@ export default function AdminDashboard() {
                   onClick={() => handleSidebarItemClick(item)}
                   to={`/admin/${item}`}
                 >
-                  {item === 'users' && <UsersIcon className="h-4 w-4" />}
+                  {item === 'users' && <FaUsers className="h-4 w-4" />}
                   {item === 'userRequests' && <FaRegComment className="h-4 w-4" />}
-                  {item === 'tollStations' && <MapPinIcon className="h-4 w-4" />}
-                  {item === 'transactions' && <CreditCardIcon className="h-4 w-4" />}
+                  {item === 'tollStations' && <FiMapPin className="h-4 w-4" />}
+                  {item === 'transactions' && <FaCreditCard className="h-4 w-4" />}
                   {item.charAt(0).toUpperCase() + item.slice(1)}
                 </Link>
               ))}

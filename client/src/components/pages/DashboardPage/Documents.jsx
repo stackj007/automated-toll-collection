@@ -12,7 +12,7 @@ import { Label } from '../../ui/label.jsx'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useAuth } from '../../../AuthContext.jsx'
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 function RequestForm({ onSubmit }) {
   return (
@@ -71,31 +71,41 @@ function RequestForm({ onSubmit }) {
 
 export function Documents() {
   const { user, setUser } = useAuth()
-  const navigate = useNavigate()
-  if (user.userVehicleRequest) {
-    navigate('/account')
-  }
 
+  const navigate = useNavigate()
   useEffect(() => {
+    // Check if user is not logged in or is an admin
     if (!user || user?.isAdmin) {
       throw new Error('User is not authorized to view this page')
     }
-  }, [user])
+
+    // Check if user is approved and redirect
+    if (user.userVehicleRequest?.status === 'approved') {
+      navigate('/dashboard')
+    }
+  }, [user, navigate]) // Re-run the effect if the user object changes
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     try {
       const response = await axios.post('/api/user-request', new FormData(e.target))
       const request = response.data.request
       setUser((user) => {
         user.userVehicleRequest = request
-
         return user
       })
-      window.location.reload()
     } catch (error) {
-      console.error('Error submitting documents:', error)
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.code === 'ER_DUP_ENTRY'
+      ) {
+        alert(
+          'A request with this vehicle number already exists. Please check your existing requests.'
+        )
+      } else {
+        console.error('Error submitting documents:', error)
+      }
     }
   }
 

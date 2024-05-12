@@ -10,9 +10,9 @@
 #### frontend
 
 - [ ] user-dashboard fix GUI for desktop
-- [ ] Add isAdmin option to edit-user
-- [ ] Nav.jsx -> Navbar.jsx, Header() -> Navbar()
-- [ ] replace all icons with radix icons (if possible)
+- [x] Add isAdmin option to edit-user
+- [x] Nav.jsx -> Navbar.jsx, Header() -> Navbar()
+- [x] replace all icons with radix icons (if possible)
 - [ ] replace localstorage with URI in AdminDashboard
 - [ ] add isLoading circular buffer to documents.jsx submit
 - [ ] fix useless stripe call
@@ -20,7 +20,7 @@
 - [ ] Add rejected page for transaction (on cancellation)
 - [ ] Add footer
 - [ ] add vehicle type
-- [ ] mute or fix  ESLint: 'onRedirect' is missing in props validation(react/prop-types)
+- [ ] mute or fix ESLint: 'onRedirect' is missing in props validation(react/prop-types)
 - [ ] use local storage or session to store user rather than context
 - [ ] in /account, account balance, remove add payment/make payment and add top up
 - [ ] remove console.log everywhere (tip: use eslint)
@@ -30,6 +30,7 @@
 - [ ] add unit tests
 - [ ] show the gate in transaction history
 - [ ] create alert modal, use it everywhere instead of alert()
+- [ ] fix isAdmin always checked in usersContent
 
 #### backend
 

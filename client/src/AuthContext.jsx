@@ -1,10 +1,5 @@
 /* eslint-disable react/prop-types */
-import {
-  createContext,
-  useState,
-  useContext,
-  useEffect,
-} from 'react'
+import { createContext, useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 
 const AuthContext = createContext()
@@ -41,10 +36,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user)
       return [response.data.user, null]
     } catch (error) {
-      return [
-        null,
-        error.response.data?.error ?? error.response.data,
-      ]
+      return [null, error.response.data?.error ?? error.response.data]
     }
   }
 
@@ -55,19 +47,11 @@ export const AuthProvider = ({ children }) => {
       window.location.href = '/login'
       return [true, null]
     } catch (error) {
-      return [
-        false,
-        error.response.data?.error ?? error.response.data,
-      ]
+      return [false, error.response.data?.error ?? error.response.data]
     }
   }
 
-  const register = async (
-    email,
-    password,
-    confirmPassword,
-    name
-  ) => {
+  const register = async (email, password, confirmPassword, name) => {
     try {
       const response = await axios.post('/api/register', {
         email,
@@ -78,10 +62,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user)
       return [true, null]
     } catch (error) {
-      return [
-        false,
-        error.response.data?.error ?? error.response.data,
-      ]
+      return [false, error.response.data?.error ?? error.response.data]
     }
   }
 
@@ -95,7 +76,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const isVerified = (user) => {
-    return user?.userVehicleRequest?.status === "approved"
+    return user?.userVehicleRequest?.status === 'approved'
   }
 
   const value = {
@@ -106,12 +87,8 @@ export const AuthProvider = ({ children }) => {
     fetchUser,
     user,
     setUser,
-    isVerified
+    isVerified,
   }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
