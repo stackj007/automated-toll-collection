@@ -39,6 +39,35 @@ export default function UsersContent() {
     fetchUsers()
   }, [])
 
+  const handleRoleChange = async (user) => {
+    if (!user) {
+      console.error('User is null, cannot update role')
+      return
+    }
+
+    try {
+      await axios.put(`/api/users/${user.id}`, { isAdmin: !user.isAdmin })
+      setUsers(users.map((u) => (u.id === user.id ? { ...u, isAdmin: !u.isAdmin } : u)))
+    } catch (error) {
+      console.error('Error updating user role', error)
+    }
+  }
+
+  const handleEdit = (user) => {
+    if (!user) {
+      console.error('User is null, cannot edit')
+      return
+    }
+
+    setIsEditModalOpened(true)
+    setSelectedUser(user)
+  }
+
+  const handleDelete = (user) => {
+    setIsDeleteModalOpened(true)
+    setSelectedUser(user)
+  }
+
   return (
     <div className="grid gap-4">
       <DeleteUserDialog
@@ -61,41 +90,47 @@ export default function UsersContent() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[100px]">ID</TableHead>
+                <TableHead>ID</TableHead>
                 <TableHead>Full name</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
 
             <TableBody>
               {users.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell className="font-semibold">{user.id}</TableCell>
+                  <TableCell>{user.id}</TableCell>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
+                    <Button
+                      className=""
+                      size="icon"
+                      // variant="outline"
+                      color={user.isAdmin ? 'red' : 'default'}
+                      onClick={() => handleRoleChange(user)}
+                    >
+                      {user.isAdmin ? 'Admin' : 'User'}
+                    </Button>
+                  </TableCell>
+                  <TableCell>
                     <Button
                       size="icon"
                       variant="outline"
-                      onClick={() => {
-                        setIsEditModalOpened(true)
-                        setSelectedUser(user)
-                      }}
+                      color="blue"
+                      onClick={() => handleEdit(user)}
                     >
                       <FileEditIcon className="h-4 w-4" />
-                      <span className="sr-only">Edit</span>
                     </Button>
                     <Button
                       size="icon"
                       variant="outline"
-                      onClick={() => {
-                        setIsDeleteModalOpened(true)
-                        setSelectedUser(user)
-                      }}
+                      color="red"
+                      onClick={() => handleDelete(user)}
                     >
                       <TrashIcon className="h-4 w-4" />
-                      <span className="sr-only">Delete</span>
                     </Button>
                   </TableCell>
                 </TableRow>
