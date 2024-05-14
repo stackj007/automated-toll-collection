@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom'
 import VehicleDocument from './VehicleDocument.jsx'
 import { CardTitle, CardDescription, CardHeader, CardContent, Card } from '../../ui/card'
@@ -5,6 +6,10 @@ import { Button } from '../../ui/button'
 import { useAuth } from '../../../AuthContext.jsx'
 import { ClockIcon, FileIcon } from '@radix-ui/react-icons'
 import { FaCar, FaUsers } from 'react-icons/fa'
+
+import axios from 'axios'
+import RechargeModal from '../../modals/RechargeModal.jsx'
+import { useState } from 'react'
 
 function PendingNoVehicle({ onRedirect }) {
   return (
@@ -82,6 +87,29 @@ function PendingAccount({ onRedirect, vehicle }) {
 function AuthorizeAccount({ user, onRedirect, vehicle }) {
   const navigate = useNavigate()
 
+  const [isRechargeModalOpen, setIsRechargeModalOpen] = useState(false)
+  const [message, setMessage] = useState('')
+
+  const handleRecharge = async (amount) => {
+    if (isNaN(amount) || amount <= 0) {
+      setMessage('Please enter a valid amount greater than 0.')
+      return
+    }
+
+    try {
+      const response = await axios.post('/api/user/balance', {
+        amount: amount,
+      })
+
+      window.location = response.data.url
+    } catch (error) {
+      setMessage('Recharge failed. Please try again.')
+    }
+  }
+
+  const openRechargeModal = () => setIsRechargeModalOpen(true)
+  const closeRechargeModal = () => setIsRechargeModalOpen(false)
+
   return (
     <div className="container mx-auto px-4 lg:px-8 xl:px-0">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
@@ -150,11 +178,13 @@ function AuthorizeAccount({ user, onRedirect, vehicle }) {
           <CardContent>
             {/* TODO: fix/implement*/}
             <div className="flex items-center gap-4">
-              <Button size="sm" className="bg-black text-white" variant="default">
-                Add Payment Method
-              </Button>
-              <Button size="sm" className="bg-black text-white" variant="default">
-                Make Payment
+              <Button
+                size="sm"
+                className="bg-black text-white"
+                variant="default"
+                onClick={openRechargeModal}
+              >
+                Top Up
               </Button>
             </div>
             <div className="mt-4">
@@ -164,6 +194,11 @@ function AuthorizeAccount({ user, onRedirect, vehicle }) {
           </CardContent>
         </Card>
       </div>
+      <RechargeModal
+        open={isRechargeModalOpen}
+        handleClose={closeRechargeModal}
+        onRecharge={handleRecharge}
+      />
     </div>
   )
 }

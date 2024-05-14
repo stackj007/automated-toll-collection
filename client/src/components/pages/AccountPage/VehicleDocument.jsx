@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Button } from '../../ui/button'
 
 const VehicleDocument = ({ onRedirect, message }) => {
