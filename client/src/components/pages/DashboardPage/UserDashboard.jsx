@@ -1,18 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import { useDocumentsUploaded } from '../../../hooks/DocumentsUploadedContext'
 import TransactionHistoryItem from './TransactionHistoryItem'
 import BalanceDisplay from './BalanceDisplay'
 import RechargeModal from '../../modals/RechargeModal'
 import useLastFourTransactions from '../../../hooks/useLastFourTransactions'
-
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
-
 import { VscAccount } from 'react-icons/vsc'
 import { FaCreditCard } from 'react-icons/fa'
 import axios from 'axios'
@@ -20,7 +17,6 @@ import { useAuth } from '../../../AuthContext.jsx'
 
 export function DashboardPage() {
   const navigate = useNavigate()
-
   const { isVerified, user } = useAuth()
 
   if (!isVerified(user)) {
@@ -35,7 +31,6 @@ export function DashboardPage() {
   }
 
   const handleCloseRechargeModal = () => {
-    console.log('Attempting to close the dialog...')
     setIsRechargeModalOpen(false)
   }
 
@@ -46,10 +41,7 @@ export function DashboardPage() {
     }
 
     try {
-      const response = await axios.post('/api/user/balance', {
-        amount: amount,
-      })
-
+      const response = await axios.post('/api/user/balance', { amount })
       window.location = response.data.url
     } catch (error) {
       setMessage('Recharge failed. Please try again.')
@@ -81,17 +73,13 @@ export function DashboardPage() {
     navigate('/account')
   }
 
-  const { transactions, isLoading, error } = useLastFourTransactions({limit: 4})
+  const { transactions, isLoading, error } = useLastFourTransactions({ limit: 4 })
 
   return (
-    <div className="max-w-sm mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+    <div className="container mx-auto px-4">
       <div className="text-center">
-        <h1 className="text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-          Hey, {user.name}
-        </h1>
-        <h2 className="text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-          Welcome back!
-        </h2>
+        <h1 className="text-2xl font-semibold lg:text-4xl">Hey, {user.name}</h1>
+        <h2 className="text-xl font-semibold lg:text-3xl">Welcome back!</h2>
       </div>
       <BalanceDisplay
         onOpenRechargeModal={handleOpenRechargeModal}
@@ -103,7 +91,7 @@ export function DashboardPage() {
       <div className="mt-6 grid grid-cols-3 gap-4 text-center">
         <div className="flex flex-col items-center" onClick={handleClick}>
           <VscAccount className="text-4xl cursor-pointer" />
-          <button className="text-xs mt-2">Account</button>
+          <button className="text-xs mt-2 lg:text-base">Account</button>
         </div>
 
         <div
@@ -111,7 +99,7 @@ export function DashboardPage() {
           onClick={handleQrCodeClick}
         >
           <FaCreditCard className="text-4xl" />
-          <button className="text-xs mt-2">Pay Toll</button>
+          <button className="text-xs mt-2 lg:text-base">Pay Toll</button>
         </div>
 
         <RechargeModal
@@ -135,14 +123,12 @@ export function DashboardPage() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDialog}> Close</Button>
-
+            <Button onClick={handleCloseDialog}>Close</Button>
             {!paymentMethod && (
               <>
                 <Button onClick={handlePayWithCash} color="primary">
                   Cash
                 </Button>
-
                 <Button onClick={handlePayWithQrCode} color="primary" autoFocus>
                   QR Code
                 </Button>
@@ -152,13 +138,13 @@ export function DashboardPage() {
         </Dialog>
 
         <div className="flex flex-col items-center cursor-pointer">
-          <VscAccount className="text-4xl " />
-          <button className="text-xs mt-2">Vehicle</button>
+          <VscAccount className="text-4xl" />
+          <button className="text-xs mt-2 lg:text-base">Vehicle</button>
         </div>
       </div>
 
       <div className="mt-6 mb-6">
-        <h3 className="text-lg text-center font-semibold fle ">Transaction history</h3>
+        <h3 className="text-lg text-center font-semibold">Transaction history</h3>
 
         {isLoading ? (
           <p>Loading...</p>
@@ -171,10 +157,8 @@ export function DashboardPage() {
         )}
 
         <button
-          className="text-xs mt-4 mx-auto flex justify-center"
-          onClick={() => {
-            navigate('/transaction-history-details')
-          }}
+          className="text-xs mt-4 mx-auto flex justify-center lg:text-base"
+          onClick={() => navigate('/transaction-history-details')}
         >
           View More
         </button>
