@@ -23,10 +23,6 @@ const TollStationsContent = () => {
   const [selectedStation, setSelectedStation] = useState(null)
 
   useEffect(() => {
-    localStorage.setItem('lastVisitedPage', 'tollStations')
-  }, [])
-
-  useEffect(() => {
     fetchTollGates()
   }, [])
 

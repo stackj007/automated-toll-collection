@@ -24,10 +24,6 @@ export default function UsersContent() {
   const [selectedUser, setSelectedUser] = useState(null)
 
   useEffect(() => {
-    localStorage.setItem('lastVisitedPage', 'users')
-  }, [])
-
-  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('/api/users')

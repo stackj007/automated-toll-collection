@@ -13,7 +13,7 @@
 - [x] Add isAdmin option to edit-user
 - [x] Nav.jsx -> Navbar.jsx, Header() -> Navbar()
 - [x] replace all icons with radix icons (if possible)
-- [ ] replace localstorage with URI in AdminDashboard
+- [x] replace localstorage with URI in AdminDashboard
 - [x] add isLoading circular buffer to documents.jsx submit
 - [ ] fix useless stripe call
 - [ ] Resolve other TODO in code

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate, Routes, Route } from 'react-router-dom'
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { BsSearch } from 'react-icons/bs'
 import { FaRegComment, FaCreditCard, FaUsers } from 'react-icons/fa'
@@ -12,37 +12,16 @@ import UserRequests from './Content/UserRequests'
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
-  const [selectedSidebarItem, setSelectedSidebarItem] = useState(() => {
-    const lastVisitedPage = localStorage.getItem('lastVisitedPage')
-    return lastVisitedPage || 'users'
-  })
+  const location = useLocation()
+
+  const selectedSidebarItem = location.pathname.split('/').pop() || 'users'
 
   useEffect(() => {
-    const lastVisitedPage = localStorage.getItem('lastVisitedPage')
-    if (lastVisitedPage && lastVisitedPage !== selectedSidebarItem) {
-      setSelectedSidebarItem(lastVisitedPage)
-      navigate(`/admin/${lastVisitedPage}`)
-    }
+    navigate(`/admin/${selectedSidebarItem}`)
   }, [navigate, selectedSidebarItem])
 
   const handleSidebarItemClick = (item) => {
-    setSelectedSidebarItem(item)
     navigate(`/admin/${item}`)
-  }
-
-  const renderContent = () => {
-    switch (selectedSidebarItem) {
-      case 'users':
-        return <UsersContent />
-      case 'tollStations':
-        return <TollStationsContent />
-      case 'transactions':
-        return <TransactionsContent />
-      case 'userRequests':
-        return <UserRequests />
-      default:
-        return <UsersContent />
-    }
   }
 
   return (
@@ -95,7 +74,13 @@ export default function AdminDashboard() {
           </InputGroup>
         </div>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-          {renderContent()}
+          <Routes>
+            <Route path="/users" element={<UsersContent />} />
+            <Route path="/userRequests" element={<UserRequests />} />
+            <Route path="/tollStations" element={<TollStationsContent />} />
+            <Route path="/transactions" element={<TransactionsContent />} />
+            <Route path="*" element={<UsersContent />} />
+          </Routes>
         </main>
       </div>
     </div>

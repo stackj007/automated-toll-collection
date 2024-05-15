@@ -16,10 +16,6 @@ export default function TransactionsContent() {
 
   const { transactions, isLoading, error } = useTransactions()
 
-  useEffect(() => {
-    localStorage.setItem('lastVisitedPage', 'transactions')
-  }, [])
-
   const columns = React.useMemo(
     () => [
       {

@@ -14,13 +14,8 @@ import {
 
 export default function UserRequests() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedRequest, setSelectedRequest] =
-    useState(null)
+  const [selectedRequest, setSelectedRequest] = useState(null)
   const [userRequests, setUserRequests] = useState([])
-
-  useEffect(() => {
-    localStorage.setItem('lastVisitedPage', 'userRequests')
-  }, [])
 
   useEffect(() => {
     fetchUserRequests()
@@ -37,14 +32,8 @@ export default function UserRequests() {
 
   const handleAccept = async (requestId) => {
     try {
-      await axios.post(
-        `/api/user-requests/${requestId}/accept`
-      )
-      setUserRequests(
-        userRequests.filter(
-          (request) => request.id !== requestId
-        )
-      )
+      await axios.post(`/api/user-requests/${requestId}/accept`)
+      setUserRequests(userRequests.filter((request) => request.id !== requestId))
       setIsModalOpen(false)
     } catch (error) {
       console.error('Error accepting request:', error)
@@ -53,14 +42,8 @@ export default function UserRequests() {
 
   const handleReject = async (requestId) => {
     try {
-      await axios.post(
-        `/api/user-requests/${requestId}/reject`
-      )
-      setUserRequests(
-        userRequests.filter(
-          (request) => request.id !== requestId
-        )
-      )
+      await axios.post(`/api/user-requests/${requestId}/reject`)
+      setUserRequests(userRequests.filter((request) => request.id !== requestId))
       setIsModalOpen(false)
     } catch (error) {
       console.error('Error rejecting request:', error)
@@ -92,13 +75,7 @@ export default function UserRequests() {
               <TableCell>{request.vehicleNumber}</TableCell>
               <TableCell>{request.status}</TableCell>
               <TableCell>
-                <Button
-                  onClick={() =>
-                    handleRequestSelect(request)
-                  }
-                >
-                  Review
-                </Button>
+                <Button onClick={() => handleRequestSelect(request)}>Review</Button>
               </TableCell>
             </TableRow>
           ))}
