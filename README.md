@@ -17,7 +17,7 @@
 - [x] add isLoading circular buffer to documents.jsx submit
 - [ ] fix useless stripe call
 - [ ] Resolve other TODO in code
-- [ ] Add rejected page for transaction (on cancellation)
+- [x] Add rejected page for transaction (on cancellation)
 - [ ] Add footer
 - [ ] add vehicle type
 - [x] mute or fix ESLint: 'onRedirect' is missing in props validation(react/prop-types)

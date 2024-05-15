@@ -21,6 +21,7 @@ import TransactionsContent from './components/pages/AdminDashboard/Content/Trans
 import UsersContent from './components/pages/AdminDashboard/Content/UsersContent'
 import UserRequests from './components/pages/AdminDashboard/Content/UserRequests'
 import SuccessPage from './components/pages/SuccessPage'
+import FailedPage from './components/pages/FailedPage'
 import TollStationsContent from './components/pages/AdminDashboard/Content/TollStationsContent'
 import LandingPage from './components/pages/LandingPage/LandingPage.jsx'
 
@@ -63,7 +64,9 @@ function App() {
                 />
 
                 {!user?.isAdmin && <Route path="/account" element={<Account />} />}
+
                 <Route path="/success" element={<SuccessPage />} />
+                <Route path="/cancel" element={<FailedPage />} />
 
                 <Route path="/profile-completion" element={<ProfileCompletion />} />
                 <Route path="/qr-code" element={<QrCodePage />} />
