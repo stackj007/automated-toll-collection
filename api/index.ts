@@ -2,12 +2,12 @@ import express from 'express'
 import session from 'express-session'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import passport from './src/passport'
-import {AppDataSource} from './src/data-source'
+import passport from './_src/passport'
+import {AppDataSource} from './_src/data-source'
 import 'dotenv/config'
 import fileUpload from 'express-fileupload'
 import {TypeormStore} from 'connect-typeorm'
-import {Session} from './src/entity/Session'
+import {Session} from './_src/entity/Session'
 import router from "./router";
 
 const sessionRepository = AppDataSource.getRepository(Session)

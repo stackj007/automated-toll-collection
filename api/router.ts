@@ -1,9 +1,9 @@
 import express from 'express';
-import {tollGateRouter} from "./src/routes/tollgate";
-import {userRouter} from "./src/routes/user";
-import {transactionRouter} from "./src/routes/transaction";
-import {userRequestRouter} from "./src/routes/userRequest";
-import {stripeRouter} from "./src/routes/stripe";
+import {tollGateRouter} from "./_src/routes/tollgate";
+import {userRouter} from "./_src/routes/user";
+import {transactionRouter} from "./_src/routes/transaction";
+import {userRequestRouter} from "./_src/routes/userRequest";
+import {stripeRouter} from "./_src/routes/stripe";
 
 const router = express.Router();
 
