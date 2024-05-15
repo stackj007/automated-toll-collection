@@ -19,7 +19,7 @@
 - [ ] Resolve other TODO in code
 - [x] Add rejected page for transaction (on cancellation)
 - [ ] Add footer
-- [ ] add vehicle type
+- [x] add vehicle type
 - [x] mute or fix ESLint: 'onRedirect' is missing in props validation(react/prop-types)
 - [ ] use local storage or session to store user rather than context
 - [x] in /account, account balance, remove add payment/make payment and add top up

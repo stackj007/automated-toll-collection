@@ -67,10 +67,42 @@ function RequestForm({ onSubmit, isLoading, successMessage, errorMessage }) {
               <Label htmlFor="vehicleNumber">Vehicle number</Label>
               <Input
                 name="vehicleNumber"
-                id="vehicle-license"
+                id="vehicle-number"
                 placeholder="Enter vehicle number"
                 required
               />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="vehicle-name">Vehicle name</label>
+              <input
+                name="vehicleName"
+                id="vehicle-name"
+                placeholder="Enter vehicle name"
+                className="ml-2"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="vehicleType">Vehicle Type</label>
+              <select
+                name="vehicleType"
+                id="vehicle-type"
+                required
+                className="bg-white border border-gray-300 rounded-md p-2 w-full"
+              >
+                <option value="">Select vehicle type</option>
+                <option value="car">Car</option>
+                <option value="motorcycle">Motorcycle</option>
+                <option value="bus">Bus</option>
+                <option value="truck">Truck</option>
+                <option value="van">Van</option>
+                <option value="suv">SUV</option>
+                <option value="trailer">Trailer</option>
+                <option value="bicycle">Bicycle</option>
+                <option value="electric">Electric Vehicle</option>
+              </select>
             </div>
 
             <div className="space-y-2">
