@@ -9,12 +9,35 @@ import {
 import { Input } from '../../ui/input'
 import { Button } from '../../ui/button'
 import { Label } from '../../ui/label.jsx'
+import { ButtonSpinner, Spinner } from '@chakra-ui/react'
+
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useAuth } from '../../../AuthContext.jsx'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
-function RequestForm({ onSubmit }) {
+function RequestForm({ onSubmit, isLoading, successMessage, errorMessage }) {
+  const [filePreviews, setFilePreviews] = useState({
+    id: '',
+    license: '',
+    rcBook: '',
+  })
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target
+    if (files && files[0]) {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        setFilePreviews((prev) => ({
+          ...prev,
+          [name]: event.target.result,
+        }))
+      }
+      reader.readAsDataURL(files[0])
+    }
+  }
+
   return (
     <div className="max-w-6xl m-auto my-10">
       <form className="space-y-4" id="requestForm" onSubmit={onSubmit}>
@@ -26,8 +49,20 @@ function RequestForm({ onSubmit }) {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="id">ID card</Label>
-              <Input name="id" accept=".jpg, .jpeg, .png" id="id" type="file" required />
+
+              <Input
+                name="id"
+                accept=".jpg, .jpeg, .png"
+                id="id"
+                type="file"
+                required
+                onChange={handleFileChange}
+              />
+              {filePreviews.id && (
+                <img src={filePreviews.id} alt="id Preview" className="mt-2 h-24 w-24" />
+              )}
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="vehicleNumber">Vehicle number</Label>
               <Input
@@ -37,6 +72,7 @@ function RequestForm({ onSubmit }) {
                 required
               />
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="license">Vehicle license</Label>
               <Input
@@ -45,8 +81,17 @@ function RequestForm({ onSubmit }) {
                 id="license"
                 type="file"
                 required
+                onChange={handleFileChange}
               />
+              {filePreviews.license && (
+                <img
+                  src={filePreviews.license}
+                  alt="License Preview"
+                  className="mt-2 h-24 w-24"
+                />
+              )}
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="rcBook">RC book</Label>
               <Input
@@ -55,15 +100,31 @@ function RequestForm({ onSubmit }) {
                 id="rc"
                 type="file"
                 required
+                onChange={handleFileChange}
               />
+              {filePreviews.rcBook && (
+                <img
+                  src={filePreviews.rcBook}
+                  alt="RC Book Preview"
+                  className="mt-2 h-24 w-24"
+                />
+              )}
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="ml-auto">
-              Submit
+            <Button type="submit" className="ml-auto" disabled={isLoading}>
+              {isLoading ? <ButtonSpinner /> : 'Submit'}
             </Button>
           </CardFooter>
         </Card>
+        {successMessage && (
+          <p className="text-green-500 flex items-center justify-center">
+            {successMessage}
+          </p>
+        )}
+        {errorMessage && (
+          <p className="text-red-500 flex items-center justify-center">{errorMessage}</p>
+        )}
       </form>
     </div>
   )
@@ -71,6 +132,9 @@ function RequestForm({ onSubmit }) {
 
 export function Documents() {
   const { user, setUser } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const navigate = useNavigate()
   useEffect(() => {
@@ -79,14 +143,16 @@ export function Documents() {
       throw new Error('User is not authorized to view this page')
     }
 
-    // Check if user is approved and redirect
     if (user.userVehicleRequest?.status === 'approved') {
       navigate('/dashboard')
     }
-  }, [user, navigate]) // Re-run the effect if the user object changes
+  }, [user, navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
+    setSuccessMessage('')
+    setErrorMessage('')
     try {
       const response = await axios.post('/api/user-request', new FormData(e.target))
       const request = response.data.request
@@ -94,20 +160,30 @@ export function Documents() {
         user.userVehicleRequest = request
         return user
       })
+      setSuccessMessage('Request Submitted successfully!')
     } catch (error) {
       if (
         error.response &&
         error.response.data &&
         error.response.data.code === 'ER_DUP_ENTRY'
       ) {
-        alert(
+        setErrorMessage(
           'A request with this vehicle number already exists. Please check your existing requests.'
         )
       } else {
-        console.error('Error submitting documents:', error)
+        setErrorMessage('Error submitting documents Please try again')
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  return <RequestForm onSubmit={handleSubmit} />
+  return (
+    <RequestForm
+      onSubmit={handleSubmit}
+      isLoading={isLoading}
+      successMessage={successMessage}
+      errorMessage={errorMessage}
+    />
+  )
 }

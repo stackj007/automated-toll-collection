@@ -9,12 +9,12 @@
 
 #### frontend
 
-- [ ] user-dashboard fix GUI for desktop
+- [x] user-dashboard fix GUI for desktop
 - [x] Add isAdmin option to edit-user
 - [x] Nav.jsx -> Navbar.jsx, Header() -> Navbar()
 - [x] replace all icons with radix icons (if possible)
 - [ ] replace localstorage with URI in AdminDashboard
-- [ ] add isLoading circular buffer to documents.jsx submit
+- [x] add isLoading circular buffer to documents.jsx submit
 - [ ] fix useless stripe call
 - [ ] Resolve other TODO in code
 - [ ] Add rejected page for transaction (on cancellation)
