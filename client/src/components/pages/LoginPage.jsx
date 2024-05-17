@@ -31,7 +31,7 @@ export default function LoginPage() {
         navigate('/documents')
       }
     } else {
-      setError(error)
+      setError(error.message)
     }
   }
 
@@ -44,9 +44,7 @@ export default function LoginPage() {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {/*  Login form */}
           <form onSubmit={handleLogin} action="#" className="space-y-6" method="POST">
-            {/*  Email input field */}
             <div>
               <label className="block text-sm font-medium text-gray-700" htmlFor="email">
                 Email Address
@@ -86,7 +84,7 @@ export default function LoginPage() {
                 />
               </div>
             </div>
-            {error && <div className="text-red-500 text-s text-center">{error}</div>}
+            {!!error && <div className="text-red-500 text-s text-center">{error}</div>}
             <div>
               <button
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"

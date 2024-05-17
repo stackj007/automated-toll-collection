@@ -15,6 +15,7 @@ module.exports = {
     'react/jsx-no-target-blank': 'off',
     'no-unused-vars': 'warn',
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-    'yoda': 'error'
+    'yoda': 'error',
+    'react/prop-types': 'off',
   },
 }

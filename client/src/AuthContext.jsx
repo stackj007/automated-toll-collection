@@ -10,22 +10,6 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({})
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('/api/user')
-        setUser(response.data.user)
-      } catch (error) {
-        setUser(null)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchUser()
-  }, [])
 
   const login = async (email, password) => {
     try {
@@ -36,6 +20,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user)
       return [response.data.user, null]
     } catch (error) {
+      setUser(null)
       return [null, error.response.data?.error ?? error.response.data]
     }
   }
@@ -80,7 +65,6 @@ export const AuthProvider = ({ children }) => {
   }
 
   const value = {
-    loading,
     login,
     logout,
     register,
