@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn} from "typeorm"
 import {User} from "./User";
+import {UserVehicleRequestStatus, VehicleType} from "../types";
 
 @Entity("userVehicleRequest")
 export class UserVehicleRequest {
@@ -22,10 +23,16 @@ export class UserVehicleRequest {
     @Column({nullable: true})
     vehicleRCBookUrl: string
 
-    @Column({default: "pending"})
-    status: "pending" | "approved" | "rejected"
+    @Column({default: UserVehicleRequestStatus.pending})
+    status: UserVehicleRequestStatus
 
-    setStatus(status: "pending" | "approved" | "rejected") {
+    @Column({default: VehicleType.car})
+    vehicleType: VehicleType
+
+    @Column()
+    vehicleName: string
+
+    setStatus(status: UserVehicleRequestStatus) {
         this.status = status
     }
 }

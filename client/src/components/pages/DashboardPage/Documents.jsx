@@ -9,7 +9,7 @@ import {
 import { Input } from '../../ui/input'
 import { Button } from '../../ui/button'
 import { Label } from '../../ui/label.jsx'
-import { ButtonSpinner, Spinner } from '@chakra-ui/react'
+import { ButtonSpinner } from '@chakra-ui/react'
 
 import axios from 'axios'
 import { useEffect } from 'react'
@@ -38,6 +38,7 @@ function RequestForm({ onSubmit, isLoading, successMessage, errorMessage }) {
     }
   }
 
+  const vehicleTypes = ['car', 'motorcycle', 'bus', 'truck', 'van', 'suv', 'trailer', 'bicycle', 'electric'];
   return (
     <div className="max-w-6xl m-auto my-10">
       <form className="space-y-4" id="requestForm" onSubmit={onSubmit}>
@@ -75,11 +76,10 @@ function RequestForm({ onSubmit, isLoading, successMessage, errorMessage }) {
 
             <div className="space-y-2">
               <label htmlFor="vehicle-name">Vehicle name</label>
-              <input
+              <Input
                 name="vehicleName"
                 id="vehicle-name"
                 placeholder="Enter vehicle name"
-                className="ml-2"
                 required
               />
             </div>
@@ -93,20 +93,16 @@ function RequestForm({ onSubmit, isLoading, successMessage, errorMessage }) {
                 className="bg-white border border-gray-300 rounded-md p-2 w-full"
               >
                 <option value="">Select vehicle type</option>
-                <option value="car">Car</option>
-                <option value="motorcycle">Motorcycle</option>
-                <option value="bus">Bus</option>
-                <option value="truck">Truck</option>
-                <option value="van">Van</option>
-                <option value="suv">SUV</option>
-                <option value="trailer">Trailer</option>
-                <option value="bicycle">Bicycle</option>
-                <option value="electric">Electric Vehicle</option>
+                {vehicleTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </option>
+                ))}
               </select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="license">Vehicle license</Label>
+            <Label htmlFor="license">Vehicle license</Label>
               <Input
                 name="license"
                 accept=".jpg, .jpeg, .png"

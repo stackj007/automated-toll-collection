@@ -37,7 +37,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true,
   allowedHeaders: 'Content-Type, Authorization',
-  methods: ['PUT', 'DELETE', 'POST', 'GET', 'PATCH']
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
 }))
 app.use(fileUpload({limits: {fileSize: 50 * 1024 * 1024},}))
 

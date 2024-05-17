@@ -8,6 +8,7 @@ import { User } from './entity/User';
 import { UserVehicleRequest } from './entity/UserVehicleRequest';
 import { Migration1713240724393 } from "./migration/1713240724393-migration";
 import { Migration1715328143447 } from "./migration/1715328143447-migration";
+import {Migration1715954825787} from "./migration/1715954825787-migration";
 
 export const AppDataSource = new DataSource({
   type: process.env.DATABASE_TYPE as 'mysql' | 'postgres',
@@ -23,6 +24,6 @@ export const AppDataSource = new DataSource({
     Transaction,
     TollGate,
   ],
-  migrations: [Migration1713240724393, Migration1715328143447],
+  migrations: [Migration1713240724393, Migration1715328143447, Migration1715954825787],
   subscribers: [],
 });

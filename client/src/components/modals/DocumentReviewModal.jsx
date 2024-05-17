@@ -54,6 +54,18 @@ const DocumentReviewModal = ({
             </strong>{' '}
             {request.vehicleNumber}
           </p>
+          <p>
+            <strong className="font-semibold">
+              Vehicle name:
+            </strong>{' '}
+            {request.vehicleName}
+          </p>
+          <p>
+            <strong className="font-semibold">
+              Vehicle Type:
+            </strong>{' '}
+            {request.vehicleType}
+          </p>
         </div>
         <h3 className="mt-6 text-xl font-bold">
           Documents:
@@ -67,7 +79,7 @@ const DocumentReviewModal = ({
             <img
               src={document.url}
               alt={document.name}
-              className="rounded-lg max-h-12"
+              className="rounded-lg max-h-32"
             />
           </div>
         ))}

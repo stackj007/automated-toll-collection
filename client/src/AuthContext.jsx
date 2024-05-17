@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const isVerified = (user) => {
-    return user?.userVehicleRequest?.status === 'approved'
+    return user?.userVehicleRequest?.status === 'approved' || user?.isAdmin
   }
 
   const value = {

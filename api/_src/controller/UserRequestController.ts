@@ -4,13 +4,19 @@ import {UploadedFile} from "express-fileupload";
 import {UploadFileResult} from "uploadthing/types";
 import utApi from "../uploadthing";
 import {User} from "../entity/User";
+import {UserVehicleRequestStatus, VehicleType} from "../types";
 
 export class UserRequestController {
   public async submitRequest(req, res) {
-    const {vehicleNumber} = req.body
-    if (!vehicleNumber) {
-      return res.status(400).json({message: 'vehicle number is required'})
+    const {vehicleNumber, vehicleName, vehicleType} = req.body
+    if (!vehicleNumber || !vehicleName || !vehicleType) {
+      return res.status(400)
     }
+
+    if (!Object.values(VehicleType).includes(vehicleType.toLowerCase())) {
+      return res.status(400).json({message: 'Invalid vehicle type'})
+    }
+
 
     if (await AppDataSource.getRepository(UserVehicleRequest).findOneBy({vehicleNumber})) {
       return res.status(400).json({message: 'Vehicle number already exists'})
@@ -40,6 +46,8 @@ export class UserRequestController {
     const urls = uploadedResults.map((result) => result.data.url)
     const userVehicleRequest = AppDataSource.getRepository(UserVehicleRequest).create({
       vehicleNumber,
+      vehicleType: vehicleType.toLowerCase(),
+      vehicleName,
       idCardUrl: urls[0],
       driverLicenseUrl: urls[1],
       vehicleRCBookUrl: urls[2],
@@ -64,7 +72,7 @@ export class UserRequestController {
     try {
       const userRequests = await AppDataSource.getRepository(UserVehicleRequest).find({
         relations: ['user'],
-        where: {status: 'pending'},
+        where: {status: UserVehicleRequestStatus.pending}
       })
       res.json(userRequests)
     } catch (e) {
@@ -86,7 +94,7 @@ export class UserRequestController {
         return res.status(404).json({message: 'Request not found'})
       }
 
-      userRequest.setStatus('approved')
+      userRequest.setStatus(UserVehicleRequestStatus.approved)
       await AppDataSource.getRepository(UserVehicleRequest).save(userRequest)
 
       res.json({message: 'Request approved'})
@@ -105,7 +113,7 @@ export class UserRequestController {
         return res.status(404).json({message: 'Request not found'})
       }
 
-      userRequest.setStatus('rejected')
+      userRequest.setStatus(UserVehicleRequestStatus.rejected)
       await AppDataSource.getRepository(UserVehicleRequest).save(userRequest)
 
       res.json({message: 'Request rejected'})
