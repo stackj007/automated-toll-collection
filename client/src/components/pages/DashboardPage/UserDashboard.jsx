@@ -82,9 +82,9 @@ export function DashboardPage() {
         <h2 className="text-xl font-semibold lg:text-3xl">Welcome back!</h2>
       </div>
       <BalanceDisplay
-        onOpenRechargeModal={handleOpenRechargeModal}
         balance={user ? user.balance : 0}
-        vehicleNumber="DL 06 DD 2561"
+        onOpenRechargeModal={handleOpenRechargeModal}
+        lastTollPrice={transactions.length > 0 ? transactions[0].price : 0}
       />
       {message && <div className="mt-2 text-sm text-center">{message}</div>}
 
@@ -144,7 +144,7 @@ export function DashboardPage() {
       </div>
 
       <div className="mt-6 mb-6">
-        <h3 className="text-lg text-center font-semibold">Transaction history</h3>
+        <h3 className="text-xl text-center font-semibold">Transaction history</h3>
 
         {isLoading ? (
           <p>Loading...</p>
@@ -156,12 +156,15 @@ export function DashboardPage() {
           ))
         )}
 
-        <button
-          className="text-xs mt-4 mx-auto flex justify-center lg:text-base"
-          onClick={() => navigate('/transaction-history-details')}
-        >
-          View More
-        </button>
+        {transactions.length === 0 && <p className="text-center text-sm text-gray-600">No transactions found.</p>}
+        {transactions.length > 4 && (
+          <button
+            className="text-xs mt-4 mx-auto flex justify-center lg:text-base"
+            onClick={() => navigate('/transaction-history-details')}
+          >
+            View More
+          </button>
+        )}
       </div>
     </div>
   )

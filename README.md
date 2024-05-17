@@ -9,7 +9,6 @@
 
 #### frontend
 
-- [x] user-dashboard fix GUI for desktop
 - [x] Add isAdmin option to edit-user
 - [x] Nav.jsx -> Navbar.jsx, Header() -> Navbar()
 - [x] replace all icons with radix icons (if possible)
