@@ -1,9 +1,15 @@
 import { FaCheckCircle } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import {useAuth} from "../../AuthContext.jsx";
+import {useEffect} from "react";
 
 const SuccessPage = () => {
   const navigate = useNavigate()
+  const {fetchUser} = useAuth()
 
+  useEffect(() => {
+    fetchUser()
+  }, []);
   const handleButtonClick = () => {
     navigate('/dashboard')
   }
