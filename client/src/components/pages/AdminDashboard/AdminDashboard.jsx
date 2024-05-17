@@ -1,27 +1,29 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link, useLocation, useNavigate, Routes, Route } from 'react-router-dom'
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { BsSearch } from 'react-icons/bs'
 import { FaRegComment, FaCreditCard, FaUsers } from 'react-icons/fa'
 import { FiMapPin, FiBox } from 'react-icons/fi'
-
 import UsersContent from '../AdminDashboard/Content/UsersContent'
 import TollStationsContent from '../AdminDashboard/Content/TollStationsContent'
 import TransactionsContent from '../AdminDashboard/Content/TransactionsContent'
 import UserRequests from './Content/UserRequests'
 
 export default function AdminDashboard() {
+  const tabs = ['users', 'userRequests', 'tollStations', 'transactions'];
+
   const navigate = useNavigate()
   const location = useLocation()
 
-  const selectedSidebarItem = location.pathname.split('/').pop() || 'users'
-
+  const selectedSidebarItem = location.pathname.split('/').pop()
   useEffect(() => {
-    navigate(`/admin/${selectedSidebarItem}`)
+    if (selectedSidebarItem === 'dashboard') return
+
+    navigate(`/dashboard/${selectedSidebarItem}`)
   }, [navigate, selectedSidebarItem])
 
   const handleSidebarItemClick = (item) => {
-    navigate(`/admin/${item}`)
+    navigate(`/dashboard/${item}`)
   }
 
   return (
@@ -36,7 +38,7 @@ export default function AdminDashboard() {
           </div>
           <nav className="flex-1 overflow-auto px-4">
             <div className="grid items-start gap-3 text-sm">
-              {['users', 'userRequests', 'tollStations', 'transactions'].map((item) => (
+              {tabs.map((item) => (
                 <Link
                   key={item}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
@@ -45,7 +47,7 @@ export default function AdminDashboard() {
                       : ''
                   }`}
                   onClick={() => handleSidebarItemClick(item)}
-                  to={`/admin/${item}`}
+                  to={`/dashboard/${item}`}
                 >
                   {item === 'users' && <FaUsers className="h-4 w-4" />}
                   {item === 'userRequests' && <FaRegComment className="h-4 w-4" />}

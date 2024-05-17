@@ -63,12 +63,18 @@ export class UserController {
         return res.status(401).json({message: info.message})
       }
 
-      req.logIn(user, function (err) {
+      req.logIn(user, async function (err) {
         if (err) {
           return res.status(500).json({message: err.message})
         }
 
-        return res.json({message: 'Logged in', user})
+        const dbUser = await AppDataSource.getRepository(User)
+          .findOne({
+            where: {id: user.id},
+            relations: ['userVehicleRequest'],
+          })
+
+        return res.json({message: 'Logged in', user: dbUser})
       })
     })(req, res))
   }

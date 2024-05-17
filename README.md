@@ -31,7 +31,8 @@
 - [ ] show the gate in transaction history
 - [ ] create alert modal, use it everywhere instead of alert()
 - [ ] fix isAdmin always checked in usersContent
-
+- [ ] fix failed login
+- [ ] fix landing page size (Enjoy the Ride)
 #### backend
 
 - [x] add relation between transaction and tollgate (transaction.tollGate: TollGate|null)

@@ -77,11 +77,11 @@ function App() {
               </>
             )}
             {user?.isAdmin && (
-              <Route path="/admin" element={<AdminDashboard />}>
-                <Route path="/admin/users" element={<UsersContent />} />
-                <Route path="/admin/transactions" element={<TransactionsContent />} />
-                <Route path="/admin/userRequests" element={<UserRequests />} />
-                <Route path="/admin/tollStations" element={<TollStationsContent />} />
+              <Route path="/dashboard" element={<AdminDashboard />}>
+                <Route path="/dashboard/users" element={<UsersContent />} />
+                <Route path="/dashboard/transactions" element={<TransactionsContent />} />
+                <Route path="/dashboard/userRequests" element={<UserRequests />} />
+                <Route path="/dashboard/tollStations" element={<TollStationsContent />} />
               </Route>
             )}
           </Routes>
