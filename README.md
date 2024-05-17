@@ -8,17 +8,10 @@
 ### Todo
 
 #### frontend
-
-- [ ] remove console.log everywhere (tip: use `npm run lint`) and replace with alert
-- [ ] show the gate in transaction history
-- [ ] create alert modal, use it everywhere instead of alert()
+- [ ] create alert modal, use it everywhere instead of alert() and console.log()
 - [ ] fix landing page size (Enjoy the Ride)
-- [ ] add prices per vehicle type in toll-gate
-
-#### backend
-
-- [ ] add prices per vehicle type in toll-gate
-- [ ] switch to restapi
+- [ ] rename `toll-station` to `toll-gate
+- [ ] show the gate address in transaction history (transaction.tollGate.address)
 
 ##### later
 
@@ -31,6 +24,7 @@
 - [ ] Resolve other TODO in code
 
 #### backend
-
+- 
+- [ ] switch to restapi
 - [ ] add unit tests
 - [ ] add integration tests

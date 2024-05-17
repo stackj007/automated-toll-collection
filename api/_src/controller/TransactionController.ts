@@ -5,7 +5,7 @@ export class TransactionController {
   public async getAllTransactions(req, res) {
     try {
       const transactions = await AppDataSource.getRepository(Transaction).find({
-        relations: ['user'],
+        relations: ['user', 'tollGate'],
         order: {date: 'DESC'}
       })
 
@@ -19,7 +19,7 @@ export class TransactionController {
     try {
       const transactions = await AppDataSource.getRepository(Transaction).find({
         where: {user: req.user},
-        relations: ['user'],
+        relations: ['user', 'tollGate'],
         order: {date: 'DESC'}
       })
 
@@ -32,7 +32,7 @@ export class TransactionController {
   public async getTransaction(req, res) {
     try {
       const {id} = req.params
-      const transaction = await AppDataSource.getRepository(Transaction).findOne({where: {id}, relations: ['user']})
+      const transaction = await AppDataSource.getRepository(Transaction).findOne({where: {id}, relations: ['user', 'tollGate']})
 
       if (!transaction) {
         return res.status(404).json({message: 'Transaction not found'})

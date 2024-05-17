@@ -38,7 +38,7 @@ function RequestForm({ onSubmit, isLoading, successMessage, errorMessage }) {
     }
   }
 
-  const vehicleTypes = ['car', 'motorcycle', 'bus', 'truck', 'van', 'suv', 'trailer', 'bicycle', 'electric'];
+  const vehicleTypes = ['car', 'motorcycle', 'truck', 'bus', 'trailer'];
   return (
     <div className="max-w-6xl m-auto my-10">
       <form className="space-y-4" id="requestForm" onSubmit={onSubmit}>

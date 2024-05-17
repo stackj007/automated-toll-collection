@@ -76,7 +76,7 @@ const TollStationsContent = () => {
           <TableRow>
             <TableCell>ID</TableCell>
             <TableCell>Address</TableCell>
-            <TableCell>Fee</TableCell>
+            <TableCell>Price list</TableCell>
             <TableCell>QR Code</TableCell>
             <TableCell>Action</TableCell>
           </TableRow>
@@ -86,7 +86,14 @@ const TollStationsContent = () => {
             <TableRow key={station.id}>
               <TableCell>{station.id}</TableCell>
               <TableCell>{station.address}</TableCell>
-              <TableCell>{station.fee}</TableCell>
+              <TableCell>
+                {Object.entries(station.priceList).map(([key, value]) => (
+                  <div key={key}>
+                    {key.charAt(0).toUpperCase() + key.slice(1)}: <span> {Number(value)} EGP</span>
+                  </div>
+                ))}
+
+              </TableCell>
               <TableCell>
                 <img src={QRLink(station)} alt="QR Code" />
               </TableCell>

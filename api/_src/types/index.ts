@@ -3,11 +3,11 @@ export enum VehicleType {
     motorcycle = 'motorcycle',
     bus = 'bus',
     truck = 'truck',
-    van = 'van',
-    suv = 'suv',
-    trailer = 'trailer',
-    bicycle = 'bicycle',
-    electric = 'electric'
+    trailer = 'trailer'
+}
+
+export type PriceList = {
+    [key in VehicleType]: number
 }
 
 export enum UserVehicleRequestStatus {
@@ -15,3 +15,4 @@ export enum UserVehicleRequestStatus {
     approved = 'approved',
     rejected = 'rejected'
 }
+

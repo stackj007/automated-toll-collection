@@ -16,14 +16,14 @@ export class TollgateController {
   }
 
   public async createTollGate(req: Request, res: Response) {
-    const {address, fee} = req.body
+    const {address, priceList} = req.body
 
-    if (!address || !fee || !Number(fee)) {
+    if (!address || !priceList) {
       return res.status(400).json({message: 'All fields are required'})
     }
 
     try {
-      const tollGate = AppDataSource.getRepository(TollGate).create({address, fee: Number(fee)})
+      const tollGate = AppDataSource.getRepository(TollGate).create({address, priceList})
 
       await AppDataSource.getRepository(TollGate).save(tollGate)
       res.json({message: 'Toll gate created successfully', tollGate})
@@ -52,15 +52,16 @@ export class TollgateController {
       }
 
       const user = req.user as User | null
-      if (user && tollGate.fee < Number(user?.balance)) {
+
+      if (user && tollGate.fee(user) < Number(user?.balance)) {
         const transaction = AppDataSource.getRepository(Transaction).create({
-          amount: String(tollGate.fee),
+          amount: String(tollGate.fee(user)),
           user: user,
           status: 'completed',
           tollGate: tollGate,
         })
 
-        user.balance = String(Number(user.balance) - tollGate.fee)
+        user.balance = String(Number(user.balance) - tollGate.fee(user))
 
         await AppDataSource.getRepository(User).save(user)
         await AppDataSource.getRepository(Transaction).save(transaction)
@@ -69,7 +70,7 @@ export class TollgateController {
       }
 
       const transaction = AppDataSource.getRepository(Transaction).create({
-        amount: String(tollGate.fee),
+        amount: String(tollGate.fee(user)),
         user: user,
         tollGate: tollGate,
       })
@@ -83,7 +84,7 @@ export class TollgateController {
               product_data: {
                 name: 'Toll Gate Fee',
               },
-              unit_amount: tollGate.fee * 100,
+              unit_amount: tollGate.fee(user) * 100,
             },
             quantity: 1,
           },
@@ -104,9 +105,9 @@ export class TollgateController {
 
   public async editTollGate(req: Request, res: Response) {
     const {id} = req.params
-    const {address, fee} = req.body
+    const {address, priceList} = req.body
 
-    if (!address || !fee || !Number(fee)) {
+    if (!address || !priceList) {
       return res.status(400).json({message: 'All fields are required'})
     }
 
@@ -118,7 +119,7 @@ export class TollgateController {
       }
 
       tollGate.address = address
-      tollGate.fee = Number(fee)
+      tollGate.priceList = priceList
 
       await AppDataSource.getRepository(TollGate).save(tollGate)
       res.json({message: 'Toll gate updated successfully', tollGate})

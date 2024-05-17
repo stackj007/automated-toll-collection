@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
+import {Input} from "../ui/input.jsx";
 
 const AddTollGateModal = ({
   isOpen,
   onClose,
   onAddTollGate,
 }) => {
+  const vehicleTypes = ['car', 'motorcycle', 'truck', 'bus', 'trailer'];
   const [newTollGate, setNewTollGate] = useState({
     address: '',
-    fee: '',
+    priceList: Object.fromEntries(vehicleTypes.map((type) => [type, 0])),
   })
 
   if (!isOpen) {
@@ -20,6 +22,7 @@ const AddTollGateModal = ({
     await onAddTollGate(newTollGate)
     onClose()
   }
+
 
   return (
     <div
@@ -54,24 +57,33 @@ const AddTollGateModal = ({
               />
             </div>
             <div>
-              <label
-                htmlFor="fee"
-                className="block text-sm font-medium text-gray-700 my-2"
-              >
-                Fee
-              </label>
-              <input
-                type="number"
-                id="fee"
-                value={newTollGate.fee}
-                onChange={(e) =>
-                  setNewTollGate({
-                    ...newTollGate,
-                    fee: e.target.value,
-                  })
-                }
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-              />
+              {vehicleTypes.map((type) => (
+                <div key={type}>
+                  <label
+                    htmlFor={type}
+                    className="block text-sm font-medium text-gray-700 my-2"
+                  >
+                    {type.charAt(0).toUpperCase() + type.slice(1)} Fee
+                  </label>
+                  <Input
+                    type="number"
+                    id={type}
+                    name={type}
+                    value={newTollGate.priceList[type]}
+                    onChange={(e) =>
+                      setNewTollGate((prev) => ({
+                        ...prev,
+                        priceList: {
+                          ...prev.priceList,
+                          [e.target.name]: e.target.value,
+                        },
+                      }))
+                    }
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                  />
+                </div>
+              ))
+              }
             </div>
           </div>
           <div className="flex justify-end gap-2 mt-6">
