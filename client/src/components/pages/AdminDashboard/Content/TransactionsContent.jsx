@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '../../../ui/table/Table.jsx'
 
-import { useTransactions } from '../../../../hooks/useTransactions'
+import { useTransactions } from '../../../../hooks/UseTransactions.jsx'
 
 export default function TransactionsContent() {
   const [filterInput, setFilterInput] = useState('')

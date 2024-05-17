@@ -1,5 +1,5 @@
 import TransactionHistoryItem from '../DashboardPage/TransactionHistoryItem'
-import useTransactions from '../../../hooks/UseTransactions.jsx'
+import useTransactions from '../../../hooks/UseUserTransactions.jsx'
 
 const TransactionHistoryDetails = () => {
   const { transactions, isLoading, error } = useTransactions({limit: null})

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { DocumentsUploadedProvider } from './hooks/DocumentsUploadedContext'
-import { TransactionProvider } from './hooks/useTransactions'
+import { TransactionProvider } from './hooks/UseTransactions.jsx'
 import LoginPage from './components/pages/LoginPage'
 import SignUp from './components/pages/SignUp'
 import Header from './components/Navbar.jsx'
