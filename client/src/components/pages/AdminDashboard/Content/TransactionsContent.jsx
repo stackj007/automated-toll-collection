@@ -1,4 +1,4 @@
-import {useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTable, useSortBy, useFilters } from 'react-table'
 import { Input } from '../../../ui/input'
 import {
@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '../../../ui/table/Table.jsx'
 
-import { useTransactions } from '../../../../hooks/UseTransactions.jsx'
+import useTransactions from '../../../../hooks/UseTransactions'
 
 export default function TransactionsContent() {
   const [filterInput, setFilterInput] = useState('')

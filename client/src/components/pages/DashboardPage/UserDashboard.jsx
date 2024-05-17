@@ -156,7 +156,9 @@ export function DashboardPage() {
           ))
         )}
 
-        {transactions.length === 0 && <p className="text-center text-sm text-gray-600">No transactions found.</p>}
+        {transactions.length === 0 && (
+          <p className="text-center text-sm text-gray-600">No transactions found.</p>
+        )}
         {transactions.length > 4 && (
           <button
             className="text-xs mt-4 mx-auto flex justify-center lg:text-base"

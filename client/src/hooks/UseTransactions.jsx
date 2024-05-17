@@ -1,10 +1,8 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-const TransactionContext = React.createContext()
-// TODO: don't use providers here, serves no purpose
+import { useState, useEffect } from 'react'
 
-export const TransactionProvider = ({ children }) => {
-  const [transactions, setTransactions] = React.useState([])
+const useTransactions = ({ limit } = {}) => {
+  const [transactions, setTransactions] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -12,22 +10,25 @@ export const TransactionProvider = ({ children }) => {
     const fetchTransactions = async () => {
       try {
         const response = await axios.get('api/transactions')
-        setTransactions(response.data)
+
+        if (limit) {
+          console.log(limit)
+          setTransactions(response.data.slice(0, limit))
+        } else {
+          setTransactions(response.data)
+          console.log('transactions:', response.data, 'no problem')
+        }
+
         setIsLoading(false)
-      } catch (error) {
-        console.error('Error fetching transactions:', error)
-        setError(error)
+      } catch (err) {
+        setError(err)
         setIsLoading(false)
       }
     }
     fetchTransactions()
   }, [])
 
-  return (
-    <TransactionContext.Provider value={{ transactions, isLoading, error }}>
-      {children}
-    </TransactionContext.Provider>
-  )
+  return { transactions, isLoading, error }
 }
 
-export const useTransactions = () => React.useContext(TransactionContext)
+export default useTransactions
