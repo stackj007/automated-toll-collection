@@ -30,18 +30,22 @@ function Header() {
             {user ? (
               <HStack>
                 <>
-                  <Link
-                    className="text-base font-medium text-gray-500 hover:text-gray-900 mx-2"
-                    to="/dashboard"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    className="text-base font-medium text-gray-500 hover:text-gray-900 "
-                    to="/account"
-                  >
-                    Account
-                  </Link>
+                  {!user.isAdmin && (
+                    <>
+                      <Link
+                        className="text-base font-medium text-gray-500 hover:text-gray-900 mx-2"
+                        to="/dashboard"
+                      >
+                        Home
+                      </Link>
+                      <Link
+                        className="text-base font-medium text-gray-500 hover:text-gray-900 "
+                        to="/account"
+                      >
+                        Account
+                      </Link>
+                    </>
+                  )}
                   <button
                     className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-orange-600 hover:bg-orange-700"
                     onClick={handleLogout}

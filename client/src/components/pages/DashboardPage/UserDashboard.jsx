@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import TransactionHistoryItem from './TransactionHistoryItem'
 import BalanceDisplay from './BalanceDisplay'
 import RechargeModal from '../../modals/RechargeModal'
-import useLastFourTransactions from '../../../hooks/useLastFourTransactions'
+import useTransactions from '../../../hooks/UseTransactions.jsx'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -73,7 +73,7 @@ export function DashboardPage() {
     navigate('/account')
   }
 
-  const { transactions, isLoading, error } = useLastFourTransactions({ limit: 4 })
+  const { transactions, isLoading, error } = useTransactions({ limit: 4 })
 
   return (
     <div className="container mx-auto px-4">

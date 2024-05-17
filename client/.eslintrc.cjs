@@ -17,5 +17,6 @@ module.exports = {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'yoda': 'error',
     'react/prop-types': 'off',
+    'no-console': 'warn',
   },
 }

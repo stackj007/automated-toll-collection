@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import {useMemo, useState } from 'react'
 import { useTable, useSortBy, useFilters } from 'react-table'
 import { Input } from '../../../ui/input'
 import {
@@ -16,7 +16,7 @@ export default function TransactionsContent() {
 
   const { transactions, isLoading, error } = useTransactions()
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: 'Transaction ID',
