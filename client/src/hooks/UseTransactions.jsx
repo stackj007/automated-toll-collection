@@ -12,11 +12,9 @@ const useTransactions = ({ limit } = {}) => {
         const response = await axios.get('api/transactions')
 
         if (limit) {
-          console.log(limit)
           setTransactions(response.data.slice(0, limit))
         } else {
           setTransactions(response.data)
-          console.log('transactions:', response.data, 'no problem')
         }
 
         setIsLoading(false)

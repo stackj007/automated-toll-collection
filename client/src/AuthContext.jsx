@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
         password: password,
       })
       setUser(response.data.user)
+      localStorage.setItem('user', JSON.stringify(response.data.user))
       return [response.data.user, null]
     } catch (error) {
       setUser(null)
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await axios.post('/api/logout')
       setUser(null)
+      localStorage.removeItem('user')
       window.location.href = '/login'
       return [true, null]
     } catch (error) {
@@ -45,6 +47,7 @@ export const AuthProvider = ({ children }) => {
         name,
       })
       setUser(response.data.user)
+      localStorage.setItem('user', JSON.stringify(response.data.user))
       return [true, null]
     } catch (error) {
       return [false, error.response.data?.error ?? error.response.data]
@@ -55,6 +58,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.get('/api/user')
       setUser(response.data.user)
+      localStorage.setItem('user', JSON.stringify(response.data.user))
     } catch (error) {
       setUser(null)
     }

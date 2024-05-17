@@ -9,12 +9,10 @@
 
 #### frontend
 
-- [ ] use local storage or session to store user rather than context
 - [ ] remove console.log everywhere (tip: use `npm run lint`) and replace with alert
 - [ ] show the gate in transaction history
 - [ ] create alert modal, use it everywhere instead of alert()
 - [ ] fix landing page size (Enjoy the Ride)
-- [x] remove TransactionProvider completely
 - [ ] add prices per vehicle type in toll-gate
 
 #### backend
