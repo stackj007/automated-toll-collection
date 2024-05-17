@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -10,35 +9,22 @@ import {
 import axios from 'axios'
 import { Input } from '../ui/input.jsx'
 import { Button } from '../ui/button.jsx'
-import { CheckBox } from '@mui/icons-material'
+import { Checkbox } from '../ui/checkbox.jsx'
 
 export function EditUserDialog({ open, setIsEditDialogOpen, user }) {
-  const [isAdmin, setIsAdmin] = useState(user?.isAdmin || false)
+  const submit = async () => {
+    const [id, name, email, isAdmin] = [
+      document.getElementById('userId').value,
+      document.getElementById('name').value,
+      document.getElementById('email').value,
+      document.getElementById('isAdmin').checked,
+    ]
 
-  const [id, setId] = useState(user?.id || '')
-  const [name, setName] = useState(user?.name || '')
-  const [email, setEmail] = useState(user?.email || '')
-
-  useEffect(() => {
-    if (user) {
-      setId(user.id)
-      setName(user.name)
-      setEmail(user.email)
-
-      setIsAdmin(user.isAdmin)
-    } else {
-      setIsAdmin(false)
-    }
-  }, [user])
-
-  const submit = async (e) => {
-    e.preventDefault()
     if (!name || !email) return alert('please fill in all fields')
 
     try {
       await axios.post('/api/edit-user', { id, name, email, isAdmin })
       setIsEditDialogOpen(false)
-      window.location.reload()
     } catch (error) {
       alert(error.message)
     }
@@ -53,34 +39,30 @@ export function EditUserDialog({ open, setIsEditDialogOpen, user }) {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            isAdmin
-            <CheckBox
+            <label htmlFor="isAdmin">Admin</label>
+            <Checkbox
               id="isAdmin"
-              checked={isAdmin}
-              onChange={(e) => setIsAdmin(e.target.checked)}
-              className="col-span-3"
+              defaultChecked={user?.isAdmin}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            id
-            <Input id="userId" value={id} className="col-span-3" disabled />
+            <label htmlFor="userId">id</label>
+            <Input id="userId" defaultValue={user?.id} className="col-span-3" disabled />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             name
             <Input
               id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              defaultValue={user?.name}
               className="col-span-3"
               type="text"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            email
+            <label htmlFor="email">email</label>
             <Input
               id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              defaultValue={user?.email}
               className="col-span-3"
               type="text"
             />
