@@ -1,16 +1,9 @@
 /* eslint-disable react/prop-types */
-// import { ExitIcon } from '@radix-ui/react-icons'
-
-const DocumentReviewModal = ({
-  isOpen,
-  onClose,
-  request,
-  onAccept,
-  onReject,
-}) => {
+const DocumentReviewModal = ({ isOpen, onClose, request, onAccept, onReject }) => {
   if (!isOpen) {
     return null
   }
+
   const documents = [
     {
       name: 'ID',
@@ -28,58 +21,37 @@ const DocumentReviewModal = ({
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50"
+      className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 "
       style={{ display: isOpen ? 'flex' : 'none' }}
     >
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6">
-          Review User Request
-        </h2>
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md max-h-full overflow-y-auto">
+        <h2 className="text-2xl font-bold mb-6">Review User Request</h2>
         <div className="space-y-2">
           <p>
-            <strong className="font-semibold">
-              Request ID:
-            </strong>{' '}
-            {request.id}
+            <strong className="font-semibold">Request ID:</strong> {request.id}
           </p>
           <p>
-            <strong className="font-semibold">
-              User Name:
-            </strong>{' '}
-            {request.user.name}
+            <strong className="font-semibold">User Name:</strong> {request.user.name}
           </p>
           <p>
-            <strong className="font-semibold">
-              Vehicle Number:
-            </strong>{' '}
+            <strong className="font-semibold">Vehicle Number:</strong>{' '}
             {request.vehicleNumber}
           </p>
           <p>
-            <strong className="font-semibold">
-              Vehicle name:
-            </strong>{' '}
-            {request.vehicleName}
+            <strong className="font-semibold">Vehicle Name:</strong> {request.vehicleName}
           </p>
           <p>
-            <strong className="font-semibold">
-              Vehicle Type:
-            </strong>{' '}
-            {request.vehicleType}
+            <strong className="font-semibold">Vehicle Type:</strong> {request.vehicleType}
           </p>
         </div>
-        <h3 className="mt-6 text-xl font-bold">
-          Documents:
-        </h3>
-
+        <h3 className="mt-6 text-xl font-bold">Documents:</h3>
         {documents.map((document) => (
           <div key={document.name} className="mb-4">
-            <h4 className="text-lg font-semibold">
-              {document.name}
-            </h4>
+            <h4 className="text-lg font-semibold">{document.name}</h4>
             <img
               src={document.url}
               alt={document.name}
-              className="rounded-lg max-h-32"
+              className="rounded-lg w-full object-cover max-h-32"
             />
           </div>
         ))}

@@ -85,14 +85,15 @@ const TollStationsContent = () => {
           {tollGates.map((station) => (
             <TableRow key={station.id}>
               <TableCell>{station.id}</TableCell>
-              <TableCell>{station.address}</TableCell>
+              <TableCell>{station?.address}</TableCell>
               <TableCell>
-                {Object.entries(station.priceList).map(([key, value]) => (
-                  <div key={key}>
-                    {key.charAt(0).toUpperCase() + key.slice(1)}: <span> {Number(value)} EGP</span>
-                  </div>
-                ))}
-
+                {station.priceList &&
+                  Object.entries(station.priceList).map(([key, value]) => (
+                    <div key={key}>
+                      {key.charAt(0).toUpperCase() + key.slice(1)}:{' '}
+                      <span> {Number(value)} EGP</span>
+                    </div>
+                  ))}
               </TableCell>
               <TableCell>
                 <img src={QRLink(station)} alt="QR Code" />

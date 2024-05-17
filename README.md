@@ -8,10 +8,11 @@
 ### Todo
 
 #### frontend
+
 - [ ] create alert modal, use it everywhere instead of alert() and console.log()
-- [ ] fix landing page size (Enjoy the Ride)
+- [x] fix landing page size (Enjoy the Ride)
 - [ ] rename `toll-station` to `toll-gate
-- [ ] show the gate address in transaction history (transaction.tollGate.address)
+- [x] show the gate address in transaction history (transaction.tollGate.address)
 
 ##### later
 
@@ -24,7 +25,8 @@
 - [ ] Resolve other TODO in code
 
 #### backend
-- 
+
+-
 - [ ] switch to restapi
 - [ ] add unit tests
 - [ ] add integration tests

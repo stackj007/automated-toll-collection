@@ -18,7 +18,7 @@
   background-size: cover;
   background-position: center;
   filter: blur(0.2);
-  min-height: 100vh;
+  min-height: 700px;
 }
 
 .overlay {
@@ -64,10 +64,7 @@
 
 .benefits {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(300px, 1fr)
-  );
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
   justify-content: space-between;
   align-items: center;

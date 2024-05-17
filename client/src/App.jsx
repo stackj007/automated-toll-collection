@@ -33,24 +33,24 @@ function App() {
   useEffect(() => {
     // TODO: on 401, should redirect to login page and clear user from local storage
     const getUserFromLocalStorage = () => {
-      const unSerializedUser = localStorage.getItem('user');
-      if (!unSerializedUser) return null;
+      const unSerializedUser = localStorage.getItem('user')
+      if (!unSerializedUser) return null
 
       try {
-        return JSON.parse(unSerializedUser);
+        return JSON.parse(unSerializedUser)
       } catch (error) {
-        localStorage.removeItem('user');
-        return null;
+        localStorage.removeItem('user')
+        return null
       }
-    };
-
-    const user = getUserFromLocalStorage();
-    if (user && Object.keys(user).length) {
-      setUser(user);
-    } else {
-      fetchUser();
     }
-  }, []);
+
+    const user = getUserFromLocalStorage()
+    if (user && Object.keys(user).length) {
+      setUser(user)
+    } else {
+      fetchUser()
+    }
+  }, [])
 
   if (loading) {
     return <CircularProgress size={50} sx={{ color: 'black' }} />
