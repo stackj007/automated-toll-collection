@@ -16,11 +16,11 @@ export class Transaction {
   @Column({ unique: true, nullable: true })
   stripeSessionId: string | null
 
-  @ManyToOne(() => User, (user) => user.transactions, {nullable: true})
+  @ManyToOne(() => User, (user) => user.transactions, {nullable: true, onDelete: 'CASCADE'})
   @JoinColumn()
   user: User | null
 
-  @ManyToOne(() => TollGate, (tollgate) => tollgate.transactions, {nullable: true})
+  @ManyToOne(() => TollGate, (tollgate) => tollgate.transactions, {nullable: true, onDelete: 'CASCADE'})
   @JoinColumn()
   tollGate: TollGate | null
 

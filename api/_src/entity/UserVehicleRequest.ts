@@ -7,7 +7,7 @@ export class UserVehicleRequest {
     @PrimaryGeneratedColumn()
     id: number
 
-    @OneToOne(() => User, user => user.userVehicleRequest)
+    @OneToOne(() => User, user => user.userVehicleRequest, {onDelete: 'CASCADE'})
     @JoinColumn()
     user: User
 

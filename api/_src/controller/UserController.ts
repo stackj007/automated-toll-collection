@@ -114,9 +114,19 @@ export class UserController {
     const {id} = req.body
 
     try {
+      const user = await AppDataSource.getRepository(User).findOneBy({id})
+      if (!user) {
+        res.status(404)
+      }
+
+      if (user.isAdmin) {
+        res.status(403).json({message: "Can't delete admins"})
+      }
+
       await AppDataSource.getRepository(User).delete(id)
       res.json({message: 'User deleted'})
     } catch (e) {
+      console.error(e)
       res.status(400).json({message: 'Error delete the user'})
     }
   }
