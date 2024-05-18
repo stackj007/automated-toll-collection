@@ -21,7 +21,7 @@ import UsersContent from './components/pages/AdminDashboard/Content/UsersContent
 import UserRequests from './components/pages/AdminDashboard/Content/UserRequests'
 import SuccessPage from './components/pages/SuccessPage'
 import FailedPage from './components/pages/FailedPage'
-import TollStationsContent from './components/pages/AdminDashboard/Content/TollStationsContent'
+import TollStationsContent from './components/pages/AdminDashboard/Content/TollGateContent'
 import LandingPage from './components/pages/LandingPage/LandingPage.jsx'
 
 function App() {

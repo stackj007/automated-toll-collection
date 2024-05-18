@@ -12,10 +12,16 @@ import {
   TableRow,
 } from '../../../ui/table/Table.jsx'
 
+import AlertModal from '../../../ui/AlertModal'
+
 export default function UserRequests() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedRequest, setSelectedRequest] = useState(null)
   const [userRequests, setUserRequests] = useState([])
+
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  const [alertTitle, setAlertTitle] = useState('')
+  const [alertMessage, setAlertMessage] = useState('')
 
   useEffect(() => {
     fetchUserRequests()
@@ -26,7 +32,9 @@ export default function UserRequests() {
       const response = await axios.get('/api/user-requests')
       setUserRequests(response.data)
     } catch (error) {
-      console.error('Error fetching user requests:', error)
+      setAlertTitle('Error')
+      setAlertMessage('Failed to fetch user requests.')
+      setIsAlertOpen(true)
     }
   }
 
@@ -36,7 +44,9 @@ export default function UserRequests() {
       setUserRequests(userRequests.filter((request) => request.id !== requestId))
       setIsModalOpen(false)
     } catch (error) {
-      console.error('Error accepting request:', error)
+      setAlertTitle('Error')
+      setAlertMessage('Failed to accept the request.')
+      setIsAlertOpen(true)
     }
   }
 
@@ -46,12 +56,13 @@ export default function UserRequests() {
       setUserRequests(userRequests.filter((request) => request.id !== requestId))
       setIsModalOpen(false)
     } catch (error) {
-      console.error('Error rejecting request:', error)
+      setAlertTitle('Error')
+      setAlertMessage('Failed to reject the request.')
+      setIsAlertOpen(true)
     }
   }
 
   const handleRequestSelect = (request) => {
-    console.log(`Selected request with ID: ${request.id}`)
     setSelectedRequest(request)
     setIsModalOpen(true)
   }
@@ -82,7 +93,6 @@ export default function UserRequests() {
         </TableBody>
       </Table>
 
-      {/* Ensure the modal is rendered outside of the table's container */}
       {selectedRequest && (
         <DocumentReviewModal
           isOpen={isModalOpen}
@@ -92,6 +102,13 @@ export default function UserRequests() {
           onReject={() => handleReject(selectedRequest.id)}
         />
       )}
+
+      <AlertModal
+        open={isAlertOpen}
+        onClose={() => setIsAlertOpen(false)}
+        title={alertTitle}
+        description={alertMessage}
+      />
     </div>
   )
 }

@@ -9,9 +9,9 @@
 
 #### frontend
 
-- [ ] create alert modal, use it everywhere instead of alert() and console.log()
+- [x] create alert modal, use it everywhere instead of alert() and console.log()
 - [x] fix landing page size (Enjoy the Ride)
-- [ ] rename `toll-station` to `toll-gate
+- [x] rename `toll-station` to `toll-gate
 - [x] show the gate address in transaction history (transaction.tollGate.address)
 
 ##### later

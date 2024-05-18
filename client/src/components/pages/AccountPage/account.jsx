@@ -158,7 +158,6 @@ function AuthorizeAccount({ user, onRedirect, vehicle }) {
                 className="bg-black text-white"
                 variant="default"
                 onClick={() => {
-                  console.log('Navigating to transaction history details')
                   navigate('/transaction-history-details')
                 }}
               >

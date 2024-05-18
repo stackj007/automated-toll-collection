@@ -12,10 +12,11 @@ import {
 
 import { FiFileText, FiTrash2 } from 'react-icons/fi'
 
-import DeleteUserDialog from '../../../modals/../modals/DeleteUserDialog.jsx'
+import DeleteUserDialog from '../../../modals/DeleteUserDialog.jsx'
 import { EditUserDialog } from '../../../modals/EditUserDialog.jsx'
 import { Card, CardContent, CardHeader, CardTitle } from '../../../ui/card.jsx'
 import { Button } from '../../../ui/button.jsx'
+import AlertModal from '../../../ui/AlertModal.jsx'
 
 export default function UsersContent() {
   const [users, setUsers] = useState([])
@@ -23,13 +24,19 @@ export default function UsersContent() {
   const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
 
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  const [alertTitle, setAlertTitle] = useState('')
+  const [alertMessage, setAlertMessage] = useState('')
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('/api/users')
         setUsers(response.data)
       } catch (error) {
-        console.error('Error fetching users:', error)
+        setAlertTitle('Error')
+        setAlertMessage('Failed to fetch users.')
+        setIsAlertOpen(true)
       }
     }
 
@@ -38,7 +45,9 @@ export default function UsersContent() {
 
   const handleRoleChange = async (user) => {
     if (!user) {
-      console.error('User is null, cannot update role')
+      setAlertTitle('Error')
+      setAlertMessage('User is null, cannot update role.')
+      setIsAlertOpen(true)
       return
     }
 
@@ -46,13 +55,17 @@ export default function UsersContent() {
       await axios.put(`/api/users/${user.id}`, { isAdmin: !user.isAdmin })
       setUsers(users.map((u) => (u.id === user.id ? { ...u, isAdmin: !u.isAdmin } : u)))
     } catch (error) {
-      console.error('Error updating user role', error)
+      setAlertTitle('Error')
+      setAlertMessage('Failed to update user role.')
+      setIsAlertOpen(true)
     }
   }
 
   const handleEdit = (user) => {
     if (!user) {
-      console.error('User is null, cannot edit')
+      setAlertTitle('Error')
+      setAlertMessage('User is null, cannot edit.')
+      setIsAlertOpen(true)
       return
     }
 
@@ -71,6 +84,7 @@ export default function UsersContent() {
         open={isDeleteModalOpened}
         setIsDeleteDialogOpen={setIsDeleteModalOpened}
         user={selectedUser}
+        setUsers={setUsers}
       />
 
       <EditUserDialog
@@ -105,7 +119,6 @@ export default function UsersContent() {
                     <Button
                       className=""
                       size="icon"
-                      // variant="outline"
                       color={user.isAdmin ? 'red' : 'default'}
                       onClick={() => handleRoleChange(user)}
                     >
@@ -136,6 +149,13 @@ export default function UsersContent() {
           </Table>
         </CardContent>
       </Card>
+
+      <AlertModal
+        open={isAlertOpen}
+        onClose={() => setIsAlertOpen(false)}
+        title={alertTitle}
+        description={alertMessage}
+      />
     </div>
   )
 }

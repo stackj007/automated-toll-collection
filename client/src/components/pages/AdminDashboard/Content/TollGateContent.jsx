@@ -11,6 +11,7 @@ import { PlusIcon } from '@radix-ui/react-icons'
 import NewTollGateDialog from '../../../modals/AddTollGateModal.jsx'
 import DeleteTollGateDialog from '../../../modals/DeleteTollGateDialog.jsx'
 import EditTollGateDialog from '../../../modals/EditTollGateDialog.jsx'
+import AlertModal from '../../../ui/AlertModal.jsx'
 
 import axios from 'axios'
 import { Button } from '../../../ui/button.jsx'
@@ -22,6 +23,11 @@ const TollStationsContent = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [selectedStation, setSelectedStation] = useState(null)
 
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
+  const [alertTitle, setAlertTitle] = useState('')
+  const [alertAction, setAlertAction] = useState(null)
+
   useEffect(() => {
     fetchTollGates()
   }, [])
@@ -31,7 +37,10 @@ const TollStationsContent = () => {
       const response = await axios.get('/api/toll-gates')
       setTollGates(response.data)
     } catch (error) {
-      console.error('Error fetching toll gates:', error)
+      setAlertTitle('Error')
+      setAlertMessage('Error fetching toll gates: ' + error.message)
+      setAlertAction(null)
+      setIsAlertOpen(true)
     }
   }
 
@@ -47,7 +56,21 @@ const TollStationsContent = () => {
 
   const deleteTollGate = (station) => {
     setSelectedStation(station)
-    setIsDeleteDialogOpen(true)
+    setAlertTitle('Confirm Deletion')
+    setAlertMessage('Are you sure you want to delete this toll gate?')
+    setAlertAction(() => async () => {
+      try {
+        await axios.delete(`/api/toll-gates/${station.id}`)
+        setTollGates((prev) => prev.filter((s) => s.id !== station.id))
+        setIsAlertOpen(false)
+      } catch (error) {
+        setAlertTitle('Error')
+        setAlertMessage('Error deleting toll gate: ' + error.message)
+        setAlertAction(null)
+        setIsAlertOpen(true)
+      }
+    })
+    setIsAlertOpen(true)
   }
 
   const addTollGate = async (gateDetails) => {
@@ -55,7 +78,10 @@ const TollStationsContent = () => {
       const response = await axios.post('/api/toll-gates', gateDetails)
       setTollGates([...tollGates, response.data.tollGate])
     } catch (error) {
-      console.error('Error adding toll gate:', error.message)
+      setAlertTitle('Error')
+      setAlertMessage('Error adding toll gate: ' + error.message)
+      setAlertAction(null)
+      setIsAlertOpen(true)
     }
   }
 
@@ -82,7 +108,7 @@ const TollStationsContent = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tollGates.map((station) => (
+          {tollGates?.map((station) => (
             <TableRow key={station.id}>
               <TableCell>{station.id}</TableCell>
               <TableCell>{station?.address}</TableCell>
@@ -133,6 +159,14 @@ const TollStationsContent = () => {
         open={isEditDialogOpen}
         setIsEditDialogOpen={setIsEditDialogOpen}
         station={selectedStation}
+      />
+
+      <AlertModal
+        open={isAlertOpen}
+        onClose={() => setIsAlertOpen(false)}
+        title={alertTitle}
+        description={alertMessage}
+        onConfirm={alertAction}
       />
     </div>
   )

@@ -5,12 +5,12 @@ import { BsSearch } from 'react-icons/bs'
 import { FaRegComment, FaCreditCard, FaUsers } from 'react-icons/fa'
 import { FiMapPin, FiBox } from 'react-icons/fi'
 import UsersContent from '../AdminDashboard/Content/UsersContent'
-import TollStationsContent from '../AdminDashboard/Content/TollStationsContent'
+import TollStationsContent from './Content/TollGateContent'
 import TransactionsContent from '../AdminDashboard/Content/TransactionsContent'
 import UserRequests from './Content/UserRequests'
 
 export default function AdminDashboard() {
-  const tabs = ['users', 'userRequests', 'tollStations', 'transactions'];
+  const tabs = ['users', 'userRequests', 'tollStations', 'transactions']
 
   const navigate = useNavigate()
   const location = useLocation()

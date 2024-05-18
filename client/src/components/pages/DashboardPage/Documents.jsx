@@ -38,7 +38,7 @@ function RequestForm({ onSubmit, isLoading, successMessage, errorMessage }) {
     }
   }
 
-  const vehicleTypes = ['car', 'motorcycle', 'truck', 'bus', 'trailer'];
+  const vehicleTypes = ['car', 'motorcycle', 'truck', 'bus', 'trailer']
   return (
     <div className="max-w-6xl m-auto my-10">
       <form className="space-y-4" id="requestForm" onSubmit={onSubmit}>
@@ -102,7 +102,7 @@ function RequestForm({ onSubmit, isLoading, successMessage, errorMessage }) {
             </div>
 
             <div className="space-y-2">
-            <Label htmlFor="license">Vehicle license</Label>
+              <Label htmlFor="license">Vehicle license</Label>
               <Input
                 name="license"
                 accept=".jpg, .jpeg, .png"

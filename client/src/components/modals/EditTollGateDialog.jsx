@@ -7,12 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../ui/dialog.jsx'
-import {Input} from '../ui/input.jsx'
-import {Button} from '../ui/button.jsx'
-import {useState} from "react";
+import { Input } from '../ui/input.jsx'
+import { Button } from '../ui/button.jsx'
+import { useState } from 'react'
 
-export default function EditTollGateDialog({open, setIsEditDialogOpen, station}) {
-  const vehicleTypes = ['car', 'motorcycle', 'truck', 'bus', 'trailer'];
+export default function EditTollGateDialog({ open, setIsEditDialogOpen, station }) {
+  const vehicleTypes = ['car', 'motorcycle', 'truck', 'bus', 'trailer']
   const [priceList, setPriceList] = useState({})
 
   const submit = async (e) => {
@@ -20,13 +20,16 @@ export default function EditTollGateDialog({open, setIsEditDialogOpen, station})
 
     const [id, address] = [
       document.getElementById('stationId').value,
-      document.getElementById('address').value
+      document.getElementById('address').value,
     ]
 
     if (!address || !priceList) return alert('Please fill in all fields')
 
     try {
-      await axios.put(`/api/toll-gates/${id}`, {address, priceList: {...station.priceList, ...priceList}})
+      await axios.put(`/api/toll-gates/${id}`, {
+        address,
+        priceList: { ...station.priceList, ...priceList },
+      })
       setIsEditDialogOpen(false)
       window.location.reload()
     } catch (e) {
@@ -67,17 +70,16 @@ export default function EditTollGateDialog({open, setIsEditDialogOpen, station})
                 type="number"
                 id={type}
                 className="col-span-3"
-                defaultValue={station?.priceList[type]}
+                defaultValue={station?.priceList?.[type] || ''}
                 onChange={(e) =>
                   setPriceList((priceList) => ({
                     ...priceList,
-                    [e.target.id]: e.target.value
+                    [e.target.id]: e.target.value,
                   }))
                 }
               />
             </div>
-          ))
-          }
+          ))}
         </div>
         <DialogFooter>
           <Button type="submit" onClick={submit}>
