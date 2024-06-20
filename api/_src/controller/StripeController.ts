@@ -34,10 +34,6 @@ export class StripeController {
           const checkoutSessionAsyncPaymentFailed = event.data.object
           await handleTransaction('failed', checkoutSessionAsyncPaymentFailed.id)
           break
-        case 'checkout.session.async_payment_succeeded':
-          const checkoutSessionAsyncPaymentSucceeded = event.data.object
-          await handleTransaction('completed', checkoutSessionAsyncPaymentSucceeded.id)
-          break
         case 'checkout.session.completed':
           const checkoutSessionCompleted = event.data.object
           await handleTransaction('completed', checkoutSessionCompleted.id)
