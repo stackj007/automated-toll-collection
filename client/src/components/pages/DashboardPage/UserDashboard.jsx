@@ -84,7 +84,7 @@ export function DashboardPage() {
       <BalanceDisplay
         balance={user ? user.balance : 0}
         onOpenRechargeModal={handleOpenRechargeModal}
-        lastTollPrice={transactions.length > 0 ? transactions[0].price : 0}
+        lastTollPrice={transactions.length > 0 ? transactions[0].amount : 0}
       />
       {message && <div className="mt-2 text-sm text-center">{message}</div>}
 
